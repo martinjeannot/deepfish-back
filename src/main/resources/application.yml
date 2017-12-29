@@ -1,0 +1,37 @@
+logging:
+  level:
+    org:
+      springframework:
+        web: INFO
+      hibernate:
+        tool.hbm2ddl: DEBUG
+        SQL: DEBUG
+        type: TRACE
+security:
+  oauth2:
+    resource:
+      id: oauth2_id
+  ignored: /**
+  basic:
+    enabled: false
+spring:
+  data:
+    rest:
+      detection-strategy: annotated
+  datasource:
+    url: jdbc:postgresql://localhost:5432/deepfish_dev
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+  mail:
+    host: smddtp.gmail.com
+    port: 587
+    username: morgandeepfish@gmail.com
+    password: d33pfish
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls.enable: true
