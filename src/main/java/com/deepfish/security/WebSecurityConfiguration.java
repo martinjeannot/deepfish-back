@@ -7,14 +7,44 @@ import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
-//@EnableWebSecurity
+@EnableWebSecurity
 @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
+
+  private final UserDetailsService userDetailsService;
+
+  public WebSecurityConfiguration(UserDetailsService userDetailsService) {
+    this.userDetailsService = userDetailsService;
+  }
+
+  @Override
+  protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    auth
+        .userDetailsService(userDetailsService).passwordEncoder(passwordEncoder()).and()
+        .inMemoryAuthentication().withUser("admin@deepfish.fr").password("password")
+        .authorities("ROLE_SUPER_ADMIN");
+  }
+
+  @Override
+  protected void configure(HttpSecurity http) throws Exception {
+    http
+        .cors().and()
+        .formLogin().disable()
+        .csrf().disable() // FIXME
+        .authorizeRequests()
+        .antMatchers("/employers/sign-up").permitAll()
+        .anyRequest().denyAll();
+  }
 
   @Bean
   @Override
@@ -27,17 +57,12 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     return new BCryptPasswordEncoder();
   }
 
-  @Override
-  protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-    auth.inMemoryAuthentication().withUser("user").password("password").roles("USER").and()
-        .withUser("admin").password("password").authorities("ROLE_ADMIN");
-  }
-
-  @Override
-  protected void configure(HttpSecurity http) throws Exception {
-    http
-        .formLogin().disable()
-        .anonymous().disable()
-        .authorizeRequests().anyRequest().authenticated();
+  @Bean
+  public CorsConfigurationSource corsConfigurationSource() {
+    CorsConfiguration corsConfiguration = new CorsConfiguration();
+    corsConfiguration.applyPermitDefaultValues();
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    source.registerCorsConfiguration("/**", corsConfiguration);
+    return source;
   }
 }

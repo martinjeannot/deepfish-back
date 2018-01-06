@@ -1,4 +1,4 @@
-package com.deepfish.security;
+package com.deepfish.user.services;
 
 import com.deepfish.employer.repositories.EmployerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +19,10 @@ public class DefaultUserDetailsService implements UserDetailsService {
 
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    return employerRepository.findByUsername(username);
+    UserDetails userDetails = employerRepository.findByUsername(username);
+    if (userDetails == null) {
+      throw new UsernameNotFoundException(username);
+    }
+    return userDetails;
   }
 }

@@ -1,19 +1,22 @@
 logging:
   level:
     org:
-      springframework:
-        web: INFO
       hibernate:
-        tool.hbm2ddl: DEBUG
         SQL: DEBUG
+        tool.hbm2ddl: DEBUG
         type: TRACE
+      springframework:
+        #boot:
+          #autoconfigure:
+            #security: INFO
+        web: INFO
 security:
+  basic:
+    enabled: false
+  ignored: /**
   oauth2:
     resource:
       id: oauth2_id
-  ignored: /**
-  basic:
-    enabled: false
 spring:
   data:
     rest:

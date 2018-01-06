@@ -9,4 +9,6 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 public interface EmployerRepository extends PagingAndSortingRepository<Employer, UUID> {
 
   Employer findByUsername(String username);
+
+  Employer findOneByUsername(String username);
 }

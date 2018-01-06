@@ -1,10 +1,8 @@
 package com.deepfish.security;
 
 import javax.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
@@ -20,11 +18,15 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
   @Value("${security.oauth2.resource.id}")
   private String resourceId;
 
-  @Autowired
-  private DefaultTokenServices defaultTokenServices;
+  private final DefaultTokenServices defaultTokenServices;
 
-  @Autowired
-  private TokenStore tokenStore;
+  private final TokenStore tokenStore;
+
+  public ResourceServerConfiguration(DefaultTokenServices defaultTokenServices,
+      TokenStore tokenStore) {
+    this.defaultTokenServices = defaultTokenServices;
+    this.tokenStore = tokenStore;
+  }
 
   @Override
   public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
@@ -41,7 +43,7 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
         .csrf().disable()
         .anonymous().disable()
         .authorizeRequests()
-        .antMatchers(HttpMethod.OPTIONS).permitAll()
+        //.antMatchers(HttpMethod.OPTIONS).permitAll()
         .antMatchers("/users").hasAnyRole("USER", "ADMIN");
   }
 

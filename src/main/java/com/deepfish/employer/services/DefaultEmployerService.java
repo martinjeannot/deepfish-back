@@ -2,10 +2,10 @@ package com.deepfish.employer.services;
 
 import com.deepfish.employer.domain.Employer;
 import com.deepfish.employer.repositories.EmployerRepository;
+import com.deepfish.security.Role;
+import java.util.Arrays;
 import java.util.UUID;
-import org.springframework.mail.MailException;
 import org.springframework.mail.MailSender;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +33,10 @@ public class DefaultEmployerService implements EmployerService {
     // encode raw password
     employer.setPassword(passwordEncoder.encode(employer.getPassword()));
 
+    // set permissions
+    employer.setAuthorities(
+        Arrays.asList(Role.ROLE_USER.toGrantedAuthority(), Role.ROLE_ADMIN.toGrantedAuthority()));
+
     employerRepository.save(employer);
   }
 
@@ -41,11 +45,15 @@ public class DefaultEmployerService implements EmployerService {
     // generate random password
     String password = UUID.randomUUID().toString().split("-")[0];
     employer.setPassword(password);
+    System.out.println("EMPLOYER PASSWORD :" + password);
+
+    // allow new employer to authenticate
+    employer.enableAuthentication();
 
     create(employer);
 
     // send confirmation mail
-    SimpleMailMessage mail = new SimpleMailMessage();
+    /*SimpleMailMessage mail = new SimpleMailMessage();
     mail.setFrom("morgandeepfish@gmail.com");
     mail.setTo("m4rtinjeannot@gmail.com");
     mail.setSubject("Confirmation de votre inscription");
@@ -54,6 +62,6 @@ public class DefaultEmployerService implements EmployerService {
       mailSender.send(mail);
     } catch (MailException e) {
       System.err.println(e.getMessage());
-    }
+    }*/
   }
 }
