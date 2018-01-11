@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
@@ -26,6 +25,8 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
   private final int ACCESS_TOKEN_VALIDITY_SECONDS = 10000;
   private final int REFRESH_TOKEN_VALIDITY_SECONDS = 30000;
 
+  public static final String[] AUTHORIZATION_SCOPE = new String[]{"read", "write"};
+
   @Value("${security.oauth2.resource.id}")
   private String resourceId;
 
@@ -33,7 +34,8 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 
   private final CorsConfigurationSource corsConfigurationSource;
 
-  public AuthorizationServerConfiguration(AuthenticationManager authenticationManager,
+  public AuthorizationServerConfiguration(
+      AuthenticationManager authenticationManager,
       CorsConfigurationSource corsConfigurationSource) {
     this.authenticationManager = authenticationManager;
     this.corsConfigurationSource = corsConfigurationSource;
@@ -80,7 +82,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
         .secret("9c7d7778e0534031aa0ed684bba16546")
         .authorizedGrantTypes("client_credentials", "password", "refresh_token")
         .authorities("ROLE_TRUSTED_CLIENT")
-        .scopes("read", "write")
+        .scopes(AUTHORIZATION_SCOPE)
         .resourceIds(resourceId)
         .accessTokenValiditySeconds(ACCESS_TOKEN_VALIDITY_SECONDS)
         .refreshTokenValiditySeconds(REFRESH_TOKEN_VALIDITY_SECONDS);

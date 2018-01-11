@@ -42,6 +42,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         .formLogin().disable()
         .csrf().disable() // FIXME
         .authorizeRequests()
+        .antMatchers("/auth/linkedin/*").permitAll()
         .antMatchers("/employers/sign-up").permitAll()
         .anyRequest().denyAll();
   }

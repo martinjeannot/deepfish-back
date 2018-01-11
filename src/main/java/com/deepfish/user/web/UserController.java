@@ -1,6 +1,6 @@
 package com.deepfish.user.web;
 
-import com.deepfish.user.domain.User;
+import com.deepfish.user.domain.AbstractUser;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
   @RequestMapping
-  public User getUser() {
+  public AbstractUser getUser() {
     return null;
   }
 }

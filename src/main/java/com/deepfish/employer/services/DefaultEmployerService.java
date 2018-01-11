@@ -5,6 +5,8 @@ import com.deepfish.employer.repositories.EmployerRepository;
 import com.deepfish.security.Role;
 import java.util.Arrays;
 import java.util.UUID;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.mail.MailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,17 +17,21 @@ import org.springframework.stereotype.Service;
 @Service
 public class DefaultEmployerService implements EmployerService {
 
-  private final EmployerRepository employerRepository;
+  private static final Logger LOGGER = LoggerFactory.getLogger(DefaultEmployerService.class);
 
-  private final MailSender mailSender;
+  private final EmployerRepository employerRepository;
 
   private final PasswordEncoder passwordEncoder;
 
-  public DefaultEmployerService(EmployerRepository employerRepository, MailSender mailSender,
-      PasswordEncoder passwordEncoder) {
+  private final MailSender mailSender;
+
+  public DefaultEmployerService(
+      EmployerRepository employerRepository,
+      PasswordEncoder passwordEncoder,
+      MailSender mailSender) {
     this.employerRepository = employerRepository;
-    this.mailSender = mailSender;
     this.passwordEncoder = passwordEncoder;
+    this.mailSender = mailSender;
   }
 
   @Override
@@ -45,7 +51,7 @@ public class DefaultEmployerService implements EmployerService {
     // generate random password
     String password = UUID.randomUUID().toString().split("-")[0];
     employer.setPassword(password);
-    System.out.println("EMPLOYER PASSWORD :" + password);
+    LOGGER.error(password);
 
     // allow new employer to authenticate
     employer.enableAuthentication();

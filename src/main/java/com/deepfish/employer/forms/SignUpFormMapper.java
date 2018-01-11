@@ -4,9 +4,10 @@ import com.deepfish.company.domain.Company;
 import com.deepfish.employer.domain.Employer;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 
-@Mapper
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface SignUpFormMapper {
 
   SignUpFormMapper INSTANCE = Mappers.getMapper(SignUpFormMapper.class);
