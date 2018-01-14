@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
  * Spring Data Rest. The SDR reference documentation states : "Existing Spring Web MVC CORS
  * configuration is not applied to Spring Data REST."
  */
-@Component
+//@Component
 public class CORSConfiguration extends RepositoryRestConfigurerAdapter {
 
   @Override

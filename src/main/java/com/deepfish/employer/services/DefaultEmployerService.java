@@ -41,7 +41,8 @@ public class DefaultEmployerService implements EmployerService {
 
     // set permissions
     employer.setAuthorities(
-        Arrays.asList(Role.ROLE_USER.toGrantedAuthority(), Role.ROLE_ADMIN.toGrantedAuthority()));
+        Arrays
+            .asList(Role.ROLE_USER.toGrantedAuthority(), Role.ROLE_EMPLOYER.toGrantedAuthority()));
 
     employerRepository.save(employer);
   }

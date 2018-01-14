@@ -11,6 +11,7 @@ import javax.persistence.MappedSuperclass;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.hateoas.Identifiable;
@@ -19,6 +20,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 @MappedSuperclass
 @Data
+@Accessors(chain = true)
 public abstract class AbstractUser implements UserDetails, Identifiable<UUID> {
 
   @Id
@@ -38,6 +40,9 @@ public abstract class AbstractUser implements UserDetails, Identifiable<UUID> {
 
   @NotBlank
   private String lastName;
+
+  @NotBlank
+  private String phoneNumber;
 
   @Convert(converter = AuthoritiesConverter.class)
   @NotEmpty

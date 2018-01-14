@@ -40,11 +40,10 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
   public void configure(HttpSecurity http) throws Exception {
     http
         .requestMatcher(new OAuthRequestedMatcher())
+        .cors().and()
         .csrf().disable()
         .anonymous().disable()
-        .authorizeRequests()
-        //.antMatchers(HttpMethod.OPTIONS).permitAll()
-        .antMatchers("/users").hasAnyRole("USER", "ADMIN");
+        .authorizeRequests().anyRequest().authenticated();
   }
 
   private static class OAuthRequestedMatcher implements RequestMatcher {
