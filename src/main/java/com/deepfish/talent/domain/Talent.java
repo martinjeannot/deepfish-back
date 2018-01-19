@@ -1,10 +1,13 @@
 package com.deepfish.talent.domain;
 
 import com.deepfish.user.domain.AbstractUser;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -35,6 +38,9 @@ public class Talent extends AbstractUser {
   @NotNull
   @Enumerated(EnumType.STRING)
   private MaturityLevel maturityLevel;
+
+  @OneToOne(mappedBy = "talent", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+  private Conditions conditions;
 
   public Talent(String linkedInId) {
     this.linkedInId = linkedInId;

@@ -1,10 +1,14 @@
 package com.deepfish.talent.services;
 
+import com.deepfish.company.domain.CompanyMaturityLevel;
+import com.deepfish.company.repositories.CompanyMaturityLevelRepository;
 import com.deepfish.security.Role;
+import com.deepfish.talent.domain.Conditions;
 import com.deepfish.talent.domain.MaturityLevel;
 import com.deepfish.talent.domain.Talent;
 import com.deepfish.talent.repositories.TalentRepository;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.UUID;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,11 +23,16 @@ public class DefaultTalentService implements TalentService {
 
   private final PasswordEncoder passwordEncoder;
 
+  private final CompanyMaturityLevelRepository repo;
+
+
   public DefaultTalentService(
       TalentRepository talentRepository,
-      PasswordEncoder passwordEncoder) {
+      PasswordEncoder passwordEncoder,
+      CompanyMaturityLevelRepository companyMaturityLevelRepository) {
     this.talentRepository = talentRepository;
     this.passwordEncoder = passwordEncoder;
+    this.repo = companyMaturityLevelRepository;
   }
 
   @Override
@@ -35,6 +44,15 @@ public class DefaultTalentService implements TalentService {
     talent.setAuthorities(
         Arrays.asList(Role.ROLE_USER.toGrantedAuthority(), Role.ROLE_TALENT.toGrantedAuthority()));
 
+    // set conditions
+    Conditions conditions = new Conditions();
+    talent.setConditions(conditions); // cascade persist
+    conditions.setTalent(talent); // because child gets its id from parent
+
+    Iterator<CompanyMaturityLevel> toto = repo.findAll().iterator();
+    conditions.getCompanyMaturityLevels().add(toto.next());
+    conditions.getCompanyMaturityLevels().add(toto.next());
+
     talentRepository.save(talent);
   }
 
@@ -42,7 +60,7 @@ public class DefaultTalentService implements TalentService {
   public void signUp(Talent talent) {
     // set default values on sign up
     talent
-        .setMaturityLevel(MaturityLevel.OPEN_WATER)
+        .setMaturityLevel(MaturityLevel.CLEAR_WATER)
         .setPhoneNumber("null");
 
     // allow new talent to authenticate
