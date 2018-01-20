@@ -19,5 +19,5 @@ public class Job {
   private UUID id;
 
   @NotBlank
-  private String title;
+  private String l10nKey;
 }

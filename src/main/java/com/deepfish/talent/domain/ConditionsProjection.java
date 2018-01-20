@@ -8,4 +8,10 @@ import org.springframework.data.rest.core.config.Projection;
 public interface ConditionsProjection {
 
   Set<CompanyMaturityLevel> getCompanyMaturityLevels();
+
+  Set<Job> getJobs();
+
+  Set<CommodityType> getCommodityTypes();
+
+  Set<TaskType> getTaskTypes();
 }

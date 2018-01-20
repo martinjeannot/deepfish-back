@@ -27,7 +27,7 @@ spring:
     password: postgres
   jpa:
     hibernate:
-      ddl-auto: update #create-drop
+      ddl-auto: update
   mail:
     host: smddtp.gmail.com
     port: 587

@@ -25,10 +25,14 @@ public class Conditions {
   private double salary = 125000.89;
 
   @ManyToMany
-  //@JoinTable
   private Set<CompanyMaturityLevel> companyMaturityLevels = new HashSet<>();
 
-  // private Set<Job> jobs;
+  @ManyToMany
+  private Set<Job> jobs = new HashSet<>();
 
-  // private Set<CommodityType> commodityTypes;
+  @ManyToMany
+  private Set<CommodityType> commodityTypes = new HashSet<>();
+
+  @ManyToMany
+  private Set<TaskType> taskTypes = new HashSet<>();
 }
