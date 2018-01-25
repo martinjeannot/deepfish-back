@@ -39,6 +39,10 @@ public class Talent extends AbstractUser {
   @Enumerated(EnumType.STRING)
   private MaturityLevel maturityLevel;
 
+  @NotNull
+  @Column(columnDefinition = "TEXT")
+  private String selfPitch = "";
+
   @OneToOne(mappedBy = "talent", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
   private Conditions conditions;
 

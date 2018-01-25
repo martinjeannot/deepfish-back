@@ -1,6 +1,7 @@
 package com.deepfish.talent.domain;
 
 import com.deepfish.company.domain.CompanyMaturityLevel;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -9,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotNull;
 import lombok.Data;
 
 @Entity(name = "TalentConditions")
@@ -22,7 +24,10 @@ public class Conditions {
   @MapsId
   private Talent talent;
 
-  private double salary = 125000.89;
+  private double fixedSalary;
+
+  @NotNull
+  private LocalDate startingDate = LocalDate.now();
 
   @ManyToMany
   private Set<CompanyMaturityLevel> companyMaturityLevels = new HashSet<>();
@@ -35,4 +40,7 @@ public class Conditions {
 
   @ManyToMany
   private Set<TaskType> taskTypes = new HashSet<>();
+
+  @ManyToMany
+  private Set<FixedLocation> fixedLocations = new HashSet<>();
 }
