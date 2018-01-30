@@ -1,6 +1,7 @@
 package com.deepfish.talent.domain;
 
 import com.deepfish.company.domain.CompanyMaturityLevel;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
@@ -10,10 +11,11 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import lombok.Data;
 
-@Entity(name = "TalentConditions")
+@Entity
 @Data
 public class Conditions {
 
@@ -24,10 +26,11 @@ public class Conditions {
   @MapsId
   private Talent talent;
 
-  private double fixedSalary;
+  @Min(0L)
+  private BigDecimal fixedSalary;
 
   @NotNull
-  private LocalDate startingDate = LocalDate.now();
+  private LocalDate canStartOn = LocalDate.now();
 
   @ManyToMany
   private Set<CompanyMaturityLevel> companyMaturityLevels = new HashSet<>();

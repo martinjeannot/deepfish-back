@@ -59,3 +59,8 @@ INSERT INTO fixed_location (id, l10n_key, parent_location_id) VALUES ('186b1c56-
 INSERT INTO fixed_location (id, l10n_key, parent_location_id) VALUES ('f9ec8dd9-d9c3-41f9-8027-13ef41e949f7', 'Portugal', NULL);
 INSERT INTO fixed_location (id, l10n_key, parent_location_id) VALUES ('69d30103-8c75-445f-b997-eca94f6f23a8', 'Lisbonne', 'f9ec8dd9-d9c3-41f9-8027-13ef41e949f7');
 INSERT INTO fixed_location (id, l10n_key, parent_location_id) VALUES ('dc7b5bf5-e935-487c-b52b-43554c0a3f43', 'Porto', 'f9ec8dd9-d9c3-41f9-8027-13ef41e949f7');
+
+-- SENIORITY =======================================================================================
+INSERT INTO seniority (id, l10n_key, order_index) VALUES ('6780434e-2512-4f2a-96aa-01c5ee10b7ec', 'Junior', 0);
+INSERT INTO seniority (id, l10n_key, order_index) VALUES ('3fd3a132-f78a-4897-ba2b-440517a6db8f', 'Confirmé', 1);
+INSERT INTO seniority (id, l10n_key, order_index) VALUES ('fc373f87-9cbf-4460-a59a-2843d997ea15', 'Senior', 2);
