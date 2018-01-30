@@ -1,6 +1,7 @@
 package com.deepfish.talent.domain;
 
 import com.deepfish.company.domain.CompanyMaturityLevel;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Set;
 import org.springframework.data.rest.core.config.Projection;
@@ -8,9 +9,9 @@ import org.springframework.data.rest.core.config.Projection;
 @Projection(name = "default", types = {Conditions.class})
 public interface DefaultConditionsProjection {
 
-  double getFixedSalary();
+  BigDecimal getFixedSalary();
 
-  LocalDate getStartingDate();
+  LocalDate getCanStartOn();
 
   Set<CompanyMaturityLevel> getCompanyMaturityLevels();
 

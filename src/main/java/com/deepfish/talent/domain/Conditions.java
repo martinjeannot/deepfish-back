@@ -26,8 +26,9 @@ public class Conditions {
   @MapsId
   private Talent talent;
 
+  @NotNull
   @Min(0L)
-  private BigDecimal fixedSalary;
+  private BigDecimal fixedSalary = BigDecimal.ZERO;
 
   @NotNull
   private LocalDate canStartOn = LocalDate.now();
