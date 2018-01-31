@@ -1,7 +1,10 @@
 package com.deepfish.user.domain;
 
 import com.deepfish.user.converters.AuthoritiesConverter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.deepfish.user.serialization.PasswordDeserializer;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.util.Collection;
 import java.util.UUID;
 import javax.persistence.Column;
@@ -29,7 +32,8 @@ public abstract class AbstractUser implements UserDetails, Identifiable<UUID> {
   @Setter(AccessLevel.NONE)
   private UUID id;
 
-  @JsonIgnore
+  @JsonProperty(access = Access.WRITE_ONLY)
+  @JsonDeserialize(using = PasswordDeserializer.class)
   @NotBlank
   private String password;
 
