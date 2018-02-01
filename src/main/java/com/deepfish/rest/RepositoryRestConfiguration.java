@@ -1,5 +1,6 @@
 package com.deepfish.rest;
 
+import com.deepfish.company.domain.Company;
 import com.deepfish.company.domain.CompanyMaturityLevel;
 import com.deepfish.employer.domain.Employer;
 import com.deepfish.employer.domain.Seniority;
@@ -24,8 +25,8 @@ public class RepositoryRestConfiguration extends RepositoryRestConfigurerAdapter
   @Override
   public void configureRepositoryRestConfiguration(
       org.springframework.data.rest.core.config.RepositoryRestConfiguration config) {
-    config.exposeIdsFor(Employer.class, CompanyMaturityLevel.class, Job.class, CommodityType.class,
-        TaskType.class, FixedLocation.class, Seniority.class);
+    config.exposeIdsFor(Employer.class, Company.class, CompanyMaturityLevel.class, Job.class,
+        CommodityType.class, TaskType.class, FixedLocation.class, Seniority.class);
   }
 
   @Override
