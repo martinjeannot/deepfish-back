@@ -14,13 +14,15 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 import org.hibernate.validator.constraints.NotBlank;
 
 @Entity
 @Data
 @Accessors(chain = true)
-@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true, exclude = {"profile", "conditions"})
+@EqualsAndHashCode(callSuper = true, exclude = {"profile", "conditions"})
 @NoArgsConstructor
 public class Talent extends AbstractUser {
 
@@ -30,10 +32,11 @@ public class Talent extends AbstractUser {
   private String linkedInId;
 
   @NotBlank
-  private String linkedInEmail;
-
-  @NotBlank
   private String email;
+
+  @NotNull
+  @OneToOne(mappedBy = "talent", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+  private TalentProfile profile;
 
   @NotNull
   @Enumerated(EnumType.STRING)
@@ -43,10 +46,29 @@ public class Talent extends AbstractUser {
   @Column(columnDefinition = "TEXT")
   private String selfPitch = "";
 
+  @NotNull
   @OneToOne(mappedBy = "talent", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
   private Conditions conditions;
 
   public Talent(String linkedInId) {
     this.linkedInId = linkedInId;
+  }
+
+  // GETTERS & SETTERS =============================================================================
+
+  public Talent setProfile(TalentProfile profile) {
+    this.profile = profile;
+    if (profile != null) {
+      profile.setTalent(this); // synchronization
+    }
+    return this;
+  }
+
+  public Talent setConditions(Conditions conditions) {
+    this.conditions = conditions;
+    if (conditions != null) {
+      conditions.setTalent(this); // synchronization
+    }
+    return this;
   }
 }

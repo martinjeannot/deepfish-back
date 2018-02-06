@@ -13,17 +13,24 @@ import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Data
+@ToString(exclude = {"talent"})
+@EqualsAndHashCode(exclude = {"talent"})
 public class Conditions {
 
   @Id
+  @Setter(AccessLevel.NONE)
   private UUID id;
 
-  @OneToOne
   @MapsId
+  @OneToOne
   private Talent talent;
 
   @NotNull

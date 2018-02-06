@@ -1,6 +1,7 @@
 package com.deepfish.talent.services;
 
 import com.deepfish.talent.domain.Talent;
+import java.util.Map;
 
 /**
  * Service related to {@link Talent} entity
@@ -15,9 +16,9 @@ public interface TalentService {
   void create(Talent talent);
 
   /**
-   * Sign a new talent up
+   * Sign a new talent up from his LinkedIn profile
    *
-   * @param talent the talent to sign up
+   * @param profileMap a Map of data from LinkedIn
    */
-  void signUp(Talent talent);
+  void signUpFromLinkedIn(Map profileMap);
 }

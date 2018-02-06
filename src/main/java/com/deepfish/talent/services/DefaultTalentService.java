@@ -5,9 +5,15 @@ import com.deepfish.security.Role;
 import com.deepfish.talent.domain.Conditions;
 import com.deepfish.talent.domain.MaturityLevel;
 import com.deepfish.talent.domain.Talent;
+import com.deepfish.talent.domain.TalentMapper;
+import com.deepfish.talent.domain.TalentProfile;
+import com.deepfish.talent.domain.TalentProfileMapper;
 import com.deepfish.talent.repositories.TalentRepository;
 import java.util.Arrays;
+import java.util.Map;
 import java.util.UUID;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +22,8 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class DefaultTalentService implements TalentService {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(DefaultTalentService.class);
 
   private final TalentRepository talentRepository;
 
@@ -39,15 +47,18 @@ public class DefaultTalentService implements TalentService {
         Arrays.asList(Role.ROLE_USER.toGrantedAuthority(), Role.ROLE_TALENT.toGrantedAuthority()));
 
     // set conditions
-    Conditions conditions = new Conditions();
-    talent.setConditions(conditions); // cascade persist
-    conditions.setTalent(talent); // because child gets its id from parent
+    talent.setConditions(new Conditions());
 
     talentRepository.save(talent);
   }
 
   @Override
-  public void signUp(Talent talent) {
+  public void signUpFromLinkedIn(Map profileMap) {
+    TalentProfile profile = TalentProfileMapper.INSTANCE.mapToTalentProfile(profileMap);
+    Talent talent = TalentMapper.INSTANCE.profileToTalent(profile);
+    talent.setProfile(profile);
+    profile.synchronizePositions();
+
     // set default values on sign up
     talent
         .setMaturityLevel(MaturityLevel.CLEAR_WATER)

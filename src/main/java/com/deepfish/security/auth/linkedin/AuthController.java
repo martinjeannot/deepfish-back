@@ -4,6 +4,7 @@ import com.deepfish.security.auth.JwtTokenForge;
 import com.deepfish.talent.domain.Talent;
 import com.deepfish.talent.repositories.TalentRepository;
 import com.deepfish.talent.services.TalentService;
+import com.deepfish.talent.util.LinkedInUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.net.URI;
@@ -70,7 +71,7 @@ public class AuthController {
     Map response;
     try {
       response = sendAuthenticatedRequestToLinkedInAPI(HttpMethod.GET,
-          "/v1/people/~:(id)", authorizationCode.get());
+          LinkedInUtils.EMAIL_PROFILE_URI, authorizationCode.get());
     } catch (RestClientException e) {
       if (e instanceof HttpClientErrorException) {
         LOGGER.error(((HttpClientErrorException) e).getResponseBodyAsString());
@@ -111,7 +112,7 @@ public class AuthController {
     Map response;
     try {
       response = sendAuthenticatedRequestToLinkedInAPI(HttpMethod.GET,
-          "/v1/people/~:(id,email-address,first-name,last-name)", authorizationCode.get());
+          LinkedInUtils.EMAIL_PROFILE_URI, authorizationCode.get());
     } catch (RestClientException e) {
       LOGGER.error(e.getMessage(), e);
       return "redirect:http://localhost:8081/#/";
@@ -125,8 +126,7 @@ public class AuthController {
     }
 
     // register new talent
-    talent = TalentMapper.INSTANCE.mapToTalent(response);
-    talentService.signUp(talent);
+    talentService.signUpFromLinkedIn(response);
 
     // authenticate newly registered talent
 
