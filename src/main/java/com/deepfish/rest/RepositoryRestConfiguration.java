@@ -4,10 +4,11 @@ import com.deepfish.company.domain.Company;
 import com.deepfish.company.domain.CompanyMaturityLevel;
 import com.deepfish.employer.domain.Employer;
 import com.deepfish.employer.domain.Seniority;
-import com.deepfish.talent.domain.CommodityType;
-import com.deepfish.talent.domain.FixedLocation;
-import com.deepfish.talent.domain.Job;
-import com.deepfish.talent.domain.TaskType;
+import com.deepfish.talent.domain.conditions.CommodityType;
+import com.deepfish.talent.domain.conditions.FixedLocation;
+import com.deepfish.talent.domain.conditions.Job;
+import com.deepfish.talent.domain.Talent;
+import com.deepfish.talent.domain.conditions.TaskType;
 import org.springframework.data.rest.core.event.ValidatingRepositoryEventListener;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurerAdapter;
 import org.springframework.stereotype.Component;
@@ -25,8 +26,8 @@ public class RepositoryRestConfiguration extends RepositoryRestConfigurerAdapter
   @Override
   public void configureRepositoryRestConfiguration(
       org.springframework.data.rest.core.config.RepositoryRestConfiguration config) {
-    config.exposeIdsFor(Employer.class, Company.class, CompanyMaturityLevel.class, Job.class,
-        CommodityType.class, TaskType.class, FixedLocation.class, Seniority.class);
+    config.exposeIdsFor(Talent.class, Employer.class, Company.class, CompanyMaturityLevel.class,
+        Job.class, CommodityType.class, TaskType.class, FixedLocation.class, Seniority.class);
   }
 
   @Override

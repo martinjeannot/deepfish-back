@@ -1,6 +1,7 @@
-package com.deepfish.talent.domain;
+package com.deepfish.talent.domain.profile;
 
 import com.deepfish.company.domain.Company;
+import com.deepfish.talent.domain.profile.TalentProfile;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import java.util.UUID;
 import javax.persistence.CascadeType;

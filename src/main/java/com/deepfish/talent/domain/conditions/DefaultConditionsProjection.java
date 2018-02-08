@@ -1,4 +1,4 @@
-package com.deepfish.talent.domain;
+package com.deepfish.talent.domain.conditions;
 
 import com.deepfish.company.domain.CompanyMaturityLevel;
 import java.math.BigDecimal;

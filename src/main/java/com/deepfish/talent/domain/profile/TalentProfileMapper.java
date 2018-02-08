@@ -1,4 +1,4 @@
-package com.deepfish.talent.domain;
+package com.deepfish.talent.domain.profile;
 
 import java.util.Map;
 import org.mapstruct.Mapper;

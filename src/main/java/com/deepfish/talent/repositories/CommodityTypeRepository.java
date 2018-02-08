@@ -1,6 +1,6 @@
 package com.deepfish.talent.repositories;
 
-import com.deepfish.talent.domain.CommodityType;
+import com.deepfish.talent.domain.conditions.CommodityType;
 import java.util.UUID;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;

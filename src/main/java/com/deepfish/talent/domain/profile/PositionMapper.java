@@ -1,4 +1,4 @@
-package com.deepfish.talent.domain;
+package com.deepfish.talent.domain.profile;
 
 import com.deepfish.company.domain.CompanyMapper;
 import java.util.Map;

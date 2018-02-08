@@ -2,12 +2,12 @@ package com.deepfish.talent.services;
 
 import com.deepfish.company.repositories.CompanyMaturityLevelRepository;
 import com.deepfish.security.Role;
-import com.deepfish.talent.domain.Conditions;
+import com.deepfish.talent.domain.conditions.Conditions;
 import com.deepfish.talent.domain.MaturityLevel;
 import com.deepfish.talent.domain.Talent;
 import com.deepfish.talent.domain.TalentMapper;
-import com.deepfish.talent.domain.TalentProfile;
-import com.deepfish.talent.domain.TalentProfileMapper;
+import com.deepfish.talent.domain.profile.TalentProfile;
+import com.deepfish.talent.domain.profile.TalentProfileMapper;
 import com.deepfish.talent.repositories.TalentRepository;
 import java.util.Arrays;
 import java.util.Map;

@@ -1,4 +1,4 @@
-package com.deepfish.talent.domain;
+package com.deepfish.talent.domain.conditions;
 
 import java.util.UUID;
 import org.springframework.data.rest.core.config.Projection;

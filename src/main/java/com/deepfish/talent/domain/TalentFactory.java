@@ -1,5 +1,6 @@
 package com.deepfish.talent.domain;
 
+import com.deepfish.talent.domain.profile.TalentProfile;
 import org.mapstruct.ObjectFactory;
 
 public class TalentFactory {

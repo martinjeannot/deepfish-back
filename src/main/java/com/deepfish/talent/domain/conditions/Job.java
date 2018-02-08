@@ -1,4 +1,4 @@
-package com.deepfish.talent.domain;
+package com.deepfish.talent.domain.conditions;
 
 import java.util.UUID;
 import javax.persistence.Entity;
@@ -11,7 +11,7 @@ import org.hibernate.validator.constraints.NotBlank;
 
 @Entity
 @Data
-public class TaskType {
+public class Job {
 
   @Id
   @GeneratedValue

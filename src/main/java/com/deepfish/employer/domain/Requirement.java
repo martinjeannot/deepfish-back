@@ -1,7 +1,7 @@
 package com.deepfish.employer.domain;
 
 import com.deepfish.company.domain.Company;
-import com.deepfish.talent.domain.Job;
+import com.deepfish.talent.domain.conditions.Job;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;

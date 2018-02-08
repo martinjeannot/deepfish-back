@@ -1,5 +1,7 @@
 package com.deepfish.talent.domain;
 
+import com.deepfish.talent.domain.conditions.Conditions;
+import com.deepfish.talent.domain.profile.TalentProfile;
 import com.deepfish.user.domain.AbstractUser;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;

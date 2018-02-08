@@ -1,6 +1,7 @@
-package com.deepfish.talent.domain;
+package com.deepfish.talent.domain.conditions;
 
 import com.deepfish.company.domain.CompanyMaturityLevel;
+import com.deepfish.talent.domain.Talent;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.HashSet;

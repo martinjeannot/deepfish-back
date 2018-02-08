@@ -1,5 +1,6 @@
-package com.deepfish.talent.domain;
+package com.deepfish.talent.domain.profile;
 
+import com.deepfish.talent.domain.Talent;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.util.List;
 import java.util.UUID;
