@@ -9,4 +9,6 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 public interface TalentRepository extends PagingAndSortingRepository<Talent, UUID> {
 
   Talent findByLinkedInId(String linkedInId);
+
+  Talent findByUsername(String username);
 }

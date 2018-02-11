@@ -41,16 +41,19 @@ public class Talent extends AbstractUser {
   private TalentProfile profile;
 
   @NotNull
+  @OneToOne(mappedBy = "talent", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+  private Conditions conditions;
+
+  @NotBlank
+  private String pictureUrl;
+
+  @NotNull
   @Enumerated(EnumType.STRING)
   private MaturityLevel maturityLevel;
 
   @NotNull
   @Column(columnDefinition = "TEXT")
   private String selfPitch = "";
-
-  @NotNull
-  @OneToOne(mappedBy = "talent", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-  private Conditions conditions;
 
   public Talent(String linkedInId) {
     this.linkedInId = linkedInId;

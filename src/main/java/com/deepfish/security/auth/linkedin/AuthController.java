@@ -96,7 +96,7 @@ public class AuthController {
       LOGGER.error(e.getMessage(), e);
     }
 
-    return "redirect:http://localhost:8081/#/talent/auth-callback";
+    return "redirect:http://localhost:8081/#/auth/callback";
   }
 
   @RequestMapping("/sign-up")
