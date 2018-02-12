@@ -1,6 +1,8 @@
 buildscript {
     ext {
         springBootVersion = '1.5.9.RELEASE'
+        querydslVersion = "4.1.4"
+        metaModelsSourcesDir = file("metamodels")
     }
     repositories {
         mavenCentral()
@@ -12,33 +14,66 @@ buildscript {
 
 plugins {
     id 'net.ltgt.apt' version '0.9'
+    id 'io.franzbecker.gradle-lombok' version '1.11'
 }
 
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 
+
 group = 'com.deepfish'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = JavaVersion.VERSION_1_8
+
+configurations {
+    querydslapt
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir metaModelsSourcesDir
+        }
+    }
+}
+
+task querymodels(type: JavaCompile, group: 'build') {
+    doFirst {
+        delete metaModelsSourcesDir
+        metaModelsSourcesDir.mkdirs()
+    }
+
+    classpath = configurations.compile + configurations.querydslapt
+    destinationDir = metaModelsSourcesDir
+
+    source = sourceSets.main.java
+    options.compilerArgs = [
+            "-proc:only",
+            "-processor", 'com.querydsl.apt.jpa.JPAAnnotationProcessor,lombok.launch.AnnotationProcessorHider$AnnotationProcessor',
+            "-s", metaModelsSourcesDir
+    ]
+}
 
 repositories {
     mavenCentral()
     mavenLocal()
 }
 
-
 ext {
     springCloudVersion = 'Edgware.RELEASE'
     mapstructVersion = '1.2.0.Final'
+    querydslVersion = '4.1.4'
 }
 
 dependencies {
-    compile('org.springframework.cloud:spring-cloud-starter-oauth2')
-    compile('org.springframework.boot:spring-boot-starter-data-jpa')
-    compile('org.springframework.boot:spring-boot-starter-data-rest')
-    compile('org.springframework.boot:spring-boot-starter-security')
     compile('org.springframework.boot:spring-boot-starter-web')
+    compile('org.springframework.boot:spring-boot-starter-security')
+    compile('org.springframework.cloud:spring-cloud-starter-oauth2')
+    compile('org.springframework.boot:spring-boot-starter-data-rest')
+    compile('org.springframework.boot:spring-boot-starter-data-jpa')
+    compile("com.querydsl:querydsl-jpa:${querydslVersion}")
+    querydslapt("com.querydsl:querydsl-apt:${querydslVersion}")
     compile('org.springframework.boot:spring-boot-starter-mail')
     //runtime('com.h2database:h2')
     runtime('org.postgresql:postgresql')
