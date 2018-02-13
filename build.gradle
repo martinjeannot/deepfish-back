@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        springBootVersion = '1.5.9.RELEASE'
+        springBootVersion = '1.5.10.RELEASE'
         querydslVersion = "4.1.4"
         metaModelsSourcesDir = file("metamodels")
     }
@@ -64,26 +64,33 @@ ext {
     springCloudVersion = 'Edgware.RELEASE'
     mapstructVersion = '1.2.0.Final'
     querydslVersion = '4.1.4'
+    vladmihalceaHibernateTypesVersion = '2.0.0'
 }
 
 dependencies {
+    // WEB / REST
     compile('org.springframework.boot:spring-boot-starter-web')
     compile('org.springframework.boot:spring-boot-starter-security')
     compile('org.springframework.cloud:spring-cloud-starter-oauth2')
     compile('org.springframework.boot:spring-boot-starter-data-rest')
+    // SERVICES
+    compile('org.springframework.boot:spring-boot-starter-mail')
+    // PERSISTENCE
     compile('org.springframework.boot:spring-boot-starter-data-jpa')
+    compile('org.hibernate:hibernate-java8')
+    compile("com.vladmihalcea:hibernate-types-5:${vladmihalceaHibernateTypesVersion}")
     compile("com.querydsl:querydsl-jpa:${querydslVersion}")
     querydslapt("com.querydsl:querydsl-apt:${querydslVersion}")
-    compile('org.springframework.boot:spring-boot-starter-mail')
     //runtime('com.h2database:h2')
     runtime('org.postgresql:postgresql')
+    // TEST
+    //testCompile('org.springframework.boot:spring-boot-starter-test')
+    //testCompile('org.springframework.security:spring-security-test')
+    // MISC
     compileOnly("org.projectlombok:lombok")
     compile("org.mapstruct:mapstruct-jdk8:${mapstructVersion}")
     apt("org.mapstruct:mapstruct-processor:${mapstructVersion}", "org.projectlombok:lombok")
-    //testCompile('org.springframework.boot:spring-boot-starter-test')
-    //testCompile('org.springframework.security:spring-security-test')
     compile('com.fasterxml.jackson.datatype:jackson-datatype-jsr310')
-    compile('org.hibernate:hibernate-java8')
 }
 
 dependencyManagement {

@@ -1,9 +1,8 @@
 package com.deepfish.employer.web;
 
-import com.deepfish.company.domain.Company;
 import com.deepfish.employer.domain.Employer;
+import com.deepfish.employer.domain.EmployerMapper;
 import com.deepfish.employer.forms.SignUpForm;
-import com.deepfish.employer.forms.SignUpFormMapper;
 import com.deepfish.employer.services.EmployerService;
 import javax.validation.Valid;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
@@ -39,9 +38,9 @@ public class EmployerController {
   @PostMapping("employers/sign-up")
   @ResponseBody
   public ResponseEntity signUp(@Valid @RequestBody SignUpForm signUpForm) {
-    Employer employer = SignUpFormMapper.INSTANCE.signUpFormToEmployer(signUpForm);
-    Company company = SignUpFormMapper.INSTANCE.signUpFormToCompany(signUpForm);
-    employer.setCompany(company);
+    Employer employer = EmployerMapper.INSTANCE.signUpFormToEmployer(signUpForm);
+    // Company company = CompanyMapper.INSTANCE.signUpFormToCompany(signUpForm);
+    // employer.setCompany(company);
     employerService.signUp(employer);
     return ResponseEntity.created(repositoryEntityLinks.linkForSingleResource(employer).toUri())
         .build();

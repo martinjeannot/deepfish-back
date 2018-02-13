@@ -1,6 +1,6 @@
 package com.deepfish.talent.domain;
 
-import com.deepfish.talent.domain.profile.TalentProfile;
+import java.util.Map;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
@@ -11,7 +11,9 @@ public interface TalentMapper {
 
   TalentMapper INSTANCE = Mappers.getMapper(TalentMapper.class);
 
-  @Mapping(source = "linkedInId", target = "username")
-  @Mapping(source = "emailAddress", target = "email")
-  Talent profileToTalent(TalentProfile profile);
+  @Mapping(expression = "java(map)", target = "profile")
+  @Mapping(expression = "java(String.valueOf(map.get(\"firstName\")))", target = "firstName")
+  @Mapping(expression = "java(String.valueOf(map.get(\"lastName\")))", target = "lastName")
+  @Mapping(expression = "java(String.valueOf(map.get(\"emailAddress\")))", target = "email")
+  Talent mapToTalent(Map map);
 }

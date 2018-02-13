@@ -109,7 +109,7 @@ public class AuthController {
       return "redirect:http://localhost:8081/#/";
     }
 
-    Map response;
+    Map<String, Object> response;
     try {
       response = sendAuthenticatedRequestToLinkedInAPI(HttpMethod.GET,
           LinkedInUtils.EMAIL_PROFILE_URI, authorizationCode.get());
@@ -133,7 +133,7 @@ public class AuthController {
     return "redirect:http://localhost:8081/#/";
   }
 
-  private Map sendAuthenticatedRequestToLinkedInAPI(HttpMethod method, String uri,
+  private Map<String, Object> sendAuthenticatedRequestToLinkedInAPI(HttpMethod method, String uri,
       String authorizationCode) {
     String accessToken = exchangeAuthorizationCodeForAccessToken(authorizationCode);
 

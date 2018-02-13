@@ -1,12 +1,12 @@
 package com.deepfish.talent.domain;
 
-import com.deepfish.talent.domain.profile.TalentProfile;
+import java.util.Map;
 import org.mapstruct.ObjectFactory;
 
 public class TalentFactory {
 
   @ObjectFactory
-  public Talent createTalent(TalentProfile profile) {
-    return new Talent(profile.getLinkedInId());
+  public Talent createTalent(Map map) {
+    return new Talent(String.valueOf(map.get("id")));
   }
 }

@@ -2,18 +2,18 @@ package com.deepfish.talent.services;
 
 import com.deepfish.company.repositories.CompanyMaturityLevelRepository;
 import com.deepfish.security.Role;
-import com.deepfish.talent.domain.conditions.Conditions;
 import com.deepfish.talent.domain.MaturityLevel;
 import com.deepfish.talent.domain.Talent;
 import com.deepfish.talent.domain.TalentMapper;
-import com.deepfish.talent.domain.profile.TalentProfile;
-import com.deepfish.talent.domain.profile.TalentProfileMapper;
+import com.deepfish.talent.domain.conditions.Conditions;
 import com.deepfish.talent.repositories.TalentRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +28,9 @@ public class DefaultTalentService implements TalentService {
   private final TalentRepository talentRepository;
 
   private final PasswordEncoder passwordEncoder;
+
+  @Autowired
+  private ObjectMapper objectMapper;
 
   public DefaultTalentService(
       TalentRepository talentRepository,
@@ -53,11 +56,8 @@ public class DefaultTalentService implements TalentService {
   }
 
   @Override
-  public void signUpFromLinkedIn(Map profileMap) {
-    TalentProfile profile = TalentProfileMapper.INSTANCE.mapToTalentProfile(profileMap);
-    Talent talent = TalentMapper.INSTANCE.profileToTalent(profile);
-    talent.setProfile(profile);
-    profile.synchronizePositions();
+  public void signUpFromLinkedIn(Map<String, Object> profile) {
+    Talent talent = TalentMapper.INSTANCE.mapToTalent(profile);
 
     // set default values on sign up
     talent

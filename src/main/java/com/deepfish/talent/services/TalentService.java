@@ -18,7 +18,7 @@ public interface TalentService {
   /**
    * Sign a new talent up from his LinkedIn profile
    *
-   * @param profileMap a Map of data from LinkedIn
+   * @param profile a Map of data from LinkedIn
    */
-  void signUpFromLinkedIn(Map profileMap);
+  void signUpFromLinkedIn(Map<String, Object> profile);
 }
