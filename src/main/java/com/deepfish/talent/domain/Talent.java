@@ -31,8 +31,8 @@ import org.hibernate.validator.constraints.NotBlank;
 @Entity
 @Data
 @Accessors(chain = true)
-@ToString(callSuper = true, exclude = {"profile", "conditions"})
-@EqualsAndHashCode(callSuper = true, exclude = {"profile", "conditions"})
+@ToString(callSuper = true, exclude = {"profile", "conditions", "opportunities"})
+@EqualsAndHashCode(callSuper = true, exclude = {"profile", "conditions", "opportunities"})
 @NoArgsConstructor
 @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 public class Talent extends AbstractUser {

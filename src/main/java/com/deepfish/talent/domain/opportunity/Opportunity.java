@@ -16,10 +16,14 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Data
+@ToString(exclude = {"creator", "talent", "requirement"})
+@EqualsAndHashCode(exclude = {"creator", "talent", "requirement"})
 public class Opportunity {
 
   @Id
