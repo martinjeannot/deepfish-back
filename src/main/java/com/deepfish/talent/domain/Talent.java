@@ -1,15 +1,20 @@
 package com.deepfish.talent.domain;
 
 import com.deepfish.talent.domain.conditions.Conditions;
+import com.deepfish.talent.domain.opportunity.Opportunity;
 import com.deepfish.user.domain.AbstractUser;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
+import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
@@ -45,6 +50,10 @@ public class Talent extends AbstractUser {
   private String email;
 
   @NotNull
+  @Setter(AccessLevel.NONE)
+  private LocalDateTime registeredAt = LocalDateTime.now();
+
+  @NotNull
   @Type(type = "jsonb")
   @Column(columnDefinition = "jsonb")
   private Map<String, Object> profile;
@@ -54,8 +63,12 @@ public class Talent extends AbstractUser {
   private Conditions conditions;
 
   @NotNull
+  @OneToMany(mappedBy = "talent", cascade = CascadeType.ALL, orphanRemoval = true)
+  private Set<Opportunity> opportunities = new HashSet<>();
+
+  @NotNull
   @Enumerated(EnumType.STRING)
-  private MaturityLevel maturityLevel;
+  private TalentMaturityLevel maturityLevel;
 
   @NotNull
   @Column(columnDefinition = "text")

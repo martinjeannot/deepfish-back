@@ -5,6 +5,7 @@ import com.deepfish.talent.domain.conditions.Job;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -53,4 +54,8 @@ public class Requirement {
   @NotNull
   @Min(0L)
   private BigDecimal fixedSalary = BigDecimal.ZERO;
+
+  @NotNull
+  @Column(columnDefinition = "text")
+  private String opportunityPitch = "";
 }

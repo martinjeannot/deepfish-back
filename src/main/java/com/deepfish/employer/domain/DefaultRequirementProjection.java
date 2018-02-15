@@ -1,5 +1,6 @@
 package com.deepfish.employer.domain;
 
+import com.deepfish.company.domain.Company;
 import com.deepfish.talent.domain.conditions.Job;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -9,6 +10,8 @@ import org.springframework.data.rest.core.config.Projection;
 public interface DefaultRequirementProjection {
 
   LocalDateTime getCreatedAt();
+
+  Company getCompany();
 
   String getName();
 
