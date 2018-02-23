@@ -39,8 +39,6 @@ public class EmployerController {
   @ResponseBody
   public ResponseEntity signUp(@Valid @RequestBody SignUpForm signUpForm) {
     Employer employer = EmployerMapper.INSTANCE.signUpFormToEmployer(signUpForm);
-    // Company company = CompanyMapper.INSTANCE.signUpFormToCompany(signUpForm);
-    // employer.setCompany(company);
     employerService.signUp(employer);
     return ResponseEntity.created(repositoryEntityLinks.linkForSingleResource(employer).toUri())
         .build();

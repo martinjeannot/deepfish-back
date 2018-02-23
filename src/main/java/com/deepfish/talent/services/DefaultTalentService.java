@@ -2,9 +2,9 @@ package com.deepfish.talent.services;
 
 import com.deepfish.company.repositories.CompanyMaturityLevelRepository;
 import com.deepfish.security.Role;
-import com.deepfish.talent.domain.TalentMaturityLevel;
 import com.deepfish.talent.domain.Talent;
 import com.deepfish.talent.domain.TalentMapper;
+import com.deepfish.talent.domain.TalentMaturityLevel;
 import com.deepfish.talent.domain.conditions.Conditions;
 import com.deepfish.talent.repositories.TalentRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -63,6 +63,9 @@ public class DefaultTalentService implements TalentService {
     talent
         .setMaturityLevel(TalentMaturityLevel.CLEAR_WATER)
         .setPhoneNumber("null");
+
+    // new talents are activated by default
+    talent.activate();
 
     // allow new talent to authenticate
     talent.enableAuthentication();

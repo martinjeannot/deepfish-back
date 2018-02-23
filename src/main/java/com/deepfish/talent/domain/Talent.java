@@ -66,6 +66,8 @@ public class Talent extends AbstractUser {
   @OneToMany(mappedBy = "talent", cascade = CascadeType.ALL, orphanRemoval = true)
   private Set<Opportunity> opportunities = new HashSet<>();
 
+  private boolean activated;
+
   @NotNull
   @Enumerated(EnumType.STRING)
   private TalentMaturityLevel maturityLevel;
@@ -79,6 +81,14 @@ public class Talent extends AbstractUser {
   public Talent(String linkedInId) {
     this.linkedInId = linkedInId;
     setUsername(linkedInId);
+  }
+
+  public void activate() {
+    this.activated = true;
+  }
+
+  public void deactivate() {
+    this.activated = false;
   }
 
   // GETTERS & SETTERS =============================================================================
