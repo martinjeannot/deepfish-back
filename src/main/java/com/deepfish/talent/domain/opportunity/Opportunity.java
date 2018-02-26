@@ -58,4 +58,6 @@ public class Opportunity {
   @NotNull
   @Column(columnDefinition = "text")
   private String refusalReason = "";
+
+  private boolean forwarded;
 }
