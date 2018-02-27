@@ -2,6 +2,7 @@ package com.deepfish.talent.domain;
 
 import com.deepfish.talent.domain.conditions.Conditions;
 import com.deepfish.talent.domain.opportunity.Opportunity;
+import com.deepfish.talent.domain.qualification.Qualification;
 import com.deepfish.user.domain.AbstractUser;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import java.time.LocalDateTime;
@@ -63,10 +64,14 @@ public class Talent extends AbstractUser {
   private Conditions conditions;
 
   @NotNull
+  @OneToOne(mappedBy = "talent", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+  private Qualification qualification;
+
+  @NotNull
   @OneToMany(mappedBy = "talent", cascade = CascadeType.ALL, orphanRemoval = true)
   private Set<Opportunity> opportunities = new HashSet<>();
 
-  private boolean activated;
+  private boolean active;
 
   @NotNull
   @Enumerated(EnumType.STRING)
@@ -84,11 +89,11 @@ public class Talent extends AbstractUser {
   }
 
   public void activate() {
-    this.activated = true;
+    this.active = true;
   }
 
   public void deactivate() {
-    this.activated = false;
+    this.active = false;
   }
 
   // GETTERS & SETTERS =============================================================================
@@ -97,6 +102,14 @@ public class Talent extends AbstractUser {
     this.conditions = conditions;
     if (conditions != null) {
       conditions.setTalent(this); // synchronization
+    }
+    return this;
+  }
+
+  public Talent setQualification(Qualification qualification) {
+    this.qualification = qualification;
+    if (qualification != null) {
+      qualification.setTalent(this); // synchronization
     }
     return this;
   }

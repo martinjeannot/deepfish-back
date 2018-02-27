@@ -6,6 +6,7 @@ import com.deepfish.talent.domain.Talent;
 import com.deepfish.talent.domain.TalentMapper;
 import com.deepfish.talent.domain.TalentMaturityLevel;
 import com.deepfish.talent.domain.conditions.Conditions;
+import com.deepfish.talent.domain.qualification.Qualification;
 import com.deepfish.talent.repositories.TalentRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Arrays;
@@ -45,12 +46,19 @@ public class DefaultTalentService implements TalentService {
     // encode randomly generated password (note that we make no use of it)
     talent.setPassword(passwordEncoder.encode(UUID.randomUUID().toString()));
 
-    // set permissions
+    // init permissions
     talent.setAuthorities(
         Arrays.asList(Role.ROLE_USER.toGrantedAuthority(), Role.ROLE_TALENT.toGrantedAuthority()));
 
-    // set conditions
+    // init conditions
     talent.setConditions(new Conditions());
+
+    // init qualification
+    talent.setQualification(
+        new Qualification()
+            .setComplexSellingSkillsRating(3)
+            .setHuntingSkillsRating(3)
+            .setTechnicalSkillsRating(3));
 
     talentRepository.save(talent);
   }
