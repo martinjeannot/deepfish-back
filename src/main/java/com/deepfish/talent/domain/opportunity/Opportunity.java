@@ -60,4 +60,6 @@ public class Opportunity {
   private String refusalReason = "";
 
   private boolean forwarded;
+
+  private LocalDateTime forwardedAt;
 }
