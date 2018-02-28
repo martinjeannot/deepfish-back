@@ -12,13 +12,15 @@ public interface TalentService {
    * Create a new talent
    *
    * @param talent the talent to create
+   * @return the newly created talent
    */
-  void create(Talent talent);
+  Talent create(Talent talent);
 
   /**
    * Sign a new talent up from his LinkedIn profile
    *
    * @param profile a Map of data from LinkedIn
+   * @return the newly registered talent
    */
-  void signUpFromLinkedIn(Map<String, Object> profile);
+  Talent signUpFromLinkedIn(Map<String, Object> profile);
 }

@@ -42,7 +42,7 @@ public class DefaultTalentService implements TalentService {
   }
 
   @Override
-  public void create(Talent talent) {
+  public Talent create(Talent talent) {
     // encode randomly generated password (note that we make no use of it)
     talent.setPassword(passwordEncoder.encode(UUID.randomUUID().toString()));
 
@@ -60,11 +60,11 @@ public class DefaultTalentService implements TalentService {
             .setHuntingSkillsRating(3)
             .setTechnicalSkillsRating(3));
 
-    talentRepository.save(talent);
+    return talentRepository.save(talent);
   }
 
   @Override
-  public void signUpFromLinkedIn(Map<String, Object> profile) {
+  public Talent signUpFromLinkedIn(Map<String, Object> profile) {
     Talent talent = TalentMapper.INSTANCE.mapToTalent(profile);
 
     // set default values on sign up
@@ -78,6 +78,6 @@ public class DefaultTalentService implements TalentService {
     // allow new talent to authenticate
     talent.enableAuthentication();
 
-    create(talent);
+    return create(talent);
   }
 }

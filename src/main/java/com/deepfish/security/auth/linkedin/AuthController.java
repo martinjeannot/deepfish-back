@@ -57,8 +57,8 @@ public class AuthController {
     this.objectMapper = objectMapper;
   }
 
-  @RequestMapping("/sign-in")
-  public String signInCallback(
+  @RequestMapping("/callback")
+  public String authCallback(
       @RequestParam("state") String state,
       @RequestParam("code") Optional<String> authorizationCode,
       @RequestParam("error") Optional<String> error,
@@ -84,7 +84,7 @@ public class AuthController {
     Talent talent = talentRepository.findByLinkedInId((String) response.get("id"));
     if (talent == null) {
       // sign up
-      return "redirect:http://localhost:8081/#/sign-up";
+      talent = talentService.signUpFromLinkedIn(response);
     }
 
     // authenticate existing talent
@@ -97,40 +97,6 @@ public class AuthController {
     }
 
     return "redirect:http://localhost:8081/#/auth/callback";
-  }
-
-  @RequestMapping("/sign-up")
-  public String signUpCallback(
-      @RequestParam("state") String state,
-      @RequestParam("code") Optional<String> authorizationCode,
-      @RequestParam("error") Optional<String> error,
-      @RequestParam("error_description") Optional<String> errorDescription) {
-    if (!authorizationCode.isPresent()) {
-      return "redirect:http://localhost:8081/#/";
-    }
-
-    Map<String, Object> response;
-    try {
-      response = sendAuthenticatedRequestToLinkedInAPI(HttpMethod.GET,
-          LinkedInUtils.EMAIL_PROFILE_URI, authorizationCode.get());
-    } catch (RestClientException e) {
-      LOGGER.error(e.getMessage(), e);
-      return "redirect:http://localhost:8081/#/";
-    }
-
-    // check if talent does not already exist
-    Talent talent = talentRepository.findByLinkedInId((String) response.get("id"));
-    if (talent != null) {
-      // signin
-      return "redirect:http://localhost:8081/#/";
-    }
-
-    // register new talent
-    talentService.signUpFromLinkedIn(response);
-
-    // authenticate newly registered talent
-
-    return "redirect:http://localhost:8081/#/";
   }
 
   private Map<String, Object> sendAuthenticatedRequestToLinkedInAPI(HttpMethod method, String uri,
