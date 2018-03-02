@@ -1,0 +1,25 @@
+# ===================================================================
+# SPRING BOOT PROPERTIES
+# https://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+# ===================================================================
+
+# ----------------------------------------
+# WEB PROPERTIES
+# ----------------------------------------
+
+# EMBEDDED SERVER CONFIGURATION (ServerProperties)
+server:
+  port: 5000
+
+# ===================================================================
+# SPRING
+# ===================================================================
+
+spring:
+  # ----------------------------------------
+  # DATA PROPERTIES
+  # ----------------------------------------
+  # JPA (JpaBaseConfiguration, HibernateJpaAutoConfiguration)
+  jpa:
+    hibernate:
+      ddl-auto: validate

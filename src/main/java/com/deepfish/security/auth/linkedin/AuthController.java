@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -37,6 +38,15 @@ public class AuthController {
   private static final Logger LOGGER = LoggerFactory.getLogger(AuthController.class);
 
   private static final RestTemplate REST_TEMPLATE = new RestTemplate();
+
+  @Value("#{'${deepfish.front.host}' + ':' + '${deepfish.front.port}'}")
+  private String deepfishFrontAddress;
+
+  @Value("${linkedin.client.id}")
+  private String linkedInClientId;
+
+  @Value("${linkedin.client.secret}")
+  private String linkedInClientSecret;
 
   private final TalentService talentService;
 
@@ -65,7 +75,7 @@ public class AuthController {
       @RequestParam("error_description") Optional<String> errorDescription,
       RedirectAttributes redirectAttributes) {
     if (!authorizationCode.isPresent()) {
-      return "redirect:http://localhost:8081/#/";
+      return "redirect://" + deepfishFrontAddress + "/#/";
     }
 
     Map response;
@@ -77,7 +87,7 @@ public class AuthController {
         LOGGER.error(((HttpClientErrorException) e).getResponseBodyAsString());
       }
       LOGGER.error(e.getMessage(), e);
-      return "redirect:http://localhost:8081/#/";
+      return "redirect://" + deepfishFrontAddress + "/#/";
     }
 
     // check if talent exists
@@ -96,7 +106,7 @@ public class AuthController {
       LOGGER.error(e.getMessage(), e);
     }
 
-    return "redirect:http://localhost:8081/#/auth/callback";
+    return "redirect://" + deepfishFrontAddress + "/#/auth/callback";
   }
 
   private Map<String, Object> sendAuthenticatedRequestToLinkedInAPI(HttpMethod method, String uri,
@@ -118,8 +128,8 @@ public class AuthController {
     body.add("grant_type", "authorization_code");
     body.add("code", authorizationCode);
     body.add("redirect_uri", ServletUriComponentsBuilder.fromCurrentRequestUri().toUriString());
-    body.add("client_id", "77w79kdr6gql2h");
-    body.add("client_secret", "7ovNCwpTojlQLQXI");
+    body.add("client_id", linkedInClientId);
+    body.add("client_secret", linkedInClientSecret);
     HttpEntity<MultiValueMap> request = new HttpEntity<>(body, headers);
     Map response;
     try {
@@ -127,7 +137,7 @@ public class AuthController {
           .postForObject("https://www.linkedin.com/oauth/v2/accessToken", request, Map.class);
     } catch (RestClientException e) {
       LOGGER.error(e.getMessage(), e);
-      return "redirect:http://localhost:8081/#/";
+      return "redirect://" + deepfishFrontAddress + "/#/";
     }
     return (String) response.get("access_token");
   }

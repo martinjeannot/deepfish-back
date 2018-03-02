@@ -38,6 +38,11 @@ sourceSets {
     }
 }
 
+// Support passing system properties via command-line (-D)
+bootRun {
+    systemProperties = System.properties
+}
+
 task querymodels(type: JavaCompile, group: 'build') {
     doFirst {
         delete metaModelsSourcesDir

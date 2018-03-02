@@ -11,19 +11,26 @@
 logging:
   level:
     org:
-      springframework: INFO
+      hibernate:
+        SQL: DEBUG
+        tool.hbm2ddl: DEBUG
+        type: TRACE
+
+# DEEPFISH
+deepfish:
+  front:
+    host: localhost
+    port: 8081
 
 # ----------------------------------------
 # SECURITY PROPERTIES
 # ----------------------------------------
 
-security:
-  basic:
-    enabled: false
-  ignored: /**
-  oauth2:
-    resource:
-      id: oauth2_id
+# LinkedIn
+linkedin:
+  client:
+    id: 77w79kdr6gql2h
+    secret: 7ovNCwpTojlQLQXI
 
 # ===================================================================
 # SPRING
@@ -31,30 +38,14 @@ security:
 
 spring:
   # ----------------------------------------
-  # CORE PROPERTIES
-  # ----------------------------------------
-  # EMAIL (MailProperties)
-  mail:
-    host: smddtp.gmail.com
-    password: d33pfish
-    port: 587
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls.enable: true
-    username: morgandeepfish@gmail.com
-  # ----------------------------------------
-  # WEB PROPERTIES
-  # ----------------------------------------
-  # JACKSON (JacksonProperties)
-  jackson:
-    serialization:
-      fail-on-empty-beans: false
-  # ----------------------------------------
   # DATA PROPERTIES
   # ----------------------------------------
-  data:
-    # DATA REST (RepositoryRestProperties)
-    rest:
-      detection-strategy: annotated
+  # DATASOURCE (DataSourceAutoConfiguration, DataSourceProperties)
+  datasource:
+    password: postgres
+    url: jdbc:postgresql://localhost:5432/deepfish_dev
+    username: postgres
+  # JPA (JpaBaseConfiguration, HibernateJpaAutoConfiguration)
+  jpa:
+    hibernate:
+      ddl-auto: update
