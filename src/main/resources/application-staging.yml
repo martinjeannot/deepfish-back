@@ -4,12 +4,32 @@
 # ===================================================================
 
 # ----------------------------------------
+# CORE PROPERTIES
+# ----------------------------------------
+
+# DEEPFISH
+deepfish:
+  front:
+    host: deepfish-app-staging.s3-website.eu-west-3.amazonaws.com
+    port: 80
+
+# ----------------------------------------
 # WEB PROPERTIES
 # ----------------------------------------
 
 # EMBEDDED SERVER CONFIGURATION (ServerProperties)
 server:
   port: 5000
+
+# ----------------------------------------
+# SECURITY PROPERTIES
+# ----------------------------------------
+
+# LINKEDIN
+linkedin:
+  client:
+    id: 77w79kdr6gql2h
+    secret: 7ovNCwpTojlQLQXI
 
 # ===================================================================
 # SPRING
@@ -22,4 +42,4 @@ spring:
   # JPA (JpaBaseConfiguration, HibernateJpaAutoConfiguration)
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: create
