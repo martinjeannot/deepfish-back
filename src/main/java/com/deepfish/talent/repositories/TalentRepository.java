@@ -10,7 +10,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 public interface TalentRepository extends PagingAndSortingRepository<Talent, UUID>,
     QueryDslPredicateExecutor<Talent> {
 
-  Talent findByLinkedInId(String linkedInId);
+  Talent findByLinkedInIdOrEmail(String linkedInId, String email);
 
   Talent findByUsername(String username);
 }

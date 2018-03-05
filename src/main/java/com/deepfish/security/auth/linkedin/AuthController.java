@@ -91,13 +91,21 @@ public class AuthController {
     }
 
     // check if talent exists
-    Talent talent = talentRepository.findByLinkedInId((String) response.get("id"));
+    Talent talent = talentRepository.findByLinkedInIdOrEmail(
+        (String) response.get("id"),
+        (String) response.get("emailAddress"));
     if (talent == null) {
       // sign up
       talent = talentService.signUpFromLinkedIn(response);
+    } else {
+      // update talent profile
+      talent.setProfile(response);
+      talent.setLinkedInId((String) response.get("id"));
+      talent.setUsername((String) response.get("id"));
+      talent = talentRepository.save(talent);
     }
 
-    // authenticate existing talent
+    // authenticate talent
     OAuth2AccessToken authToken = jwtTokenForge.forgeToken(talent);
 
     try {

@@ -32,8 +32,9 @@ import org.hibernate.validator.constraints.NotBlank;
 @Entity
 @Data
 @Accessors(chain = true)
-@ToString(callSuper = true, exclude = {"profile", "conditions", "opportunities"})
-@EqualsAndHashCode(callSuper = true, exclude = {"profile", "conditions", "opportunities"})
+@ToString(callSuper = true, exclude = {"profile", "conditions", "qualification", "opportunities"})
+@EqualsAndHashCode(callSuper = true, exclude = {"profile", "conditions", "qualification",
+    "opportunities"})
 @NoArgsConstructor
 @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 public class Talent extends AbstractUser {
@@ -44,7 +45,7 @@ public class Talent extends AbstractUser {
    */
   @NotBlank
   @Column(unique = true)
-  @Setter(AccessLevel.NONE)
+  //@Setter(AccessLevel.NONE) FIXME after migration
   private String linkedInId;
 
   @NotBlank
