@@ -9,6 +9,7 @@ import com.deepfish.talent.domain.conditions.Conditions;
 import com.deepfish.talent.domain.qualification.Qualification;
 import com.deepfish.talent.repositories.TalentRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.UUID;
@@ -70,6 +71,7 @@ public class DefaultTalentService implements TalentService {
     // set default values on sign up
     talent
         .setMaturityLevel(TalentMaturityLevel.CLEAR_WATER)
+        .setLastSignedInAt(talent.getRegisteredAt())
         .setPhoneNumber("null");
 
     // new talents are activated by default

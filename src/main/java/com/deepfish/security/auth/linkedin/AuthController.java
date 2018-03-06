@@ -8,6 +8,7 @@ import com.deepfish.talent.util.LinkedInUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.net.URI;
+import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Optional;
 import org.slf4j.Logger;
@@ -99,9 +100,10 @@ public class AuthController {
       talent = talentService.signUpFromLinkedIn(response);
     } else {
       // update talent profile
-      talent.setProfile(response);
       talent.setLinkedInId((String) response.get("id"));
       talent.setUsername((String) response.get("id"));
+      talent.setProfile(response);
+      talent.setLastSignedInAt(LocalDateTime.now());
       talent = talentRepository.save(talent);
     }
 

@@ -56,6 +56,9 @@ public class Talent extends AbstractUser {
   private LocalDateTime registeredAt = LocalDateTime.now();
 
   @NotNull
+  private LocalDateTime lastSignedInAt;
+
+  @NotNull
   @Type(type = "jsonb")
   @Column(columnDefinition = "jsonb")
   private Map<String, Object> profile;
