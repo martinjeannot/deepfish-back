@@ -2,7 +2,7 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 -- USER ============================================================================================
-INSERT INTO users (id, username, password, first_name, last_name, phone_number, authorities, account_non_expired, account_non_locked, credentials_non_expired, enabled) VALUES ('eb4b1008-4760-4bde-a3c0-e62b65796add', 'admin@deepfish.fr', '$2a$10$zsz1JpJoBGfa0arhyikjN.8w4umkcxWlvnMT/LUaNWE69W0fa1Lom', 'Martin', 'Jeannot', '0000000000', 'ROLE_SUPER_ADMIN,ROLE_ADMIN', TRUE, TRUE, TRUE, TRUE);
+INSERT INTO users (id, username, password, first_name, last_name, phone_number, authorities, account_non_expired, account_non_locked, credentials_non_expired, enabled, created_at) VALUES ('eb4b1008-4760-4bde-a3c0-e62b65796add', 'admin@deepfish.fr', '$2a$10$zsz1JpJoBGfa0arhyikjN.8w4umkcxWlvnMT/LUaNWE69W0fa1Lom', 'Martin', 'Jeannot', '0000000000', 'ROLE_SUPER_ADMIN,ROLE_ADMIN', TRUE, TRUE, TRUE, TRUE, '2018-01-01 00:00:00.000');
 
 -- COMPANY MATURITY LEVEL ==========================================================================
 INSERT INTO company_maturity_level (id, l10n_key) VALUES ('6ae9ce1a-cbef-41b7-bf3a-6ea6f85bcda9', 'Jeune Startup');

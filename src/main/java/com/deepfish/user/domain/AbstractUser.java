@@ -5,6 +5,7 @@ import com.deepfish.user.serialization.PasswordDeserializer;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.UUID;
 import javax.persistence.Column;
@@ -12,6 +13,7 @@ import javax.persistence.Convert;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Setter;
@@ -61,6 +63,10 @@ public abstract class AbstractUser implements UserDetails, Identifiable<UUID> {
   private boolean credentialsNonExpired;
 
   private boolean enabled;
+
+  @NotNull
+  @Setter(AccessLevel.NONE)
+  private LocalDateTime createdAt = LocalDateTime.now();
 
   /**
    * Enable user authentication by setting all of Spring's authentication-blocking properties to
