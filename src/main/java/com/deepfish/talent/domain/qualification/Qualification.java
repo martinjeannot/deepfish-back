@@ -2,10 +2,12 @@ package com.deepfish.talent.domain.qualification;
 
 import com.deepfish.talent.domain.Talent;
 import java.util.UUID;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -33,4 +35,8 @@ public class Qualification {
   private int huntingSkillsRating;
 
   private int technicalSkillsRating;
+
+  @NotNull
+  @Column(columnDefinition = "text")
+  private String recommendation = "";
 }
