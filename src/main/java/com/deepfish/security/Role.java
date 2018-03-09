@@ -10,7 +10,13 @@ public enum Role {
   ROLE_TALENT,
   ROLE_USER;
 
+  private final GrantedAuthority grantedAuthority;
+
+  Role() {
+    this.grantedAuthority = new SimpleGrantedAuthority(this.name());
+  }
+
   public GrantedAuthority toGrantedAuthority() {
-    return new SimpleGrantedAuthority(name());
+    return grantedAuthority;
   }
 }
