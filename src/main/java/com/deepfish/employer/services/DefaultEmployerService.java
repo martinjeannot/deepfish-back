@@ -64,9 +64,10 @@ public class DefaultEmployerService implements EmployerService {
     // send confirmation mail
     Email email = EmailBuilder
         .startingBlank()
-        .to("m4rtinjeannot@gmail.com")
+        .to(employer.getUsername())
         .withSubject("Confirmation de votre inscription")
-        .withPlainText("Merci de vous être inscrit !")
+        .withPlainText("Bravo, vous êtes inscrit !\n\nVoici votre mot de passe : " + password
+            + "\n\nLa team Deepfish")
         .buildEmail();
     mailService.send(email);
   }
