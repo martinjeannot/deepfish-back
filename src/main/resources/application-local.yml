@@ -16,6 +16,17 @@ logging:
         tool.hbm2ddl: DEBUG
         type: TRACE
 
+# EMAIL
+simplejavamail:
+  transport.mode.logging.only: true
+  defaults:
+    from:
+      name: na
+      address: na@deepfish.com
+  smtp:
+    host: na
+    port: 25
+
 # DEEPFISH
 deepfish:
   front:

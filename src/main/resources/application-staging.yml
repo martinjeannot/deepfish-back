@@ -7,6 +7,21 @@
 # CORE PROPERTIES
 # ----------------------------------------
 
+# EMAIL
+simplejavamail:
+  smtp:
+    host: smtp.gmail.com
+    port: 587
+    password: d33pfish
+    username: morgandeepfish@gmail.com
+  defaults:
+    from:
+      name: Deepfish Staging
+      address: morgandeepfish@gmail.com
+    to:
+      name: Deepfish Staging Sink
+      address: deepfish-staging-sink@yopmail.com
+
 # DEEPFISH
 deepfish:
   front:

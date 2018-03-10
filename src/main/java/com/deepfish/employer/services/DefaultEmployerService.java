@@ -2,12 +2,14 @@ package com.deepfish.employer.services;
 
 import com.deepfish.employer.domain.Employer;
 import com.deepfish.employer.repositories.EmployerRepository;
+import com.deepfish.mail.MailService;
 import com.deepfish.security.Role;
 import java.util.Arrays;
 import java.util.UUID;
+import org.simplejavamail.email.Email;
+import org.simplejavamail.email.EmailBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.mail.MailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -23,15 +25,15 @@ public class DefaultEmployerService implements EmployerService {
 
   private final PasswordEncoder passwordEncoder;
 
-  private final MailSender mailSender;
+  private final MailService mailService;
 
   public DefaultEmployerService(
       EmployerRepository employerRepository,
       PasswordEncoder passwordEncoder,
-      MailSender mailSender) {
+      MailService mailService) {
     this.employerRepository = employerRepository;
     this.passwordEncoder = passwordEncoder;
-    this.mailSender = mailSender;
+    this.mailService = mailService;
   }
 
   @Override
@@ -60,15 +62,12 @@ public class DefaultEmployerService implements EmployerService {
     create(employer);
 
     // send confirmation mail
-    /*SimpleMailMessage mail = new SimpleMailMessage();
-    mail.setFrom("morgandeepfish@gmail.com");
-    mail.setTo("m4rtinjeannot@gmail.com");
-    mail.setSubject("Confirmation de votre inscription");
-    mail.setText("Merci de vous être inscrit !!!");
-    try {
-      mailSender.send(mail);
-    } catch (MailException e) {
-      System.err.println(e.getMessage());
-    }*/
+    Email email = EmailBuilder
+        .startingBlank()
+        .to("m4rtinjeannot@gmail.com")
+        .withSubject("Confirmation de votre inscription")
+        .withPlainText("Merci de vous être inscrit !")
+        .buildEmail();
+    mailService.send(email);
   }
 }

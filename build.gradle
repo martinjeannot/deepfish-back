@@ -63,12 +63,18 @@ task querymodels(type: JavaCompile, group: 'build') {
 repositories {
     mavenCentral()
     mavenLocal()
+    // FIXME when simple java mail 5.0.1 is released
+    maven {
+        url "https://oss.sonatype.org/content/repositories/snapshots"
+    }
 }
 
 ext {
-    springCloudVersion = 'Edgware.RELEASE'
     mapstructVersion = '1.2.0.Final'
     querydslVersion = '4.1.4'
+    sendgridVersion = '4.1.2'
+    simplejavamailVersion = '5.0.1-SNAPSHOT'
+    springCloudVersion = 'Edgware.RELEASE'
     vladmihalceaHibernateTypesVersion = '2.0.0'
 }
 
@@ -79,7 +85,8 @@ dependencies {
     compile('org.springframework.cloud:spring-cloud-starter-oauth2')
     compile('org.springframework.boot:spring-boot-starter-data-rest')
     // SERVICES
-    compile('org.springframework.boot:spring-boot-starter-mail')
+    compile("org.simplejavamail:simple-java-mail:${simplejavamailVersion}")
+    compile("com.sendgrid:sendgrid-java:${sendgridVersion}")
     // PERSISTENCE
     compile('org.springframework.boot:spring-boot-starter-data-jpa')
     compile('org.hibernate:hibernate-java8')

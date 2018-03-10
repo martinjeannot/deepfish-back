@@ -31,20 +31,6 @@ security:
 
 spring:
   # ----------------------------------------
-  # CORE PROPERTIES
-  # ----------------------------------------
-  # EMAIL (MailProperties)
-  mail:
-    host: smddtp.gmail.com
-    password: d33pfish
-    port: 587
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls.enable: true
-    username: morgandeepfish@gmail.com
-  # ----------------------------------------
   # WEB PROPERTIES
   # ----------------------------------------
   # JACKSON (JacksonProperties)
