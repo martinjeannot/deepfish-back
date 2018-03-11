@@ -18,11 +18,9 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
-import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 import org.hibernate.annotations.Type;
@@ -50,10 +48,6 @@ public class Talent extends AbstractUser {
 
   @NotBlank
   private String email;
-
-  @NotNull
-  @Setter(AccessLevel.NONE)
-  private LocalDateTime registeredAt = LocalDateTime.now();
 
   @NotNull
   private LocalDateTime lastSignedInAt;
