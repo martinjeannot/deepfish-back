@@ -61,19 +61,15 @@ task querymodels(type: JavaCompile, group: 'build') {
 }
 
 repositories {
-    mavenCentral()
     mavenLocal()
-    // FIXME when simple java mail 5.0.1 is released
-    maven {
-        url "https://oss.sonatype.org/content/repositories/snapshots"
-    }
+    mavenCentral()
 }
 
 ext {
     mapstructVersion = '1.2.0.Final'
     querydslVersion = '4.1.4'
     sendgridVersion = '4.1.2'
-    simplejavamailVersion = '5.0.1-SNAPSHOT'
+    simplejavamailVersion = '5.0.1'
     springCloudVersion = 'Edgware.RELEASE'
     vladmihalceaHibernateTypesVersion = '2.0.0'
 }
