@@ -3,6 +3,7 @@ package com.deepfish.talent.domain.opportunity;
 import com.deepfish.employer.domain.Requirement;
 import com.deepfish.talent.domain.Talent;
 import com.deepfish.user.domain.User;
+import com.querydsl.core.annotations.QueryEntity;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import javax.persistence.Column;
@@ -21,6 +22,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
+@QueryEntity
 @Data
 @ToString(exclude = {"creator", "talent", "requirement"})
 @EqualsAndHashCode(exclude = {"creator", "talent", "requirement"})

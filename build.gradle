@@ -55,7 +55,9 @@ task querymodels(type: JavaCompile, group: 'build') {
     source = sourceSets.main.java
     options.compilerArgs = [
             "-proc:only",
-            "-processor", 'com.querydsl.apt.jpa.JPAAnnotationProcessor,lombok.launch.AnnotationProcessorHider$AnnotationProcessor',
+            /* we cannot use the com.querydsl.apt.jpa.JPAAnnotationProcessor anymore since our
+            talent querying needs have complexified and we need some transient fields to be queryable (cf QueryableTalent) */
+            "-processor", 'com.querydsl.apt.QuerydslAnnotationProcessor,lombok.launch.AnnotationProcessorHider$AnnotationProcessor',
             "-s", metaModelsSourcesDir
     ]
 }

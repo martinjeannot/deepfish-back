@@ -2,6 +2,7 @@ package com.deepfish.talent.domain.conditions;
 
 import com.deepfish.company.domain.CompanyMaturityLevel;
 import com.deepfish.talent.domain.Talent;
+import com.querydsl.core.annotations.QueryEntity;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -21,6 +22,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
+@QueryEntity
 @Data
 @ToString(exclude = {"talent"})
 @EqualsAndHashCode(exclude = {"talent"})
