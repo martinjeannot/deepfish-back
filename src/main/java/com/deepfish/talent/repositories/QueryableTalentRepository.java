@@ -17,6 +17,11 @@ public interface QueryableTalentRepository extends
 
   @Override
   default void customize(QuerydslBindings bindings, QQueryableTalent talent) {
+    // Company maturity levels
+    bindings.bind(talent.companyMaturityLevelsIn)
+        .first((path, value) -> talent.conditions.companyMaturityLevels.any().in(value));
+    bindings.bind(talent.companyMaturityLevelsNotIn)
+        .first((path, value) -> talent.conditions.companyMaturityLevels.any().notIn(value));
     // Fixed salary
     bindings.bind(talent.minFixedSalary)
         .first((path, value) -> talent.conditions.fixedSalary.goe(value));
