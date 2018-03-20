@@ -70,7 +70,6 @@ public class DefaultTalentService implements TalentService {
     // set default values on sign up
     talent
         .setMaturityLevel(TalentMaturityLevel.CLEAR_WATER)
-        .setLastSignedInAt(talent.getCreatedAt())
         .setPhoneNumber("null");
 
     // new talents are activated by default

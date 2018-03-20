@@ -5,7 +5,6 @@ import com.deepfish.talent.domain.opportunity.Opportunity;
 import com.deepfish.talent.domain.qualification.Qualification;
 import com.deepfish.user.domain.AbstractUser;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -46,9 +45,6 @@ public class AbstractTalent extends AbstractUser {
 
   @NotBlank
   private String email;
-
-  @NotNull
-  private LocalDateTime lastSignedInAt;
 
   @NotNull
   @Type(type = "jsonb")

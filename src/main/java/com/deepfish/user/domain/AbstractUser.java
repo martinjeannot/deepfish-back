@@ -68,6 +68,9 @@ public abstract class AbstractUser implements UserDetails, Identifiable<UUID> {
   @Setter(AccessLevel.NONE)
   private LocalDateTime createdAt = LocalDateTime.now();
 
+  @NotNull
+  private LocalDateTime lastSignedInAt = LocalDateTime.now();
+
   /**
    * Enable user authentication by setting all of Spring's authentication-blocking properties to
    * true. Usually called upon user creation.
