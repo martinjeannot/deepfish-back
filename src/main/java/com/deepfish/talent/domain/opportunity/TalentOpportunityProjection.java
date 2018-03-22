@@ -5,8 +5,8 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.rest.core.config.Projection;
 
-@Projection(name = "partial", types = {Opportunity.class})
-public interface PartialOpportunityProjection {
+@Projection(name = "talent", types = {Opportunity.class})
+public interface TalentOpportunityProjection {
 
   UUID getId();
 
