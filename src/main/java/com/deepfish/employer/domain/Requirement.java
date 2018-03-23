@@ -2,6 +2,7 @@ package com.deepfish.employer.domain;
 
 import com.deepfish.company.domain.Company;
 import com.deepfish.talent.domain.conditions.Job;
+import com.querydsl.core.annotations.QueryEntity;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -18,6 +19,7 @@ import lombok.Setter;
 import org.hibernate.validator.constraints.NotBlank;
 
 @Entity
+@QueryEntity
 @Data
 public class Requirement {
 
