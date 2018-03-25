@@ -20,10 +20,13 @@ public class Company {
   @Setter(AccessLevel.NONE)
   private UUID id;
 
-  @NotBlank
-  private String name;
-
   @NotNull
   @Setter(AccessLevel.NONE)
   private LocalDateTime createdAt = LocalDateTime.now();
+
+  @NotBlank
+  private String name;
+
+  @NotBlank
+  private String description = "";
 }

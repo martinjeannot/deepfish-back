@@ -30,6 +30,8 @@ public class Qualification {
   @OneToOne
   private Talent talent;
 
+  private int ranking;
+
   private int complexSellingSkillsRating;
 
   private int huntingSkillsRating;

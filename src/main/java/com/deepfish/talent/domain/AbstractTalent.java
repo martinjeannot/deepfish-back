@@ -51,6 +51,8 @@ public class AbstractTalent extends AbstractUser {
   @Column(columnDefinition = "jsonb")
   private Map<String, Object> profile;
 
+  private int yearsOfExperience;
+
   @NotNull
   @OneToOne(mappedBy = "talent", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
   private Conditions conditions;
