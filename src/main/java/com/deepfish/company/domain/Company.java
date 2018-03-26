@@ -27,6 +27,6 @@ public class Company {
   @NotBlank
   private String name;
 
-  @NotBlank
+  @NotNull
   private String description = "";
 }
