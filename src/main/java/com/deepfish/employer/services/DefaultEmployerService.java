@@ -54,7 +54,6 @@ public class DefaultEmployerService implements EmployerService {
     // generate random password
     String password = UUID.randomUUID().toString().split("-")[0];
     employer.setPassword(password);
-    LOGGER.error(password);
 
     // allow new employer to authenticate
     employer.enableAuthentication();
