@@ -22,7 +22,7 @@ public interface QueryableTalentRepository extends
     bindings.bind(talent.conditions.companyMaturityLevels).first((path, companyMaturityLevels) -> {
       BooleanBuilder predicate = new BooleanBuilder();
       companyMaturityLevels
-          .forEach(companyMaturityLevel -> predicate.and(path.contains(companyMaturityLevel)));
+          .forEach(companyMaturityLevel -> predicate.or(path.contains(companyMaturityLevel)));
       return predicate;
     });
     bindings.bind(talent.companyMaturityLevelsNotIn).first((path, companyMaturityLevels) -> {
@@ -34,25 +34,25 @@ public interface QueryableTalentRepository extends
     // Jobs
     bindings.bind(talent.conditions.jobs).first((path, jobs) -> {
       BooleanBuilder predicate = new BooleanBuilder();
-      jobs.forEach(job -> predicate.and(path.contains(job)));
+      jobs.forEach(job -> predicate.or(path.contains(job)));
       return predicate;
     });
     // Commodity types
     bindings.bind(talent.conditions.commodityTypes).first((path, commodityTypes) -> {
       BooleanBuilder predicate = new BooleanBuilder();
-      commodityTypes.forEach(commodityType -> predicate.and(path.contains(commodityType)));
+      commodityTypes.forEach(commodityType -> predicate.or(path.contains(commodityType)));
       return predicate;
     });
     // Task types
     bindings.bind(talent.conditions.taskTypes).first((path, taskTypes) -> {
       BooleanBuilder predicate = new BooleanBuilder();
-      taskTypes.forEach(taskType -> predicate.and(path.contains(taskType)));
+      taskTypes.forEach(taskType -> predicate.or(path.contains(taskType)));
       return predicate;
     });
     // Fixed Locations
     bindings.bind(talent.conditions.fixedLocations).first((path, fixedLocations) -> {
       BooleanBuilder predicate = new BooleanBuilder();
-      fixedLocations.forEach(fixedLocation -> predicate.and(path.contains(fixedLocation)));
+      fixedLocations.forEach(fixedLocation -> predicate.or(path.contains(fixedLocation)));
       return predicate;
     });
     // Fixed salary
