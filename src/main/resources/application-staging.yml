@@ -9,21 +9,17 @@
 
 # EMAIL
 simplejavamail:
-  smtp:
-    host: smtp.gmail.com
-    port: 587
-    password: d33pfish
-    username: morgandeepfish@gmail.com
   defaults:
     from:
       name: Deepfish Staging
       address: morgandeepfish@gmail.com
-    to:
-      name: Deepfish Staging Sink
-      address: deepfish-staging-sink@yopmail.com
 
 # DEEPFISH
 deepfish:
+  mail:
+    sink:
+      name: Deepfish Staging Sink
+      address: morgandeepfish@gmail.com
   front:
     host: deepfish-app-staging.s3-website.eu-west-3.amazonaws.com
     port: 80

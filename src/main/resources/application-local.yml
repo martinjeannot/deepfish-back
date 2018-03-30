@@ -18,17 +18,23 @@ logging:
 
 # EMAIL
 simplejavamail:
-  transport.mode.logging.only: true
+  smtp:
+    host: smtp.gmail.com
+    port: 587
+    password: d33pfish
+    username: morgandeepfish@gmail.com
   defaults:
     from:
-      name: na
-      address: na@deepfish.com
-  smtp:
-    host: na
-    port: 25
+      name: Deepfish Staging
+      address: morgandeepfish@gmail.com
+  transport.mode.logging.only: true
 
 # DEEPFISH
 deepfish:
+  mail:
+    sink:
+      name: Deepfish Staging Sink
+      address: deepfish-staging-sink@yopmail.com
   front:
     host: localhost
     port: 8081
