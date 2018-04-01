@@ -26,9 +26,12 @@ public class OpportunityEventHandler {
   public void onAfterCreate(Opportunity opportunity) {
     Email opportunityMail = EmailBuilder.startingBlank()
         .to(opportunity.getTalent().getEmail())
-        .withSubject("Vous avez reçu une nouvelle opportunité !")
+        .withSubject("Vous avez reçu une nouvelle opportunité sur Deepfish !")
         .withPlainText("La société " + opportunity.getRequirement().getCompany().getName()
-            + " pourrait éventuellement dans un futur plus ou moins proche vouloir entrer en contact avec vous !")
+            + " pourrait être intéressée par votre profil !\n\n"
+            + opportunity.getPitch() + "\n\nQuelques mots sur la société : \n"
+            + opportunity.getRequirement().getCompany().getDescription() + "\n\n"
+            + "N'oubliez pas d'y répondre sur Deepfish !")
         .buildEmail();
     mailService.send(opportunityMail);
   }

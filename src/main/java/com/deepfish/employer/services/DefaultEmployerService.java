@@ -60,14 +60,23 @@ public class DefaultEmployerService implements EmployerService {
 
     create(employer);
 
-    // send confirmation mail
-    Email email = EmailBuilder
+    // send employer welcome mail
+    Email employerEmail = EmailBuilder
         .startingBlank()
         .to(employer.getUsername())
         .withSubject("Confirmation de votre inscription")
         .withPlainText("Bravo, vous êtes inscrit !\n\nVoici votre mot de passe : " + password
             + "\n\nLa team Deepfish")
         .buildEmail();
-    mailService.send(email);
+    mailService.send(employerEmail);
+
+    // send admin notification mail
+    Email adminNotification = EmailBuilder
+        .startingBlank()
+        .toMultiple("david@deepfish.fr", "martin@deepfish.fr")
+        .withSubject("[Deepfish notification] new employer")
+        .withPlainText("A new employer has just subscribed Deepfish")
+        .buildEmail();
+    mailService.send(adminNotification);
   }
 }
