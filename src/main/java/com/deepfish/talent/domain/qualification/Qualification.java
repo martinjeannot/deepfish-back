@@ -1,6 +1,7 @@
 package com.deepfish.talent.domain.qualification;
 
 import com.deepfish.talent.domain.Talent;
+import com.querydsl.core.annotations.QueryEntity;
 import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,6 +17,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 @Entity
+@QueryEntity
 @Data
 @Accessors(chain = true)
 @ToString(exclude = {"talent"})
