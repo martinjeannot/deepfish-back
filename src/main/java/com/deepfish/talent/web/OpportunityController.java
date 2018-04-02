@@ -35,7 +35,7 @@ public class OpportunityController {
     BooleanExpression fromTalent = opportunity.talent.id.eq(talentId);
     BooleanExpression isPending = opportunity.status.eq(OpportunityStatus.PENDING);
     opportunityRepository.findAll(fromTalent.and(isPending)).forEach(pendingOpportunity -> {
-      pendingOpportunity.setStatus(OpportunityStatus.REFUSED);
+      pendingOpportunity.setStatus(OpportunityStatus.DECLINED);
       opportunityRepository.save(pendingOpportunity);
     });
     Talent talent = talentRepository.findOne(talentId);
