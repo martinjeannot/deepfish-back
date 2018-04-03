@@ -15,6 +15,10 @@ public interface EmployerTalentProjection {
 
   String getLastName();
 
+  String getPhoneNumber();
+
+  String getEmail();
+
   Map<String, Object> getProfile();
 
   int getYearsOfExperience();

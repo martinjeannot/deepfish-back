@@ -27,9 +27,9 @@ public class OpportunityController {
     this.talentRepository = talentRepository;
   }
 
-  @PostMapping("/talents/{talentId}/opportunities/bulk-refusal")
+  @PostMapping("/talents/{talentId}/opportunities/bulk-declination")
   @ResponseBody
-  public ResponseEntity refuseInBulk(@PathVariable("talentId") UUID talentId) {
+  public ResponseEntity declineInBulk(@PathVariable("talentId") UUID talentId) {
     // the number of pending opportunities per talent should not justify a batch update here
     QOpportunity opportunity = QOpportunity.opportunity;
     BooleanExpression fromTalent = opportunity.talent.id.eq(talentId);

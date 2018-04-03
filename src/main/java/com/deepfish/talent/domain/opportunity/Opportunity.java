@@ -59,7 +59,11 @@ public class Opportunity {
 
   @NotNull
   @Column(columnDefinition = "text")
-  private String refusalReason = "";
+  private String talentDeclinationReason = "";
+
+  @NotNull
+  @Column(columnDefinition = "text")
+  private String employerDeclinationReason = "";
 
   private boolean forwarded;
 
