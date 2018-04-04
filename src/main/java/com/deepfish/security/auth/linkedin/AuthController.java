@@ -102,7 +102,7 @@ public class AuthController {
       // update talent profile
       talent.setLinkedInId((String) response.get("id"));
       talent.setUsername((String) response.get("id"));
-      talent.setProfile(response);
+      talent.getProfile().putAll(response);
       talent.setLastSignedInAt(LocalDateTime.now());
       talent = talentRepository.save(talent);
     }
