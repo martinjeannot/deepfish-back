@@ -5,6 +5,7 @@ import com.deepfish.employer.repositories.EmployerRepository;
 import com.deepfish.mail.MailService;
 import com.deepfish.security.Role;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.UUID;
 import org.simplejavamail.email.Email;
 import org.simplejavamail.email.EmailBuilder;
@@ -52,7 +53,7 @@ public class DefaultEmployerService implements EmployerService {
   @Override
   public void signUp(Employer employer) {
     // generate random password
-    String password = UUID.randomUUID().toString().split("-")[0];
+    String password = generateRandomPassword();
     employer.setPassword(password);
 
     // allow new employer to authenticate
@@ -78,5 +79,31 @@ public class DefaultEmployerService implements EmployerService {
         .withPlainText("A new employer has just subscribed Deepfish")
         .buildEmail();
     mailService.send(adminNotification);
+  }
+
+  @Override
+  public boolean resetPassword(String email) {
+    Employer employer = employerRepository.findByUsername(email);
+    if (Objects.isNull(employer)) {
+      return false;
+    }
+
+    String newPassword = generateRandomPassword();
+    employer.setPassword(passwordEncoder.encode(newPassword));
+    employerRepository.save(employer);
+
+    Email passwordResetEmail = EmailBuilder
+        .startingBlank()
+        .to(employer.getUsername())
+        .withSubject("Réinitialisation de votre mot de passe Deepfish")
+        .withPlainText("Bonjour,\n\nVoici votre nouveau mot de passe : " + newPassword
+            + "\n\nÀ bientôt sur Deepfish")
+        .buildEmail();
+    mailService.send(passwordResetEmail);
+    return true;
+  }
+
+  private String generateRandomPassword() {
+    return UUID.randomUUID().toString().split("-")[0];
   }
 }

@@ -2,6 +2,7 @@ package com.deepfish.employer.web;
 
 import com.deepfish.employer.domain.Employer;
 import com.deepfish.employer.domain.EmployerMapper;
+import com.deepfish.employer.forms.PasswordResetForm;
 import com.deepfish.employer.forms.SignUpForm;
 import com.deepfish.employer.services.EmployerService;
 import javax.validation.Valid;
@@ -42,5 +43,12 @@ public class EmployerController {
     employerService.signUp(employer);
     return ResponseEntity.created(repositoryEntityLinks.linkForSingleResource(employer).toUri())
         .build();
+  }
+
+  @PostMapping("employers/password-reset")
+  @ResponseBody
+  public ResponseEntity resetPassword(@Valid @RequestBody PasswordResetForm passwordResetForm) {
+    boolean success = employerService.resetPassword(passwordResetForm.getEmail());
+    return ResponseEntity.ok(success ? "OK" : "KO");
   }
 }

@@ -20,4 +20,12 @@ public interface EmployerService {
    * @param employer the employer to sign up
    */
   void signUp(Employer employer);
+
+  /**
+   * Reset the password of the given employer's mail and send it by mail
+   *
+   * @param email the mail address of the user
+   * @return true if the password was reset, false otherwise
+   */
+  boolean resetPassword(String email);
 }
