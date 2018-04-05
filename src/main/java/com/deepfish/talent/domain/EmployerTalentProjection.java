@@ -1,6 +1,6 @@
 package com.deepfish.talent.domain;
 
-import com.deepfish.talent.domain.conditions.Conditions;
+import com.deepfish.talent.domain.conditions.EmployerConditionsProjection;
 import com.deepfish.talent.domain.qualification.Qualification;
 import java.util.Map;
 import java.util.UUID;
@@ -23,7 +23,9 @@ public interface EmployerTalentProjection {
 
   int getYearsOfExperience();
 
-  Conditions getConditions();
+  String getSelfPitch();
+
+  EmployerConditionsProjection getConditions();
 
   Qualification getQualification();
 }
