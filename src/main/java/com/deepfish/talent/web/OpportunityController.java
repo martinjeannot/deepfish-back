@@ -33,9 +33,9 @@ public class OpportunityController {
     // the number of pending opportunities per talent should not justify a batch update here
     QOpportunity opportunity = QOpportunity.opportunity;
     BooleanExpression fromTalent = opportunity.talent.id.eq(talentId);
-    BooleanExpression isPending = opportunity.status.eq(OpportunityStatus.PENDING);
+    BooleanExpression isPending = opportunity.talentStatus.eq(OpportunityStatus.PENDING);
     opportunityRepository.findAll(fromTalent.and(isPending)).forEach(pendingOpportunity -> {
-      pendingOpportunity.setStatus(OpportunityStatus.DECLINED);
+      pendingOpportunity.setTalentStatus(OpportunityStatus.DECLINED);
       opportunityRepository.save(pendingOpportunity);
     });
     Talent talent = talentRepository.findOne(talentId);

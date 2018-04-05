@@ -19,7 +19,9 @@ public interface AdminItemOpportunityProjection {
   @Value("#{target.getRequirement().getCompany()}")
   Company getCompany();
 
-  OpportunityStatus getStatus();
+  OpportunityStatus getTalentStatus();
+
+  OpportunityStatus getEmployerStatus();
 
   boolean isForwarded();
 }

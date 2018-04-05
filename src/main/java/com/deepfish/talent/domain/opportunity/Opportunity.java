@@ -51,19 +51,22 @@ public class Opportunity {
 
   @NotNull
   @Enumerated(EnumType.STRING)
-  private OpportunityStatus status = OpportunityStatus.PENDING;
-
-  @NotNull
-  @Column(columnDefinition = "text")
-  private String pitch = "";
+  private OpportunityStatus talentStatus = OpportunityStatus.PENDING;
 
   @NotNull
   @Column(columnDefinition = "text")
   private String talentDeclinationReason = "";
 
+  @Enumerated(EnumType.STRING)
+  private OpportunityStatus employerStatus;
+
   @NotNull
   @Column(columnDefinition = "text")
   private String employerDeclinationReason = "";
+
+  @NotNull
+  @Column(columnDefinition = "text")
+  private String pitch = "";
 
   private boolean forwarded;
 

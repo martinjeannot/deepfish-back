@@ -12,7 +12,7 @@ public interface TalentOpportunityProjection {
 
   UUID getId();
 
-  OpportunityStatus getStatus();
+  OpportunityStatus getTalentStatus();
 
   Requirement getRequirement();
 
