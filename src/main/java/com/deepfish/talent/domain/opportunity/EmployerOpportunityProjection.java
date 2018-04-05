@@ -7,6 +7,8 @@ import org.springframework.data.rest.core.config.Projection;
 @Projection(name = "employer", types = {Opportunity.class})
 public interface EmployerOpportunityProjection {
 
+  OpportunityStatus getEmployerStatus();
+
   Requirement getRequirement();
 
   EmployerTalentProjection getTalent();
