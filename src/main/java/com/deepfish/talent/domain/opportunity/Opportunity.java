@@ -3,8 +3,11 @@ package com.deepfish.talent.domain.opportunity;
 import com.deepfish.employer.domain.Requirement;
 import com.deepfish.talent.domain.Talent;
 import com.deepfish.user.domain.User;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.querydsl.core.annotations.QueryEntity;
 import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,6 +17,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -32,6 +36,10 @@ public class Opportunity {
   @GeneratedValue
   @Setter(AccessLevel.NONE)
   private UUID id;
+
+  @Transient
+  @JsonProperty(access = Access.WRITE_ONLY)
+  private Map<String, Object> previousState;
 
   @NotNull
   @Setter(AccessLevel.NONE)
