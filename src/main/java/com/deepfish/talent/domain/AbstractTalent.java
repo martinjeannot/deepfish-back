@@ -67,7 +67,6 @@ public class AbstractTalent extends AbstractUser {
 
   private boolean active;
 
-  @NotNull
   @Enumerated(EnumType.STRING)
   private TalentMaturityLevel maturityLevel;
 
