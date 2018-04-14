@@ -97,7 +97,11 @@ public class DBMigrationController {
                     .ofTotalSeconds((Integer) ((Map) user.get("lastSignedInAt")).get("offset"))
             )
         );
-        talent.setPhoneNumber((String) user.get("phoneNumber"));
+        talent.setPhoneNumber("null");
+        if (user.get("phoneNumber") != null
+            && !user.get("phoneNumber").toString().isEmpty()) {
+          talent.setPhoneNumber((String) user.get("phoneNumber"));
+        }
         talent.setUsername((String) user.get("linkedInId"));
         talent.setLinkedInId((String) user.get("linkedInId"));
         talent.setEmail((String) user.get("email"));
@@ -107,7 +111,9 @@ public class DBMigrationController {
         talent.setLastName((String) user.get("lastName"));
         talent.setYearsOfExperience((Integer) user.get("yearsOfExperience"));
         talent.setSelfPitch((String) user.get("selfPitch"));
-        talent.setMaturityLevel(TalentMaturityLevel.valueOf((String) user.get("maturityLevel")));
+        if (user.get("maturityLevel") != null) {
+          talent.setMaturityLevel(TalentMaturityLevel.valueOf((String) user.get("maturityLevel")));
+        }
 
         // QUALIFICATION
         Qualification qualification = new Qualification();
