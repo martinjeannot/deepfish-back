@@ -47,10 +47,12 @@ linkedin:
 # ===================================================================
 
 spring:
+  sendgrid:
+    api-key: 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
   # ----------------------------------------
   # DATA PROPERTIES
   # ----------------------------------------
   # JPA (JpaBaseConfiguration, HibernateJpaAutoConfiguration)
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
