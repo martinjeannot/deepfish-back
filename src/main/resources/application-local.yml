@@ -65,4 +65,4 @@ spring:
   # JPA (JpaBaseConfiguration, HibernateJpaAutoConfiguration)
   jpa:
     hibernate:
-      ddl-auto: create #update
+      ddl-auto: update
