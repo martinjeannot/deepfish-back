@@ -65,7 +65,6 @@ public abstract class AbstractUser implements UserDetails, Identifiable<UUID> {
   private boolean enabled;
 
   @NotNull
-  @Setter(AccessLevel.NONE)
   private LocalDateTime createdAt = LocalDateTime.now();
 
   @NotNull
