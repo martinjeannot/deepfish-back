@@ -23,4 +23,10 @@ public class QueryableTalent extends AbstractTalent {
 
   @Transient
   private BigDecimal maxFixedSalary;
+
+  @Transient
+  private int minYearsOfExperience;
+
+  @Transient
+  private int maxYearsOfExperience;
 }
