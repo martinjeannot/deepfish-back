@@ -8,6 +8,7 @@ import com.deepfish.talent.domain.conditions.Conditions;
 import com.deepfish.talent.domain.qualification.Qualification;
 import com.deepfish.talent.repositories.TalentRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.UUID;
@@ -60,6 +61,25 @@ public class DefaultTalentService implements TalentService {
             .setTechnicalSkillsRating(3));
 
     return talentRepository.save(talent);
+  }
+
+  @Override
+  public Talent signInFromLinkedin(Map<String, Object> profile) {
+    // check if talent exists
+    Talent talent = talentRepository.findByLinkedInIdOrEmail(
+        (String) profile.get("id"),
+        (String) profile.get("emailAddress"));
+    if (talent == null) {
+      // sign up
+      return signUpFromLinkedIn(profile);
+    } else {
+      // update talent profile
+      talent.setLinkedInId((String) profile.get("id"));
+      talent.setUsername((String) profile.get("id"));
+      talent.setProfile(profile);
+      talent.setLastSignedInAt(LocalDateTime.now());
+      return talentRepository.save(talent);
+    }
   }
 
   @Override
