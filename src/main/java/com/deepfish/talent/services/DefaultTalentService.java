@@ -4,7 +4,6 @@ import com.deepfish.company.repositories.CompanyMaturityLevelRepository;
 import com.deepfish.security.Role;
 import com.deepfish.talent.domain.Talent;
 import com.deepfish.talent.domain.TalentMapper;
-import com.deepfish.talent.domain.TalentMaturityLevel;
 import com.deepfish.talent.domain.conditions.Conditions;
 import com.deepfish.talent.domain.qualification.Qualification;
 import com.deepfish.talent.repositories.TalentRepository;
@@ -68,9 +67,7 @@ public class DefaultTalentService implements TalentService {
     Talent talent = TalentMapper.INSTANCE.mapToTalent(profile);
 
     // set default values on sign up
-    talent
-        .setMaturityLevel(TalentMaturityLevel.CLEAR_WATER)
-        .setPhoneNumber("null");
+    talent.setPhoneNumber("null");
 
     // new talents are activated by default
     talent.activate();
