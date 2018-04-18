@@ -9,11 +9,13 @@ import com.deepfish.talent.domain.conditions.CommodityType;
 import com.deepfish.talent.domain.conditions.Conditions;
 import com.deepfish.talent.domain.conditions.FixedLocation;
 import com.deepfish.talent.domain.conditions.Job;
+import com.deepfish.talent.domain.conditions.TaskType;
 import com.deepfish.talent.domain.qualification.Qualification;
 import com.deepfish.talent.repositories.CommodityTypeRepository;
 import com.deepfish.talent.repositories.FixedLocationRepository;
 import com.deepfish.talent.repositories.JobRepository;
 import com.deepfish.talent.repositories.TalentRepository;
+import com.deepfish.talent.repositories.TaskTypeRepository;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -64,10 +66,18 @@ public class DBMigrationController {
   @Autowired
   private JobRepository jobRepository;
 
+  @Autowired
+  private TaskTypeRepository taskTypeRepository;
+
   @PostMapping("db/migration")
   @ResponseBody
   public ResponseEntity migrate() {
     Resource resource = new ClassPathResource("dbmigration.json");
+
+    TaskType gestionTeam = taskTypeRepository
+        .findOne(UUID.fromString("24f737e9-da1c-4251-8f47-7cd9f637fd8e"));
+    TaskType accountManagement = taskTypeRepository
+        .findOne(UUID.fromString("0a423494-e99a-4e00-8d06-7807a40dd056"));
 
     try {
       JsonParser jsonParser = new JsonFactory().createParser(resource.getInputStream());
@@ -158,6 +168,16 @@ public class DBMigrationController {
         for (String jobId : jobs) {
           Job job = jobRepository.findOne(UUID.fromString(jobId));
           conditions.getJobs().add(job);
+        }
+
+        // TASK TYPES
+        if (Objects.nonNull(user.get("add_gestion_team"))
+            && Boolean.valueOf(true).equals(user.get("add_gestion_team"))) {
+          conditions.getTaskTypes().add(gestionTeam);
+        }
+        if (Objects.nonNull(user.get("add_account_management"))
+            && Boolean.valueOf(true).equals(user.get("add_account_management"))) {
+          conditions.getTaskTypes().add(accountManagement);
         }
 
         // LOCATIONS
