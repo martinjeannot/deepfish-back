@@ -60,4 +60,8 @@ public class Requirement {
   @NotNull
   @Column(columnDefinition = "text")
   private String opportunityPitch = "";
+
+  @NotNull
+  @Column(columnDefinition = "text")
+  private String notes = "";
 }

@@ -38,7 +38,7 @@ public class DefaultEmployerService implements EmployerService {
   }
 
   @Override
-  public void create(Employer employer) {
+  public Employer create(Employer employer) {
     // encode raw password
     employer.setPassword(passwordEncoder.encode(employer.getPassword()));
 
@@ -47,11 +47,11 @@ public class DefaultEmployerService implements EmployerService {
         Arrays
             .asList(Role.ROLE_USER.toGrantedAuthority(), Role.ROLE_EMPLOYER.toGrantedAuthority()));
 
-    employerRepository.save(employer);
+    return employerRepository.save(employer);
   }
 
   @Override
-  public void signUp(Employer employer) {
+  public Employer signUp(Employer employer) {
     // generate random password
     String password = generateRandomPassword();
     employer.setPassword(password);
@@ -79,6 +79,8 @@ public class DefaultEmployerService implements EmployerService {
         .withPlainText("A new employer has just subscribed Deepfish")
         .buildEmail();
     mailService.send(adminNotification);
+
+    return employer;
   }
 
   @Override

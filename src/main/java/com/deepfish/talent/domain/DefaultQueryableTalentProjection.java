@@ -20,6 +20,8 @@ public interface DefaultQueryableTalentProjection {
 
   Map<String, Object> getProfile();
 
+  int getYearsOfExperience();
+
   DefaultConditionsProjection getConditions();
 
   Qualification getQualification();

@@ -4,11 +4,11 @@ import com.deepfish.company.repositories.CompanyMaturityLevelRepository;
 import com.deepfish.security.Role;
 import com.deepfish.talent.domain.Talent;
 import com.deepfish.talent.domain.TalentMapper;
-import com.deepfish.talent.domain.TalentMaturityLevel;
 import com.deepfish.talent.domain.conditions.Conditions;
 import com.deepfish.talent.domain.qualification.Qualification;
 import com.deepfish.talent.repositories.TalentRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.UUID;
@@ -54,13 +54,28 @@ public class DefaultTalentService implements TalentService {
     talent.setConditions(new Conditions());
 
     // init qualification
-    talent.setQualification(
-        new Qualification()
-            .setComplexSellingSkillsRating(3)
-            .setHuntingSkillsRating(3)
-            .setTechnicalSkillsRating(3));
+    talent.setQualification(new Qualification());
 
     return talentRepository.save(talent);
+  }
+
+  @Override
+  public Talent signInFromLinkedin(Map<String, Object> profile) {
+    // check if talent exists
+    Talent talent = talentRepository.findByLinkedInIdOrEmail(
+        (String) profile.get("id"),
+        (String) profile.get("emailAddress"));
+    if (talent == null) {
+      // sign up
+      return signUpFromLinkedIn(profile);
+    } else {
+      // update talent profile
+      talent.setLinkedInId((String) profile.get("id"));
+      talent.setUsername((String) profile.get("id"));
+      talent.setProfile(profile);
+      talent.setLastSignedInAt(LocalDateTime.now());
+      return talentRepository.save(talent);
+    }
   }
 
   @Override
@@ -68,9 +83,7 @@ public class DefaultTalentService implements TalentService {
     Talent talent = TalentMapper.INSTANCE.mapToTalent(profile);
 
     // set default values on sign up
-    talent
-        .setMaturityLevel(TalentMaturityLevel.CLEAR_WATER)
-        .setPhoneNumber("null");
+    talent.setPhoneNumber("null");
 
     // new talents are activated by default
     talent.activate();

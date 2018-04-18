@@ -18,6 +18,11 @@ public interface QueryableTalentRepository extends
 
   @Override
   default void customize(QuerydslBindings bindings, QQueryableTalent talent) {
+    // Years of experience
+    bindings.bind(talent.minYearsOfExperience)
+        .first(((path, value) -> talent.yearsOfExperience.goe(value)));
+    bindings.bind(talent.maxYearsOfExperience)
+        .first(((path, value) -> talent.yearsOfExperience.loe(value)));
     // Company maturity levels
     bindings.bind(talent.conditions.companyMaturityLevels).first((path, companyMaturityLevels) -> {
       BooleanBuilder predicate = new BooleanBuilder();

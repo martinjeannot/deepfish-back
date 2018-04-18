@@ -2,13 +2,11 @@ package com.deepfish.security.auth.linkedin;
 
 import com.deepfish.security.auth.JwtTokenForge;
 import com.deepfish.talent.domain.Talent;
-import com.deepfish.talent.repositories.TalentRepository;
 import com.deepfish.talent.services.TalentService;
 import com.deepfish.talent.util.LinkedInUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.net.URI;
-import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Optional;
 import org.slf4j.Logger;
@@ -51,19 +49,15 @@ public class AuthController {
 
   private final TalentService talentService;
 
-  private final TalentRepository talentRepository;
-
   private final JwtTokenForge jwtTokenForge;
 
   private final ObjectMapper objectMapper;
 
   public AuthController(
       TalentService talentService,
-      TalentRepository talentRepository,
       JwtTokenForge jwtTokenForge,
       ObjectMapper objectMapper) {
     this.talentService = talentService;
-    this.talentRepository = talentRepository;
     this.jwtTokenForge = jwtTokenForge;
     this.objectMapper = objectMapper;
   }
@@ -91,21 +85,7 @@ public class AuthController {
       return "redirect://" + deepfishFrontAddress + "/#/";
     }
 
-    // check if talent exists
-    Talent talent = talentRepository.findByLinkedInIdOrEmail(
-        (String) response.get("id"),
-        (String) response.get("emailAddress"));
-    if (talent == null) {
-      // sign up
-      talent = talentService.signUpFromLinkedIn(response);
-    } else {
-      // update talent profile
-      talent.setLinkedInId((String) response.get("id"));
-      talent.setUsername((String) response.get("id"));
-      talent.setProfile(response);
-      talent.setLastSignedInAt(LocalDateTime.now());
-      talent = talentRepository.save(talent);
-    }
+    Talent talent = talentService.signInFromLinkedin(response);
 
     // authenticate talent
     OAuth2AccessToken authToken = jwtTokenForge.forgeToken(talent);

@@ -17,6 +17,14 @@ public interface TalentService {
   Talent create(Talent talent);
 
   /**
+   * Sign a talent in from his LinkedIn profile
+   *
+   * @param profile a Map of data from LinkedIn
+   * @return the signed in talent
+   */
+  Talent signInFromLinkedin(Map<String, Object> profile);
+
+  /**
    * Sign a new talent up from his LinkedIn profile
    *
    * @param profile a Map of data from LinkedIn
