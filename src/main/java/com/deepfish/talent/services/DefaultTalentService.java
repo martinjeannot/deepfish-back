@@ -54,11 +54,7 @@ public class DefaultTalentService implements TalentService {
     talent.setConditions(new Conditions());
 
     // init qualification
-    talent.setQualification(
-        new Qualification()
-            .setComplexSellingSkillsRating(3)
-            .setHuntingSkillsRating(3)
-            .setTechnicalSkillsRating(3));
+    talent.setQualification(new Qualification());
 
     return talentRepository.save(talent);
   }
