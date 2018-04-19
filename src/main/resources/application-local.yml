@@ -12,9 +12,9 @@ logging:
   level:
     org:
       hibernate:
-        SQL: DEBUG
-        tool.hbm2ddl: DEBUG
-        type: TRACE
+        SQL: INFO
+        tool.hbm2ddl: INFO
+        type: INFO
 
 # EMAIL
 simplejavamail:

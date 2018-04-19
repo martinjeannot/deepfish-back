@@ -73,6 +73,7 @@ public class DBMigrationController {
   @ResponseBody
   public ResponseEntity migrate() {
     Resource resource = new ClassPathResource("dbmigration.json");
+    int counter = 0;
 
     TaskType gestionTeam = taskTypeRepository
         .findOne(UUID.fromString("24f737e9-da1c-4251-8f47-7cd9f637fd8e"));
@@ -220,6 +221,8 @@ public class DBMigrationController {
         profileMap.put("positions", positions);
         talent.setProfile(profileMap);
 
+        counter++;
+        System.out.println("Migrating counter " + counter);
         talentRepository.save(talent);
       }
     } catch (Exception e) {
