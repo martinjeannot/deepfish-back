@@ -73,4 +73,8 @@ public class AbstractTalent extends AbstractUser {
   @NotNull
   @Column(columnDefinition = "text")
   private String selfPitch = "";
+
+  @NotNull
+  @Column(columnDefinition = "text")
+  private String notes = "";
 }
