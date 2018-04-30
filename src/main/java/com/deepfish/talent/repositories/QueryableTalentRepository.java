@@ -28,7 +28,6 @@ public interface QueryableTalentRepository extends
               .or(talent.selfPitch.containsIgnoreCase(keyword))
               .or(talent.notes.containsIgnoreCase(keyword))
               .or(talent.qualification.recommendation.containsIgnoreCase(keyword)));
-      // talent.profileText.containsIgnoreCase(searchQuery);
       return predicate;
     });
     // Years of experience
