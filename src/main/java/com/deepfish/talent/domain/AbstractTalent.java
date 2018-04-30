@@ -51,6 +51,10 @@ public class AbstractTalent extends AbstractUser {
   @Column(columnDefinition = "jsonb")
   private Map<String, Object> profile;
 
+  @NotNull
+  @Column(columnDefinition = "text")
+  private String profileText;
+
   private int yearsOfExperience;
 
   @NotNull

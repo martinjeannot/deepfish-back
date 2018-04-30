@@ -1,12 +1,12 @@
 package com.deepfish.talent.services;
 
-import com.deepfish.company.repositories.CompanyMaturityLevelRepository;
 import com.deepfish.security.Role;
 import com.deepfish.talent.domain.Talent;
 import com.deepfish.talent.domain.TalentMapper;
 import com.deepfish.talent.domain.conditions.Conditions;
 import com.deepfish.talent.domain.qualification.Qualification;
 import com.deepfish.talent.repositories.TalentRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -14,7 +14,6 @@ import java.util.Map;
 import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -30,15 +29,15 @@ public class DefaultTalentService implements TalentService {
 
   private final PasswordEncoder passwordEncoder;
 
-  @Autowired
   private ObjectMapper objectMapper;
 
   public DefaultTalentService(
       TalentRepository talentRepository,
       PasswordEncoder passwordEncoder,
-      CompanyMaturityLevelRepository companyMaturityLevelRepository) {
+      ObjectMapper objectMapper) {
     this.talentRepository = talentRepository;
     this.passwordEncoder = passwordEncoder;
+    this.objectMapper = objectMapper;
   }
 
   @Override
@@ -73,6 +72,11 @@ public class DefaultTalentService implements TalentService {
       talent.setLinkedInId((String) profile.get("id"));
       talent.setUsername((String) profile.get("id"));
       talent.setProfile(profile);
+      try {
+        talent.setProfileText(objectMapper.writeValueAsString(profile));
+      } catch (JsonProcessingException e) {
+        LOGGER.error(e.getMessage(), e);
+      }
       talent.setLastSignedInAt(LocalDateTime.now());
       return talentRepository.save(talent);
     }
@@ -80,10 +84,18 @@ public class DefaultTalentService implements TalentService {
 
   @Override
   public Talent signUpFromLinkedIn(Map<String, Object> profile) {
+    String profileText = "{}";
+    try {
+      profileText = objectMapper.writeValueAsString(profile);
+    } catch (JsonProcessingException e) {
+      LOGGER.error(e.getMessage(), e);
+    }
     Talent talent = TalentMapper.INSTANCE.mapToTalent(profile);
 
     // set default values on sign up
-    talent.setPhoneNumber("null");
+    talent
+        .setProfileText(profileText)
+        .setPhoneNumber("null");
 
     // new talents are activated by default
     talent.activate();

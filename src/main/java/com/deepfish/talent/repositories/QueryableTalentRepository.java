@@ -3,6 +3,7 @@ package com.deepfish.talent.repositories;
 import com.deepfish.talent.domain.QQueryableTalent;
 import com.deepfish.talent.domain.QueryableTalent;
 import com.querydsl.core.BooleanBuilder;
+import java.util.Arrays;
 import java.util.UUID;
 import org.springframework.data.querydsl.QueryDslPredicateExecutor;
 import org.springframework.data.querydsl.binding.QuerydslBinderCustomizer;
@@ -18,11 +19,23 @@ public interface QueryableTalentRepository extends
 
   @Override
   default void customize(QuerydslBindings bindings, QQueryableTalent talent) {
+    // Keyword search
+    bindings.bind(talent.searchQuery).first((path, searchQuery) -> {
+      BooleanBuilder predicate = new BooleanBuilder();
+      Arrays.stream(searchQuery.split("\\s+"))
+          .forEach(keyword -> predicate
+              .or(talent.profileText.containsIgnoreCase(keyword))
+              .or(talent.selfPitch.containsIgnoreCase(keyword))
+              .or(talent.notes.containsIgnoreCase(keyword))
+              .or(talent.qualification.recommendation.containsIgnoreCase(keyword)));
+      // talent.profileText.containsIgnoreCase(searchQuery);
+      return predicate;
+    });
     // Years of experience
-    bindings.bind(talent.minYearsOfExperience)
-        .first(((path, value) -> talent.yearsOfExperience.goe(value)));
-    bindings.bind(talent.maxYearsOfExperience)
-        .first(((path, value) -> talent.yearsOfExperience.loe(value)));
+    bindings.bind(talent.minYearsOfExperience).first(
+        ((path, minYearsOfExperience) -> talent.yearsOfExperience.goe(minYearsOfExperience)));
+    bindings.bind(talent.maxYearsOfExperience).first(
+        ((path, maxYearsOfExperience) -> talent.yearsOfExperience.loe(maxYearsOfExperience)));
     // Company maturity levels
     bindings.bind(talent.conditions.companyMaturityLevels).first((path, companyMaturityLevels) -> {
       BooleanBuilder predicate = new BooleanBuilder();
