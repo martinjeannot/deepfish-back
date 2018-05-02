@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
@@ -28,8 +29,8 @@ import org.springframework.web.filter.CorsFilter;
 @EnableAuthorizationServer
 public class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {
 
-  private final int ACCESS_TOKEN_VALIDITY_SECONDS = 10000;
-  private final int REFRESH_TOKEN_VALIDITY_SECONDS = 30000;
+  private final int ACCESS_TOKEN_VALIDITY_SECONDS = 60 * 60 * 12; // 12 hours
+  private final int REFRESH_TOKEN_VALIDITY_SECONDS = 60 * 60 * 24 * 30; // 30 days
 
   public static final String[] AUTHORIZATION_SCOPE = new String[]{"read", "write"};
 
@@ -38,32 +39,38 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 
   private final AuthenticationManager authenticationManager;
 
+  private final UserDetailsService userDetailsService;
+
   private final CorsConfigurationSource corsConfigurationSource;
 
   public AuthorizationServerConfiguration(
       AuthenticationManager authenticationManager,
+      UserDetailsService userDetailsService,
       CorsConfigurationSource corsConfigurationSource) {
     this.authenticationManager = authenticationManager;
+    this.userDetailsService = userDetailsService;
     this.corsConfigurationSource = corsConfigurationSource;
   }
 
   @Bean
   @Primary
   public DefaultTokenServices tokenServices() {
-    DefaultTokenServices defaultTokenServices = new DefaultTokenServices();
-    defaultTokenServices.setTokenStore(tokenStore());
-    defaultTokenServices.setSupportRefreshToken(true);
-    return defaultTokenServices;
+    DefaultTokenServices tokenServices = new DefaultTokenServices();
+    tokenServices.setTokenStore(tokenStore());
+    tokenServices.setSupportRefreshToken(true);
+    tokenServices.setReuseRefreshToken(false);
+    tokenServices.setTokenEnhancer(tokenEnhancer());
+    return tokenServices;
   }
 
   @Bean
   public TokenStore tokenStore() {
-    return new JwtTokenStore(accessTokenConverter());
+    return new JwtTokenStore(tokenEnhancer());
   }
 
   @Bean
-  public JwtAccessTokenConverter accessTokenConverter() {
-    JwtAccessTokenConverter accessTokenConverter = new JwtAccessTokenConverter() {
+  public JwtAccessTokenConverter tokenEnhancer() {
+    JwtAccessTokenConverter tokenEnhancer = new JwtAccessTokenConverter() {
       @Override
       public OAuth2AccessToken enhance(OAuth2AccessToken accessToken,
           OAuth2Authentication authentication) {
@@ -74,8 +81,8 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
         return super.enhance(accessToken, authentication);
       }
     };
-    accessTokenConverter.setSigningKey("123");
-    return accessTokenConverter;
+    tokenEnhancer.setSigningKey("DjK8G7PX3zcYeG4z");
+    return tokenEnhancer;
   }
 
   @Override
@@ -108,8 +115,14 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
   public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
     endpoints
         .authenticationManager(authenticationManager)
+        // fixing a bug where the user details service is not retrieved from the authentication manager
+        // Error message : "Handling error: IllegalStateException, UserDetailsService is required."
+        .userDetailsService(userDetailsService)
+        // TODO: reuse our tokenServices, see AuthorizationServerEndpointsConfigurer.createDefaultTokenServices
         //.tokenServices(tokenServices())
         .tokenStore(tokenStore())
-        .accessTokenConverter(accessTokenConverter());
+        .reuseRefreshTokens(false)
+        //.accessTokenConverter(tokenEnhancer())
+        .tokenEnhancer(tokenEnhancer());
   }
 }
