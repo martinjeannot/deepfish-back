@@ -219,7 +219,13 @@ public class DBMigrationController {
         positions.put("_total", 0);
         positions.put("values", Collections.emptyList());
         profileMap.put("positions", positions);
-        talent.setProfile(profileMap);
+        talent.setBasicProfile(profileMap);
+        String profileText = objectMapper.writeValueAsString(profileMap);
+        talent.setBasicProfileText(profileText);
+        talent.setFullProfileText("");
+
+        // NOTES
+        talent.setNotes((String) user.get("notes"));
 
         counter++;
         System.out.println("Migrating counter " + counter);
