@@ -19,7 +19,7 @@ public interface EmployerTalentProjection {
 
   String getEmail();
 
-  Map<String, Object> getProfile();
+  Map<String, Object> getBasicProfile();
 
   int getYearsOfExperience();
 

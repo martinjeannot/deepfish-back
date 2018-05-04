@@ -24,7 +24,8 @@ public interface QueryableTalentRepository extends
       BooleanBuilder predicate = new BooleanBuilder();
       Arrays.stream(searchQuery.split("\\s+"))
           .forEach(keyword -> predicate
-              .or(talent.profileText.containsIgnoreCase(keyword))
+              .or(talent.basicProfileText.containsIgnoreCase(keyword))
+              .or(talent.fullProfileText.containsIgnoreCase(keyword))
               .or(talent.selfPitch.containsIgnoreCase(keyword))
               .or(talent.notes.containsIgnoreCase(keyword))
               .or(talent.qualification.recommendation.containsIgnoreCase(keyword)));

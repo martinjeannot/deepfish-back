@@ -59,21 +59,21 @@ public class DefaultTalentService implements TalentService {
   }
 
   @Override
-  public Talent signInFromLinkedin(Map<String, Object> profile) {
+  public Talent signInFromLinkedin(Map<String, Object> basicProfile) {
     // check if talent exists
     Talent talent = talentRepository.findByLinkedInIdOrEmail(
-        (String) profile.get("id"),
-        (String) profile.get("emailAddress"));
+        (String) basicProfile.get("id"),
+        (String) basicProfile.get("emailAddress"));
     if (talent == null) {
       // sign up
-      return signUpFromLinkedIn(profile);
+      return signUpFromLinkedIn(basicProfile);
     } else {
       // update talent profile
-      talent.setLinkedInId((String) profile.get("id"));
-      talent.setUsername((String) profile.get("id"));
-      talent.setProfile(profile);
+      talent.setLinkedInId((String) basicProfile.get("id"));
+      talent.setUsername((String) basicProfile.get("id"));
+      talent.setBasicProfile(basicProfile);
       try {
-        talent.setProfileText(objectMapper.writeValueAsString(profile));
+        talent.setBasicProfileText(objectMapper.writeValueAsString(basicProfile));
       } catch (JsonProcessingException e) {
         LOGGER.error(e.getMessage(), e);
       }
@@ -83,18 +83,19 @@ public class DefaultTalentService implements TalentService {
   }
 
   @Override
-  public Talent signUpFromLinkedIn(Map<String, Object> profile) {
-    String profileText = "{}";
+  public Talent signUpFromLinkedIn(Map<String, Object> basicProfile) {
+    String basicProfileText = "{}";
     try {
-      profileText = objectMapper.writeValueAsString(profile);
+      basicProfileText = objectMapper.writeValueAsString(basicProfile);
     } catch (JsonProcessingException e) {
       LOGGER.error(e.getMessage(), e);
     }
-    Talent talent = TalentMapper.INSTANCE.mapToTalent(profile);
+    Talent talent = TalentMapper.INSTANCE.mapToTalent(basicProfile);
 
     // set default values on sign up
     talent
-        .setProfileText(profileText)
+        .setBasicProfileText(basicProfileText)
+        .setFullProfileText(basicProfileText)
         .setPhoneNumber("null");
 
     // new talents are activated by default
@@ -104,5 +105,13 @@ public class DefaultTalentService implements TalentService {
     talent.enableAuthentication();
 
     return create(talent);
+  }
+
+  @Override
+  public float updateProfileCompleteness(UUID talentId) {
+    Talent talent = talentRepository.findOne(talentId);
+    talent.setProfileCompleteness(10); // TODO
+    talent = talentRepository.save(talent);
+    return talent.getProfileCompleteness();
   }
 }

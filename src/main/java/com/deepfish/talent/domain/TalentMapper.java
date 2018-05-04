@@ -11,9 +11,9 @@ public interface TalentMapper {
 
   TalentMapper INSTANCE = Mappers.getMapper(TalentMapper.class);
 
-  @Mapping(expression = "java(map)", target = "profile")
-  @Mapping(expression = "java(String.valueOf(map.get(\"firstName\")))", target = "firstName")
-  @Mapping(expression = "java(String.valueOf(map.get(\"lastName\")))", target = "lastName")
-  @Mapping(expression = "java(String.valueOf(map.get(\"emailAddress\")))", target = "email")
-  Talent mapToTalent(Map map);
+  @Mapping(expression = "java(basicProfile)", target = "basicProfile")
+  @Mapping(expression = "java(String.valueOf(basicProfile.get(\"firstName\")))", target = "firstName")
+  @Mapping(expression = "java(String.valueOf(basicProfile.get(\"lastName\")))", target = "lastName")
+  @Mapping(expression = "java(String.valueOf(basicProfile.get(\"emailAddress\")))", target = "email")
+  Talent mapToTalent(Map basicProfile);
 }

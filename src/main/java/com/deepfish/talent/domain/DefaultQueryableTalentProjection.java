@@ -18,7 +18,7 @@ public interface DefaultQueryableTalentProjection {
 
   LocalDateTime getCreatedAt();
 
-  Map<String, Object> getProfile();
+  Map<String, Object> getBasicProfile();
 
   int getYearsOfExperience();
 
