@@ -16,6 +16,9 @@ import org.hibernate.annotations.Immutable;
 public class QueryableTalent extends AbstractTalent {
 
   @Transient
+  private String searchQuery;
+
+  @Transient
   private Collection<CompanyMaturityLevel> companyMaturityLevelsNotIn;
 
   @Transient

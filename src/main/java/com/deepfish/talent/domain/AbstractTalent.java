@@ -28,8 +28,9 @@ import org.hibernate.validator.constraints.NotBlank;
 @MappedSuperclass
 @Data
 @Accessors(chain = true)
-@ToString(callSuper = true, exclude = {"profile", "conditions", "qualification", "opportunities"})
-@EqualsAndHashCode(callSuper = true, exclude = {"profile", "conditions", "qualification",
+@ToString(callSuper = true, exclude = {"basicProfile", "conditions", "qualification",
+    "opportunities"})
+@EqualsAndHashCode(callSuper = true, exclude = {"basicProfile", "conditions", "qualification",
     "opportunities"})
 @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 public class AbstractTalent extends AbstractUser {
@@ -49,7 +50,17 @@ public class AbstractTalent extends AbstractUser {
   @NotNull
   @Type(type = "jsonb")
   @Column(columnDefinition = "jsonb")
-  private Map<String, Object> profile;
+  private Map<String, Object> basicProfile;
+
+  @NotNull
+  @Column(columnDefinition = "text")
+  private String basicProfileText;
+
+  @NotNull
+  @Column(columnDefinition = "text")
+  private String fullProfileText;
+
+  private float profileCompleteness;
 
   private int yearsOfExperience;
 
@@ -73,4 +84,8 @@ public class AbstractTalent extends AbstractUser {
   @NotNull
   @Column(columnDefinition = "text")
   private String selfPitch = "";
+
+  @NotNull
+  @Column(columnDefinition = "text")
+  private String notes = "";
 }
