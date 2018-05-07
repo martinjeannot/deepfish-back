@@ -101,6 +101,7 @@ dependencies {
     compile("org.mapstruct:mapstruct-jdk8:${mapstructVersion}")
     apt("org.mapstruct:mapstruct-processor:${mapstructVersion}", "org.projectlombok:lombok")
     compile('com.fasterxml.jackson.datatype:jackson-datatype-jsr310')
+    compile('io.pebbletemplates:pebble:2.5.1')
 }
 
 dependencyManagement {
