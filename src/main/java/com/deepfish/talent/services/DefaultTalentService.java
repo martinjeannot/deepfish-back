@@ -70,6 +70,13 @@ public class DefaultTalentService implements TalentService {
   }
 
   @Override
+  public Talent deactivate(UUID talentId) {
+    Talent talent = talentRepository.findOne(talentId);
+    talent.deactivate();
+    return talentRepository.save(talent);
+  }
+
+  @Override
   public Talent signInFromLinkedin(Map<String, Object> basicProfile) {
     // check if talent exists
     Talent talent = talentRepository.findByLinkedInIdOrEmail(
