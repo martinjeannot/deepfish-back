@@ -1,5 +1,6 @@
 package com.deepfish.mail;
 
+import com.deepfish.employer.domain.Employer;
 import com.deepfish.talent.domain.Talent;
 import com.deepfish.talent.domain.opportunity.Opportunity;
 import com.mitchellbosecke.pebble.PebbleEngine;
@@ -24,15 +25,18 @@ public class PebbleMailFactory implements MailFactory {
   private final PebbleTemplate talentNewOpportunityMailTemplate = pebbleEngine
       .getTemplate("mails/talent/newOpportunity.html");
 
+  private final PebbleTemplate employerWelcomeMailTemplate = pebbleEngine
+      .getTemplate("mails/employer/welcome.html");
+
   // TALENT ========================================================================================
 
   @Override
   public Email getTalentWelcomeMail(Talent talent) {
     String subject = "Bienvenue chez Deepfish";
-    Writer writer = new StringWriter();
     Map<String, Object> context = new HashMap<>();
     context.put("title", subject);
     context.put("talent", talent);
+    Writer writer = new StringWriter();
     try {
       talentWelcomeMailTemplate.evaluate(writer, context);
     } catch (IOException e) {
@@ -52,10 +56,10 @@ public class PebbleMailFactory implements MailFactory {
   public Email getTalentNewOpportunityMail(Opportunity opportunity) {
     String subject =
         opportunity.getTalent().getFirstName() + ", une entreprise vous sollicite sur Deepfish";
-    Writer writer = new StringWriter();
     Map<String, Object> context = new HashMap<>();
     context.put("title", subject);
     context.put("talent", opportunity.getTalent());
+    Writer writer = new StringWriter();
     try {
       talentNewOpportunityMailTemplate.evaluate(writer, context);
     } catch (IOException e) {
@@ -65,6 +69,31 @@ public class PebbleMailFactory implements MailFactory {
     return EmailBuilder
         .startingBlank()
         .to(opportunity.getTalent().getEmail())
+        .withSubject(subject)
+        .withHTMLText(writer.toString())
+        .buildEmail();
+  }
+
+  // EMPLOYER ======================================================================================
+
+
+  @Override
+  public Email getEmployerWelcomeMail(Employer employer, String password) {
+    String subject = "Deepfish - Plateforme de recrutement de commerciaux IT";
+    Map<String, Object> context = new HashMap<>();
+    context.put("employer", employer);
+    context.put("password", password);
+    Writer writer = new StringWriter();
+    try {
+      employerWelcomeMailTemplate.evaluate(writer, context);
+    } catch (IOException e) {
+      throw new RuntimeException(e.getMessage(), e);
+    }
+
+    return EmailBuilder
+        .startingBlank()
+        .from("martin@deepfish.fr")
+        .to(employer.getUsername())
         .withSubject(subject)
         .withHTMLText(writer.toString())
         .buildEmail();
