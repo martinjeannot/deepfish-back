@@ -93,14 +93,8 @@ public class DefaultEmployerService implements EmployerService {
     employer.setPassword(passwordEncoder.encode(newPassword));
     employerRepository.save(employer);
 
-    Email passwordResetEmail = EmailBuilder
-        .startingBlank()
-        .to(employer.getUsername())
-        .withSubject("Réinitialisation de votre mot de passe Deepfish")
-        .withPlainText("Bonjour,\n\nVoici votre nouveau mot de passe : " + newPassword
-            + "\n\nÀ bientôt sur Deepfish")
-        .buildEmail();
-    mailService.send(passwordResetEmail);
+    Email passwordResetMail = mailFactory.getEmployerPasswordResetMail(employer, newPassword);
+    mailService.send(passwordResetMail);
     return true;
   }
 

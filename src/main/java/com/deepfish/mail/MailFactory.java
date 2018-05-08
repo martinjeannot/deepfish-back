@@ -16,4 +16,6 @@ public interface MailFactory {
   // EMPLOYER ======================================================================================
 
   Email getEmployerWelcomeMail(Employer employer, String password);
+
+  Email getEmployerPasswordResetMail(Employer employer, String password);
 }

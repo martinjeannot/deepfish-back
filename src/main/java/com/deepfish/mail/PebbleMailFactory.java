@@ -28,6 +28,9 @@ public class PebbleMailFactory implements MailFactory {
   private final PebbleTemplate employerWelcomeMailTemplate = pebbleEngine
       .getTemplate("mails/employer/welcome.html");
 
+  private final PebbleTemplate employerPasswordResetMailTemplate = pebbleEngine
+      .getTemplate("mails/employer/passwordReset.html");
+
   // TALENT ========================================================================================
 
   @Override
@@ -40,7 +43,7 @@ public class PebbleMailFactory implements MailFactory {
     try {
       talentWelcomeMailTemplate.evaluate(writer, context);
     } catch (IOException e) {
-      throw new RuntimeException(e.getMessage(), e);
+      throw new RuntimeException(e);
     }
 
     return EmailBuilder
@@ -63,7 +66,7 @@ public class PebbleMailFactory implements MailFactory {
     try {
       talentNewOpportunityMailTemplate.evaluate(writer, context);
     } catch (IOException e) {
-      throw new RuntimeException(e.getMessage(), e);
+      throw new RuntimeException(e);
     }
 
     return EmailBuilder
@@ -81,18 +84,41 @@ public class PebbleMailFactory implements MailFactory {
   public Email getEmployerWelcomeMail(Employer employer, String password) {
     String subject = "Deepfish - Plateforme de recrutement de commerciaux IT";
     Map<String, Object> context = new HashMap<>();
+    context.put("title", subject);
     context.put("employer", employer);
     context.put("password", password);
     Writer writer = new StringWriter();
     try {
       employerWelcomeMailTemplate.evaluate(writer, context);
     } catch (IOException e) {
-      throw new RuntimeException(e.getMessage(), e);
+      throw new RuntimeException(e);
     }
 
     return EmailBuilder
         .startingBlank()
         .from("martin@deepfish.fr")
+        .to(employer.getUsername())
+        .withSubject(subject)
+        .withHTMLText(writer.toString())
+        .buildEmail();
+  }
+
+  @Override
+  public Email getEmployerPasswordResetMail(Employer employer, String password) {
+    String subject = "Deepfish – Changement de mot de passe";
+    Map<String, Object> context = new HashMap<>();
+    context.put("title", subject);
+    context.put("employer", employer);
+    context.put("password", password);
+    Writer writer = new StringWriter();
+    try {
+      employerPasswordResetMailTemplate.evaluate(writer, context);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
+    return EmailBuilder
+        .startingBlank()
         .to(employer.getUsername())
         .withSubject(subject)
         .withHTMLText(writer.toString())
