@@ -31,6 +31,21 @@ public class PebbleMailFactory implements MailFactory {
   private final PebbleTemplate employerPasswordResetMailTemplate = pebbleEngine
       .getTemplate("mails/employer/passwordReset.html");
 
+  private final PebbleTemplate adminNewEmployerMailTemplate = pebbleEngine
+      .getTemplate("mails/admin/newEmployer.html");
+
+  private final PebbleTemplate adminTalentAcceptedOpportunityMailTemplate = pebbleEngine
+      .getTemplate("mails/admin/talentAcceptedOpportunity.html");
+
+  private final PebbleTemplate adminTalentDeclinedOpportunityMailTemplate = pebbleEngine
+      .getTemplate("mails/admin/talentDeclinedOpportunity.html");
+
+  private final PebbleTemplate adminEmployerAcceptedTalentMailTemplate = pebbleEngine
+      .getTemplate("mails/admin/employerAcceptedTalent.html");
+
+  private final PebbleTemplate adminEmployerDeclinedTalentMailTemplate = pebbleEngine
+      .getTemplate("mails/admin/employerDeclinedTalent.html");
+
   // TALENT ========================================================================================
 
   @Override
@@ -120,6 +135,129 @@ public class PebbleMailFactory implements MailFactory {
     return EmailBuilder
         .startingBlank()
         .to(employer.getUsername())
+        .withSubject(subject)
+        .withHTMLText(writer.toString())
+        .buildEmail();
+  }
+
+  // ADMIN =========================================================================================
+
+
+  @Override
+  public Email getAdminNewEmployerMail(Employer employer) {
+    String subject = employer.getCompany().getName() + " - Nouvel inscrit recruteur";
+    Map<String, Object> context = new HashMap<>();
+    context.put("title", subject);
+    context.put("employer", employer);
+    context.put("company", employer.getCompany());
+    Writer writer = new StringWriter();
+    try {
+      adminNewEmployerMailTemplate.evaluate(writer, context);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
+    return EmailBuilder
+        .startingBlank()
+        .toMultiple("david@deepfish.fr", "martin@deepfish.fr")
+        .withSubject(subject)
+        .withHTMLText(writer.toString())
+        .buildEmail();
+  }
+
+  @Override
+  public Email getAdminTalentAcceptedOpportunityMail(Opportunity opportunity) {
+    String subject =
+        opportunity.getTalent().getLastName() + " a accepté " + opportunity.getRequirement()
+            .getCompany().getName();
+    Map<String, Object> context = new HashMap<>();
+    context.put("title", subject);
+    context.put("talent", opportunity.getTalent());
+    context.put("company", opportunity.getRequirement().getCompany());
+    Writer writer = new StringWriter();
+    try {
+      adminTalentAcceptedOpportunityMailTemplate.evaluate(writer, context);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
+    return EmailBuilder
+        .startingBlank()
+        .toMultiple("david@deepfish.fr", "martin@deepfish.fr")
+        .withSubject(subject)
+        .withHTMLText(writer.toString())
+        .buildEmail();
+  }
+
+  @Override
+  public Email getAdminTalentDeclinedOpportunityMail(Opportunity opportunity) {
+    String subject =
+        opportunity.getTalent().getLastName() + " a refusé " + opportunity.getRequirement()
+            .getCompany().getName();
+    Map<String, Object> context = new HashMap<>();
+    context.put("title", subject);
+    context.put("talent", opportunity.getTalent());
+    context.put("company", opportunity.getRequirement().getCompany());
+    context.put("opportunity", opportunity);
+    Writer writer = new StringWriter();
+    try {
+      adminTalentDeclinedOpportunityMailTemplate.evaluate(writer, context);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
+    return EmailBuilder
+        .startingBlank()
+        .toMultiple("david@deepfish.fr", "martin@deepfish.fr")
+        .withSubject(subject)
+        .withHTMLText(writer.toString())
+        .buildEmail();
+  }
+
+  @Override
+  public Email getAdminEmployerAcceptedTalentMail(Opportunity opportunity) {
+    String subject =
+        opportunity.getRequirement().getCompany().getName() + " a accepté le talent " + opportunity
+            .getTalent().getLastName();
+    Map<String, Object> context = new HashMap<>();
+    context.put("title", subject);
+    context.put("company", opportunity.getRequirement().getCompany());
+    context.put("talent", opportunity.getTalent());
+    Writer writer = new StringWriter();
+    try {
+      adminEmployerAcceptedTalentMailTemplate.evaluate(writer, context);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
+    return EmailBuilder
+        .startingBlank()
+        .toMultiple("david@deepfish.fr", "martin@deepfish.fr")
+        .withSubject(subject)
+        .withHTMLText(writer.toString())
+        .buildEmail();
+  }
+
+  @Override
+  public Email getAdminEmployerDeclinedTalentMail(Opportunity opportunity) {
+    String subject =
+        opportunity.getRequirement().getCompany().getName() + " a refusé le talent " + opportunity
+            .getTalent().getLastName();
+    Map<String, Object> context = new HashMap<>();
+    context.put("title", subject);
+    context.put("company", opportunity.getRequirement().getCompany());
+    context.put("talent", opportunity.getTalent());
+    context.put("opportunity", opportunity);
+    Writer writer = new StringWriter();
+    try {
+      adminEmployerDeclinedTalentMailTemplate.evaluate(writer, context);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
+    return EmailBuilder
+        .startingBlank()
+        .toMultiple("david@deepfish.fr", "martin@deepfish.fr")
         .withSubject(subject)
         .withHTMLText(writer.toString())
         .buildEmail();

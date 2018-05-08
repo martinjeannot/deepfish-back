@@ -18,4 +18,16 @@ public interface MailFactory {
   Email getEmployerWelcomeMail(Employer employer, String password);
 
   Email getEmployerPasswordResetMail(Employer employer, String password);
+
+  // ADMIN =========================================================================================
+
+  Email getAdminNewEmployerMail(Employer employer);
+
+  Email getAdminTalentAcceptedOpportunityMail(Opportunity opportunity);
+
+  Email getAdminTalentDeclinedOpportunityMail(Opportunity opportunity);
+
+  Email getAdminEmployerAcceptedTalentMail(Opportunity opportunity);
+
+  Email getAdminEmployerDeclinedTalentMail(Opportunity opportunity);
 }
