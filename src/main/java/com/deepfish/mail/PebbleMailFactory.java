@@ -1,6 +1,7 @@
 package com.deepfish.mail;
 
 import com.deepfish.talent.domain.Talent;
+import com.deepfish.talent.domain.opportunity.Opportunity;
 import com.mitchellbosecke.pebble.PebbleEngine;
 import com.mitchellbosecke.pebble.template.PebbleTemplate;
 import java.io.IOException;
@@ -19,6 +20,9 @@ public class PebbleMailFactory implements MailFactory {
 
   private final PebbleTemplate talentWelcomeMailTemplate = pebbleEngine
       .getTemplate("mails/talent/welcome.html");
+
+  private final PebbleTemplate talentNewOpportunityMailTemplate = pebbleEngine
+      .getTemplate("mails/talent/newOpportunity.html");
 
   // TALENT ========================================================================================
 
@@ -39,6 +43,28 @@ public class PebbleMailFactory implements MailFactory {
         .startingBlank()
         .from("david@deepfish.fr")
         .to(talent.getEmail())
+        .withSubject(subject)
+        .withHTMLText(writer.toString())
+        .buildEmail();
+  }
+
+  @Override
+  public Email getTalentNewOpportunityMail(Opportunity opportunity) {
+    String subject =
+        opportunity.getTalent().getFirstName() + ", une entreprise vous sollicite sur Deepfish";
+    Writer writer = new StringWriter();
+    Map<String, Object> context = new HashMap<>();
+    context.put("title", subject);
+    context.put("talent", opportunity.getTalent());
+    try {
+      talentNewOpportunityMailTemplate.evaluate(writer, context);
+    } catch (IOException e) {
+      throw new RuntimeException(e.getMessage(), e);
+    }
+
+    return EmailBuilder
+        .startingBlank()
+        .to(opportunity.getTalent().getEmail())
         .withSubject(subject)
         .withHTMLText(writer.toString())
         .buildEmail();
