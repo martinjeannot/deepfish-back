@@ -2,6 +2,7 @@ package com.deepfish.company.domain;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -28,5 +29,6 @@ public class Company {
   private String name;
 
   @NotNull
+  @Column(columnDefinition = "text")
   private String description = "";
 }
