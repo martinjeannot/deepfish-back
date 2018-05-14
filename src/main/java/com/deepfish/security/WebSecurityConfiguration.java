@@ -45,7 +45,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         .antMatchers("/auth/linkedin/callback").permitAll()
         .antMatchers("/employers/sign-up").permitAll()
         .antMatchers("/employers/password-reset").permitAll()
-        .antMatchers("/db/migration").permitAll()
+        .antMatchers("/db/*").permitAll()
         .anyRequest().denyAll();
   }
 

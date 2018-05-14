@@ -19,6 +19,9 @@ import com.deepfish.talent.repositories.TaskTypeRepository;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -73,6 +76,8 @@ public class DBMigrationController {
   @ResponseBody
   public ResponseEntity migrate() {
     Resource resource = new ClassPathResource("dbmigration.json");
+    Resource lkdProfiles = new ClassPathResource("lkdprofiles.json");
+    Map<String, String> lkdProfileMap = null;
     int counter = 0;
 
     TaskType gestionTeam = taskTypeRepository
@@ -85,6 +90,10 @@ public class DBMigrationController {
       jsonParser.setCodec(objectMapper);
       Map data = jsonParser.readValueAs(Map.class);
       List<Map> users = (List<Map>) data.get("data");
+
+      jsonParser = new JsonFactory().createParser(lkdProfiles.getInputStream());
+      jsonParser.setCodec(objectMapper);
+      lkdProfileMap = (Map<String, String>) jsonParser.readValueAs(Map.class);
 
       for (Map user : users) {
         Talent talent = new Talent();
@@ -224,6 +233,13 @@ public class DBMigrationController {
         talent.setBasicProfileText(profileText);
         talent.setFullProfileText("");
 
+        // FULL PROFILE TEXT (lkd profiles)
+        if (lkdProfileMap.containsKey(talent.getEmail())) {
+          talent.setFullProfileText(lkdProfileMap.get(talent.getEmail()));
+        }
+
+        talent.setBasicProfileText(profileText);
+
         // NOTES
         talent.setNotes((String) user.get("notes"));
 
@@ -234,6 +250,22 @@ public class DBMigrationController {
     } catch (Exception e) {
       LOGGER.error(e.getMessage(), e);
     }
+
+    return ResponseEntity.ok().build();
+  }
+
+  @PostMapping("db/retrievelkd")
+  @ResponseBody
+  public ResponseEntity retrieveLkdProfile() throws IOException {
+    Map<String, String> lkdProfiles = new HashMap<>();
+
+    for (Talent talent : talentRepository.findAll()) {
+      lkdProfiles.put(talent.getEmail(), talent.getFullProfileText());
+    }
+
+    BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("lkdprofiles.json"));
+    bufferedWriter.write(objectMapper.writeValueAsString(lkdProfiles));
+    bufferedWriter.close();
 
     return ResponseEntity.ok().build();
   }
