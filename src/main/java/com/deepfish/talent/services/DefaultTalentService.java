@@ -1,5 +1,7 @@
 package com.deepfish.talent.services;
 
+import com.deepfish.mail.MailFactory;
+import com.deepfish.mail.MailService;
 import com.deepfish.security.Role;
 import com.deepfish.talent.domain.Talent;
 import com.deepfish.talent.domain.TalentMapper;
@@ -12,6 +14,7 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.UUID;
+import org.simplejavamail.email.Email;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,15 +32,23 @@ public class DefaultTalentService implements TalentService {
 
   private final PasswordEncoder passwordEncoder;
 
-  private ObjectMapper objectMapper;
+  private final ObjectMapper objectMapper;
+
+  private final MailService mailService;
+
+  private final MailFactory mailFactory;
 
   public DefaultTalentService(
       TalentRepository talentRepository,
       PasswordEncoder passwordEncoder,
-      ObjectMapper objectMapper) {
+      ObjectMapper objectMapper,
+      MailService mailService,
+      MailFactory mailFactory) {
     this.talentRepository = talentRepository;
     this.passwordEncoder = passwordEncoder;
     this.objectMapper = objectMapper;
+    this.mailService = mailService;
+    this.mailFactory = mailFactory;
   }
 
   @Override
@@ -59,6 +70,13 @@ public class DefaultTalentService implements TalentService {
   }
 
   @Override
+  public Talent deactivate(UUID talentId) {
+    Talent talent = talentRepository.findOne(talentId);
+    talent.deactivate();
+    return talentRepository.save(talent);
+  }
+
+  @Override
   public Talent signInFromLinkedin(Map<String, Object> basicProfile) {
     // check if talent exists
     Talent talent = talentRepository.findByLinkedInIdOrEmail(
@@ -76,6 +94,7 @@ public class DefaultTalentService implements TalentService {
         talent.setBasicProfileText(objectMapper.writeValueAsString(basicProfile));
       } catch (JsonProcessingException e) {
         LOGGER.error(e.getMessage(), e);
+        talent.setBasicProfileText("{}");
       }
       talent.setLastSignedInAt(LocalDateTime.now());
       return talentRepository.save(talent);
@@ -84,13 +103,14 @@ public class DefaultTalentService implements TalentService {
 
   @Override
   public Talent signUpFromLinkedIn(Map<String, Object> basicProfile) {
+    Talent talent = TalentMapper.INSTANCE.mapToTalent(basicProfile);
+
     String basicProfileText = "{}";
     try {
       basicProfileText = objectMapper.writeValueAsString(basicProfile);
     } catch (JsonProcessingException e) {
       LOGGER.error(e.getMessage(), e);
     }
-    Talent talent = TalentMapper.INSTANCE.mapToTalent(basicProfile);
 
     // set default values on sign up
     talent
@@ -104,7 +124,12 @@ public class DefaultTalentService implements TalentService {
     // allow new talent to authenticate
     talent.enableAuthentication();
 
-    return create(talent);
+    talent = create(talent);
+
+    Email welcomeMail = mailFactory.getTalentWelcomeMail(talent);
+    mailService.send(welcomeMail);
+
+    return talent;
   }
 
   @Override

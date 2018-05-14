@@ -1,11 +1,10 @@
 package com.deepfish.talent.event;
 
+import com.deepfish.mail.MailFactory;
 import com.deepfish.mail.MailService;
 import com.deepfish.talent.domain.opportunity.Opportunity;
 import com.deepfish.talent.domain.opportunity.OpportunityStatus;
 import java.util.Objects;
-import org.simplejavamail.email.Email;
-import org.simplejavamail.email.EmailBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.rest.core.annotation.HandleAfterCreate;
@@ -21,22 +20,18 @@ public class OpportunityEventHandler {
 
   private final MailService mailService;
 
-  public OpportunityEventHandler(MailService mailService) {
+  private final MailFactory mailFactory;
+
+  public OpportunityEventHandler(
+      MailService mailService,
+      MailFactory mailFactory) {
     this.mailService = mailService;
+    this.mailFactory = mailFactory;
   }
 
   @HandleAfterCreate
   public void onAfterCreate(Opportunity opportunity) {
-    Email opportunityMail = EmailBuilder.startingBlank()
-        .to(opportunity.getTalent().getEmail())
-        .withSubject("Vous avez reçu une nouvelle opportunité sur Deepfish !")
-        .withPlainText("La société " + opportunity.getRequirement().getCompany().getName()
-            + " pourrait être intéressée par votre profil !\n\n"
-            + opportunity.getPitch() + "\n\nQuelques mots sur la société : \n"
-            + opportunity.getRequirement().getCompany().getDescription() + "\n\n"
-            + "N'oubliez pas de répondre sur Deepfish !")
-        .buildEmail();
-    mailService.send(opportunityMail);
+    mailService.send(mailFactory.getTalentNewOpportunityMail(opportunity));
   }
 
   @HandleAfterSave
@@ -48,23 +43,27 @@ public class OpportunityEventHandler {
         previousTalentStatus = OpportunityStatus
             .valueOf((String) opportunity.getPreviousState().get("talentStatus"));
       }
+      OpportunityStatus previousEmployerStatus = null;
+      if (opportunity.getPreviousState().containsKey("employerStatus")) {
+        previousEmployerStatus = OpportunityStatus
+            .valueOf((String) opportunity.getPreviousState().get("employerStatus"));
+      }
 
       // [previous state] data specific behavior
-      if (OpportunityStatus.ACCEPTED.equals(opportunity.getTalentStatus())
-          && OpportunityStatus.PENDING.equals(previousTalentStatus)) {
-        Email acceptedOpportunityNotification = EmailBuilder
-            .startingBlank()
-            .toMultiple("david@deepfish.fr", "martin@deepfish.fr")
-            .withSubject("[Deepfish] Accepted opportunity")
-            .withPlainText(
-                "Company : "
-                    + opportunity.getRequirement().getCompany().getName()
-                    + "\n\nTalent : "
-                    + opportunity.getTalent().getLastName()
-                    + " "
-                    + opportunity.getTalent().getFirstName())
-            .buildEmail();
-        mailService.send(acceptedOpportunityNotification);
+      if (OpportunityStatus.PENDING.equals(previousTalentStatus)) {
+        if (OpportunityStatus.ACCEPTED.equals(opportunity.getTalentStatus())) {
+          mailService.send(mailFactory.getAdminTalentAcceptedOpportunityMail(opportunity));
+        } else if (OpportunityStatus.DECLINED.equals(opportunity.getTalentStatus())) {
+          mailService.send(mailFactory.getAdminTalentDeclinedOpportunityMail(opportunity));
+        }
+      }
+
+      if (OpportunityStatus.PENDING.equals(previousEmployerStatus)) {
+        if (OpportunityStatus.ACCEPTED.equals(opportunity.getEmployerStatus())) {
+          mailService.send(mailFactory.getAdminEmployerAcceptedTalentMail(opportunity));
+        } else if (OpportunityStatus.DECLINED.equals(opportunity.getEmployerStatus())) {
+          mailService.send(mailFactory.getAdminEmployerDeclinedTalentMail(opportunity));
+        }
       }
     }
   }

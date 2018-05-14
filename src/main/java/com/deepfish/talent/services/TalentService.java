@@ -18,6 +18,14 @@ public interface TalentService {
   Talent create(Talent talent);
 
   /**
+   * Deactivate the given talent
+   *
+   * @param talentId the id of the talent
+   * @return the talent
+   */
+  Talent deactivate(UUID talentId);
+
+  /**
    * Sign a talent in from his LinkedIn basic profile
    *
    * @param basicProfile a Map of data from LinkedIn

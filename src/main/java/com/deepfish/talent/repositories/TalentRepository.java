@@ -17,7 +17,9 @@ public interface TalentRepository extends PagingAndSortingRepository<Talent, UUI
 
   Talent findByUsername(String username);
 
-  Page<Talent> findByEmailContainingOrLastNameContainingOrFirstNameContaining(
-      @Param("email") String email, @Param("lastName") String lastName,
-      @Param("firstName") String firstName, Pageable pageable);
+  Page<Talent> findByEmailContainingOrLastNameContainingOrFirstNameContainingAllIgnoreCase(
+      @Param("email") String email,
+      @Param("lastName") String lastName,
+      @Param("firstName") String firstName,
+      Pageable pageable);
 }

@@ -24,11 +24,12 @@ public interface QueryableTalentRepository extends
       BooleanBuilder predicate = new BooleanBuilder();
       Arrays.stream(searchQuery.split("\\s+"))
           .forEach(keyword -> predicate
-              .or(talent.basicProfileText.containsIgnoreCase(keyword))
-              .or(talent.fullProfileText.containsIgnoreCase(keyword))
-              .or(talent.selfPitch.containsIgnoreCase(keyword))
-              .or(talent.notes.containsIgnoreCase(keyword))
-              .or(talent.qualification.recommendation.containsIgnoreCase(keyword)));
+              // TODO : implement posix regex matching with querydsl/hibernate/postgres
+              .or(talent.basicProfileText.containsIgnoreCase(" " + keyword))
+              .or(talent.fullProfileText.containsIgnoreCase(" " + keyword))
+              .or(talent.selfPitch.containsIgnoreCase(" " + keyword))
+              .or(talent.notes.containsIgnoreCase(" " + keyword))
+              .or(talent.qualification.recommendation.containsIgnoreCase(" " + keyword)));
       return predicate;
     });
     // Years of experience
@@ -67,10 +68,22 @@ public interface QueryableTalentRepository extends
       taskTypes.forEach(taskType -> predicate.or(path.contains(taskType)));
       return predicate;
     });
+    bindings.bind(talent.taskTypesNotIn).first(((path, taskTypes) -> {
+      BooleanBuilder predicate = new BooleanBuilder();
+      taskTypes
+          .forEach(taskType -> predicate.andNot(talent.conditions.taskTypes.contains(taskType)));
+      return predicate;
+    }));
     // Fixed Locations
     bindings.bind(talent.conditions.fixedLocations).first((path, fixedLocations) -> {
       BooleanBuilder predicate = new BooleanBuilder();
       fixedLocations.forEach(fixedLocation -> predicate.or(path.contains(fixedLocation)));
+      return predicate;
+    });
+    bindings.bind(talent.fixedLocationsNotIn).first((path, fixedLocations) -> {
+      BooleanBuilder predicate = new BooleanBuilder();
+      fixedLocations.forEach(fixedLocation -> predicate
+          .andNot(talent.conditions.fixedLocations.contains(fixedLocation)));
       return predicate;
     });
     // Fixed salary

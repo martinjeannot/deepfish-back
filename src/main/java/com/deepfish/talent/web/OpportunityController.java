@@ -1,11 +1,6 @@
 package com.deepfish.talent.web;
 
-import com.deepfish.talent.domain.Talent;
-import com.deepfish.talent.domain.opportunity.OpportunityStatus;
-import com.deepfish.talent.domain.opportunity.QOpportunity;
-import com.deepfish.talent.repositories.OpportunityRepository;
-import com.deepfish.talent.repositories.TalentRepository;
-import com.querydsl.core.types.dsl.BooleanExpression;
+import com.deepfish.talent.services.OpportunityService;
 import java.util.UUID;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.http.ResponseEntity;
@@ -16,31 +11,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RepositoryRestController
 public class OpportunityController {
 
-  private final OpportunityRepository opportunityRepository;
-
-  private final TalentRepository talentRepository;
+  private final OpportunityService opportunityService;
 
   public OpportunityController(
-      OpportunityRepository opportunityRepository,
-      TalentRepository talentRepository) {
-    this.opportunityRepository = opportunityRepository;
-    this.talentRepository = talentRepository;
+      OpportunityService opportunityService) {
+    this.opportunityService = opportunityService;
   }
 
   @PostMapping("/talents/{talentId}/opportunities/bulk-declination")
   @ResponseBody
   public ResponseEntity declineInBulk(@PathVariable("talentId") UUID talentId) {
-    // the number of pending opportunities per talent should not justify a batch update here
-    QOpportunity opportunity = QOpportunity.opportunity;
-    BooleanExpression fromTalent = opportunity.talent.id.eq(talentId);
-    BooleanExpression isPending = opportunity.talentStatus.eq(OpportunityStatus.PENDING);
-    opportunityRepository.findAll(fromTalent.and(isPending)).forEach(pendingOpportunity -> {
-      pendingOpportunity.setTalentStatus(OpportunityStatus.DECLINED);
-      opportunityRepository.save(pendingOpportunity);
-    });
-    Talent talent = talentRepository.findOne(talentId);
-    talent.deactivate();
-    talentRepository.save(talent);
+    opportunityService.declineInBulk(talentId);
     return ResponseEntity.ok(null);
   }
 }

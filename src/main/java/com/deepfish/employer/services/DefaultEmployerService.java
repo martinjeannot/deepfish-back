@@ -2,6 +2,7 @@ package com.deepfish.employer.services;
 
 import com.deepfish.employer.domain.Employer;
 import com.deepfish.employer.repositories.EmployerRepository;
+import com.deepfish.mail.MailFactory;
 import com.deepfish.mail.MailService;
 import com.deepfish.security.Role;
 import java.util.Arrays;
@@ -28,13 +29,17 @@ public class DefaultEmployerService implements EmployerService {
 
   private final MailService mailService;
 
+  private final MailFactory mailFactory;
+
   public DefaultEmployerService(
       EmployerRepository employerRepository,
       PasswordEncoder passwordEncoder,
-      MailService mailService) {
+      MailService mailService,
+      MailFactory mailFactory) {
     this.employerRepository = employerRepository;
     this.passwordEncoder = passwordEncoder;
     this.mailService = mailService;
+    this.mailFactory = mailFactory;
   }
 
   @Override
@@ -62,14 +67,8 @@ public class DefaultEmployerService implements EmployerService {
     create(employer);
 
     // send employer welcome mail
-    Email employerEmail = EmailBuilder
-        .startingBlank()
-        .to(employer.getUsername())
-        .withSubject("Confirmation de votre inscription")
-        .withPlainText("Bravo, vous êtes inscrit !\n\nVoici votre mot de passe : " + password
-            + "\n\nLa team Deepfish")
-        .buildEmail();
-    mailService.send(employerEmail);
+    Email employerWelcomeMail = mailFactory.getEmployerWelcomeMail(employer, password);
+    mailService.send(employerWelcomeMail);
 
     // send admin notification mail
     Email adminNotification = EmailBuilder
@@ -94,14 +93,8 @@ public class DefaultEmployerService implements EmployerService {
     employer.setPassword(passwordEncoder.encode(newPassword));
     employerRepository.save(employer);
 
-    Email passwordResetEmail = EmailBuilder
-        .startingBlank()
-        .to(employer.getUsername())
-        .withSubject("Réinitialisation de votre mot de passe Deepfish")
-        .withPlainText("Bonjour,\n\nVoici votre nouveau mot de passe : " + newPassword
-            + "\n\nÀ bientôt sur Deepfish")
-        .buildEmail();
-    mailService.send(passwordResetEmail);
+    Email passwordResetMail = mailFactory.getEmployerPasswordResetMail(employer, newPassword);
+    mailService.send(passwordResetMail);
     return true;
   }
 
