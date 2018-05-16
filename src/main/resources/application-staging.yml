@@ -21,7 +21,7 @@ deepfish:
       name: Deepfish Staging Sink
       address: morgandeepfish@gmail.com
   front:
-    host: deepfish-app-staging.s3-website.eu-west-3.amazonaws.com
+    host: staging-app.deepfish.co
     port: 80
 
 # ----------------------------------------
@@ -55,4 +55,4 @@ spring:
   # JPA (JpaBaseConfiguration, HibernateJpaAutoConfiguration)
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
