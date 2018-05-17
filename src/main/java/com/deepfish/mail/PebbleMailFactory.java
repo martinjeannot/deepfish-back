@@ -97,7 +97,7 @@ public class PebbleMailFactory implements MailFactory {
 
   @Override
   public Email getEmployerWelcomeMail(Employer employer, String password) {
-    String subject = "Deepfish - Plateforme de recrutement de commerciaux IT";
+    String subject = "Deepfish - Plateforme de recrutement de commerciaux en startup";
     Map<String, Object> context = new HashMap<>();
     context.put("title", subject);
     context.put("employer", employer);
