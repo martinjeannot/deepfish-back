@@ -39,8 +39,8 @@ server:
 # LINKEDIN
 linkedin:
   client:
-    id: 77w79kdr6gql2h
-    secret: 7ovNCwpTojlQLQXI
+    id: 86rw9g7ie1fvw5
+    secret: dbwQGTgIuFJmiffh
 
 # ===================================================================
 # SPRING
@@ -48,7 +48,7 @@ linkedin:
 
 spring:
   sendgrid:
-    api-key: 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
+    api-key: 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
   # ----------------------------------------
   # DATA PROPERTIES
   # ----------------------------------------
