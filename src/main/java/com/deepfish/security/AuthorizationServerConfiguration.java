@@ -81,7 +81,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
         return super.enhance(accessToken, authentication);
       }
     };
-    tokenEnhancer.setSigningKey("DjK8G7PX3zcYeG4z");
+    tokenEnhancer.setSigningKey("F76D8LtRFadV4CmW");
     return tokenEnhancer;
   }
 
