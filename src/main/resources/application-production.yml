@@ -11,8 +11,8 @@
 simplejavamail:
   defaults:
     from:
-      name: Deepfish Staging
-      address: morgandeepfish@gmail.com
+      name: Deepfish
+      address: hello@deepfish.fr
 
 # DEEPFISH
 deepfish:
