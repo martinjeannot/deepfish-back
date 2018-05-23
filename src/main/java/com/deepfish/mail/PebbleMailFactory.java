@@ -17,6 +17,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class PebbleMailFactory implements MailFactory {
 
+  private static final String DAVID_EMAIL = "david@deepfish.fr";
+
+  private static final String MARTIND_EMAIL = "martin@deepfish.fr";
+
+  private static final String LUIGI_EMAIL = "louisguillaume@deepfish.co";
+
   private final PebbleEngine pebbleEngine = new PebbleEngine.Builder().build();
 
   private final PebbleTemplate talentWelcomeMailTemplate = pebbleEngine
@@ -159,7 +165,7 @@ public class PebbleMailFactory implements MailFactory {
 
     return EmailBuilder
         .startingBlank()
-        .toMultiple("david@deepfish.fr", "martin@deepfish.fr")
+        .toMultiple(DAVID_EMAIL, MARTIND_EMAIL, LUIGI_EMAIL)
         .withSubject(subject)
         .withHTMLText(writer.toString())
         .buildEmail();
@@ -183,7 +189,7 @@ public class PebbleMailFactory implements MailFactory {
 
     return EmailBuilder
         .startingBlank()
-        .toMultiple("david@deepfish.fr", "martin@deepfish.fr")
+        .toMultiple(DAVID_EMAIL, MARTIND_EMAIL, LUIGI_EMAIL)
         .withSubject(subject)
         .withHTMLText(writer.toString())
         .buildEmail();
@@ -208,7 +214,7 @@ public class PebbleMailFactory implements MailFactory {
 
     return EmailBuilder
         .startingBlank()
-        .toMultiple("david@deepfish.fr", "martin@deepfish.fr")
+        .toMultiple(DAVID_EMAIL, MARTIND_EMAIL, LUIGI_EMAIL)
         .withSubject(subject)
         .withHTMLText(writer.toString())
         .buildEmail();
@@ -232,7 +238,7 @@ public class PebbleMailFactory implements MailFactory {
 
     return EmailBuilder
         .startingBlank()
-        .toMultiple("david@deepfish.fr", "martin@deepfish.fr")
+        .toMultiple(DAVID_EMAIL, MARTIND_EMAIL, LUIGI_EMAIL)
         .withSubject(subject)
         .withHTMLText(writer.toString())
         .buildEmail();
@@ -257,7 +263,7 @@ public class PebbleMailFactory implements MailFactory {
 
     return EmailBuilder
         .startingBlank()
-        .toMultiple("david@deepfish.fr", "martin@deepfish.fr")
+        .toMultiple(DAVID_EMAIL, MARTIND_EMAIL, LUIGI_EMAIL)
         .withSubject(subject)
         .withHTMLText(writer.toString())
         .buildEmail();
