@@ -8,8 +8,11 @@ import org.springframework.data.querydsl.QueryDslPredicateExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 @RepositoryRestResource
+@PreAuthorize("hasRole('ADMIN')")
 public interface TalentRepository extends PagingAndSortingRepository<Talent, UUID>,
     QueryDslPredicateExecutor<Talent> {
 
@@ -22,4 +25,13 @@ public interface TalentRepository extends PagingAndSortingRepository<Talent, UUI
       @Param("lastName") String lastName,
       @Param("firstName") String firstName,
       Pageable pageable);
+
+  @PreAuthorize("hasRole('ADMIN') or hasRole('TALENT')")
+  @PostAuthorize("returnObject.linkedInId == principal")
+  @Override
+  Talent findOne(UUID uuid);
+
+  @PreAuthorize("hasRole('ADMIN') or #entity.linkedInId == principal")
+  @Override
+  <S extends Talent> S save(S entity);
 }

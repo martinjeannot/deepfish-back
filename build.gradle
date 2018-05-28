@@ -38,9 +38,14 @@ sourceSets {
     }
 }
 
-// Support passing system properties via command-line (-D)
 bootRun {
+    // support passing system properties via command-line (-D)
     systemProperties = System.properties
+}
+
+tasks.withType(JavaCompile) {
+    // enable the standard JDK Reflection API to retrieve formal parameters names (used by Spring Security)
+    options.compilerArgs << '-parameters'
 }
 
 task querymodels(type: JavaCompile, group: 'build') {

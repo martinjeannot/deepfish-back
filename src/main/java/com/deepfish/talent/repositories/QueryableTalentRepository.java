@@ -10,8 +10,10 @@ import org.springframework.data.querydsl.binding.QuerydslBinderCustomizer;
 import org.springframework.data.querydsl.binding.QuerydslBindings;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 @RepositoryRestResource
+@PreAuthorize("hasRole('ADMIN')")
 public interface QueryableTalentRepository extends
     PagingAndSortingRepository<QueryableTalent, UUID>,
     QueryDslPredicateExecutor<QueryableTalent>,
