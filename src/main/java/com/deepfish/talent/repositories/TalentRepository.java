@@ -18,7 +18,7 @@ public interface TalentRepository extends PagingAndSortingRepository<Talent, UUI
 
   Talent findByLinkedInIdOrEmail(String linkedInId, String email);
 
-  @PreAuthorize("hasRole('TRUSTED_CLIENT')")
+  @PreAuthorize("hasRole('ADMIN') or hasRole('TRUSTED_CLIENT')")
   Talent findByUsername(String username);
 
   Page<Talent> findByEmailContainingOrLastNameContainingOrFirstNameContainingAllIgnoreCase(
