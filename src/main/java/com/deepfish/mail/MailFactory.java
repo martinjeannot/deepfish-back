@@ -13,6 +13,8 @@ public interface MailFactory {
 
   Email getTalentNewOpportunityMail(Opportunity opportunity);
 
+  Email getTalentAcceptedOpportunityMail(Opportunity opportunity);
+
   // EMPLOYER ======================================================================================
 
   Email getEmployerWelcomeMail(Employer employer, String password);

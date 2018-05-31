@@ -25,34 +25,10 @@ public class PebbleMailFactory implements MailFactory {
 
   private final PebbleEngine pebbleEngine = new PebbleEngine.Builder().build();
 
+  // TALENT ========================================================================================
+
   private final PebbleTemplate talentWelcomeMailTemplate = pebbleEngine
       .getTemplate("mails/talent/welcome.html");
-
-  private final PebbleTemplate talentNewOpportunityMailTemplate = pebbleEngine
-      .getTemplate("mails/talent/newOpportunity.html");
-
-  private final PebbleTemplate employerWelcomeMailTemplate = pebbleEngine
-      .getTemplate("mails/employer/welcome.html");
-
-  private final PebbleTemplate employerPasswordResetMailTemplate = pebbleEngine
-      .getTemplate("mails/employer/passwordReset.html");
-
-  private final PebbleTemplate adminNewEmployerMailTemplate = pebbleEngine
-      .getTemplate("mails/admin/newEmployer.html");
-
-  private final PebbleTemplate adminTalentAcceptedOpportunityMailTemplate = pebbleEngine
-      .getTemplate("mails/admin/talentAcceptedOpportunity.html");
-
-  private final PebbleTemplate adminTalentDeclinedOpportunityMailTemplate = pebbleEngine
-      .getTemplate("mails/admin/talentDeclinedOpportunity.html");
-
-  private final PebbleTemplate adminEmployerAcceptedTalentMailTemplate = pebbleEngine
-      .getTemplate("mails/admin/employerAcceptedTalent.html");
-
-  private final PebbleTemplate adminEmployerDeclinedTalentMailTemplate = pebbleEngine
-      .getTemplate("mails/admin/employerDeclinedTalent.html");
-
-  // TALENT ========================================================================================
 
   @Override
   public Email getTalentWelcomeMail(Talent talent) {
@@ -76,6 +52,9 @@ public class PebbleMailFactory implements MailFactory {
         .buildEmail();
   }
 
+  private final PebbleTemplate talentNewOpportunityMailTemplate = pebbleEngine
+      .getTemplate("mails/talent/newOpportunity.html");
+
   @Override
   public Email getTalentNewOpportunityMail(Opportunity opportunity) {
     String subject =
@@ -98,8 +77,35 @@ public class PebbleMailFactory implements MailFactory {
         .buildEmail();
   }
 
+  private final PebbleTemplate talentAcceptedOpportunityMailTemplate = pebbleEngine
+      .getTemplate("mails/talent/acceptedOpportunity.html");
+
+  @Override
+  public Email getTalentAcceptedOpportunityMail(Opportunity opportunity) {
+    String subject = "Deepfish - Vous avez accepté une opportunité";
+    Map<String, Object> context = new HashMap<>();
+    context.put("title", subject);
+    context.put("talent", opportunity.getTalent());
+    context.put("company", opportunity.getRequirement().getCompany());
+    Writer writer = new StringWriter();
+    try {
+      talentAcceptedOpportunityMailTemplate.evaluate(writer, context);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
+    return EmailBuilder
+        .startingBlank()
+        .to(opportunity.getTalent().getEmail())
+        .withSubject(subject)
+        .withHTMLText(writer.toString())
+        .buildEmail();
+  }
+
   // EMPLOYER ======================================================================================
 
+  private final PebbleTemplate employerWelcomeMailTemplate = pebbleEngine
+      .getTemplate("mails/employer/welcome.html");
 
   @Override
   public Email getEmployerWelcomeMail(Employer employer, String password) {
@@ -123,6 +129,9 @@ public class PebbleMailFactory implements MailFactory {
         .withHTMLText(writer.toString())
         .buildEmail();
   }
+
+  private final PebbleTemplate employerPasswordResetMailTemplate = pebbleEngine
+      .getTemplate("mails/employer/passwordReset.html");
 
   @Override
   public Email getEmployerPasswordResetMail(Employer employer, String password) {
@@ -148,6 +157,8 @@ public class PebbleMailFactory implements MailFactory {
 
   // ADMIN =========================================================================================
 
+  private final PebbleTemplate adminNewEmployerMailTemplate = pebbleEngine
+      .getTemplate("mails/admin/newEmployer.html");
 
   @Override
   public Email getAdminNewEmployerMail(Employer employer) {
@@ -170,6 +181,9 @@ public class PebbleMailFactory implements MailFactory {
         .withHTMLText(writer.toString())
         .buildEmail();
   }
+
+  private final PebbleTemplate adminTalentAcceptedOpportunityMailTemplate = pebbleEngine
+      .getTemplate("mails/admin/talentAcceptedOpportunity.html");
 
   @Override
   public Email getAdminTalentAcceptedOpportunityMail(Opportunity opportunity) {
@@ -194,6 +208,9 @@ public class PebbleMailFactory implements MailFactory {
         .withHTMLText(writer.toString())
         .buildEmail();
   }
+
+  private final PebbleTemplate adminTalentDeclinedOpportunityMailTemplate = pebbleEngine
+      .getTemplate("mails/admin/talentDeclinedOpportunity.html");
 
   @Override
   public Email getAdminTalentDeclinedOpportunityMail(Opportunity opportunity) {
@@ -220,6 +237,9 @@ public class PebbleMailFactory implements MailFactory {
         .buildEmail();
   }
 
+  private final PebbleTemplate adminEmployerAcceptedTalentMailTemplate = pebbleEngine
+      .getTemplate("mails/admin/employerAcceptedTalent.html");
+
   @Override
   public Email getAdminEmployerAcceptedTalentMail(Opportunity opportunity) {
     String subject =
@@ -243,6 +263,9 @@ public class PebbleMailFactory implements MailFactory {
         .withHTMLText(writer.toString())
         .buildEmail();
   }
+
+  private final PebbleTemplate adminEmployerDeclinedTalentMailTemplate = pebbleEngine
+      .getTemplate("mails/admin/employerDeclinedTalent.html");
 
   @Override
   public Email getAdminEmployerDeclinedTalentMail(Opportunity opportunity) {
