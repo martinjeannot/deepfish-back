@@ -10,8 +10,10 @@ import org.springframework.data.querydsl.binding.QuerydslBinderCustomizer;
 import org.springframework.data.querydsl.binding.QuerydslBindings;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 @RepositoryRestResource
+@PreAuthorize("hasRole('ADMIN')")
 public interface QueryableTalentRepository extends
     PagingAndSortingRepository<QueryableTalent, UUID>,
     QueryDslPredicateExecutor<QueryableTalent>,
@@ -25,11 +27,11 @@ public interface QueryableTalentRepository extends
       Arrays.stream(searchQuery.split("\\s+"))
           .forEach(keyword -> predicate
               // TODO : implement posix regex matching with querydsl/hibernate/postgres
-              .or(talent.basicProfileText.containsIgnoreCase(" " + keyword))
-              .or(talent.fullProfileText.containsIgnoreCase(" " + keyword))
-              .or(talent.selfPitch.containsIgnoreCase(" " + keyword))
-              .or(talent.notes.containsIgnoreCase(" " + keyword))
-              .or(talent.qualification.recommendation.containsIgnoreCase(" " + keyword)));
+              .or(talent.basicProfileText.containsIgnoreCase(keyword))
+              .or(talent.fullProfileText.containsIgnoreCase(keyword))
+              .or(talent.selfPitch.containsIgnoreCase(keyword))
+              .or(talent.notes.containsIgnoreCase(keyword))
+              .or(talent.qualification.recommendation.containsIgnoreCase(keyword)));
       return predicate;
     });
     // Years of experience

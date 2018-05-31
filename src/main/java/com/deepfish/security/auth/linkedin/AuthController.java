@@ -1,5 +1,6 @@
 package com.deepfish.security.auth.linkedin;
 
+import com.deepfish.security.SystemAuthentication;
 import com.deepfish.security.auth.JwtTokenForge;
 import com.deepfish.talent.domain.Talent;
 import com.deepfish.talent.services.TalentService;
@@ -17,6 +18,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.LinkedMultiValueMap;
@@ -72,6 +74,9 @@ public class AuthController {
     if (!authorizationCode.isPresent()) {
       return "redirect://" + deepfishFrontAddress + "/#/";
     }
+
+    // manually set system authentication to access protected repo
+    SecurityContextHolder.getContext().setAuthentication(SystemAuthentication.getAuthentication());
 
     Map response;
     try {
