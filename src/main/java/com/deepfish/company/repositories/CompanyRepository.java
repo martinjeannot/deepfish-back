@@ -11,5 +11,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 @RepositoryRestResource
 public interface CompanyRepository extends PagingAndSortingRepository<Company, UUID> {
 
-  Page<Company> findByNameContaining(@Param("name") String name, Pageable pageable);
+  Page<Company> findByNameContainingAllIgnoreCase(
+      @Param("name") String name,
+      Pageable pageable);
 }

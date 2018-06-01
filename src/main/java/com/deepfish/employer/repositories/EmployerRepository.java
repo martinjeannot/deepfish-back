@@ -13,7 +13,10 @@ public interface EmployerRepository extends PagingAndSortingRepository<Employer,
 
   Employer findByUsername(String username);
 
-  Page<Employer> findByUsernameContainingOrFirstNameContainingOrLastNameContaining(
-      @Param("username") String username, @Param("firstName") String firstName,
-      @Param("lastName") String lastName, Pageable pageable);
+  Page<Employer> findByUsernameContainingOrFirstNameContainingOrLastNameContainingOrCompanyNameContainingAllIgnoreCase(
+      @Param("username") String username,
+      @Param("firstName") String firstName,
+      @Param("lastName") String lastName,
+      @Param("companyName") String companyName,
+      Pageable pageable);
 }
