@@ -18,4 +18,8 @@ public interface OpportunityRepository extends PagingAndSortingRepository<Opport
       @Param("talentLastName") String talentLastName,
       @Param("talentFirstName") String talentFirstName,
       Pageable pageable);
+
+  Page<Opportunity> findByRequirementId(
+      @Param("requirementId") UUID requirementId,
+      Pageable pageable);
 }
