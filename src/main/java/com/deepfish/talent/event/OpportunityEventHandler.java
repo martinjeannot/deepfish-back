@@ -1,5 +1,9 @@
 package com.deepfish.talent.event;
 
+import static com.deepfish.talent.domain.opportunity.OpportunityStatus.ACCEPTED;
+import static com.deepfish.talent.domain.opportunity.OpportunityStatus.DECLINED;
+import static com.deepfish.talent.domain.opportunity.OpportunityStatus.PENDING;
+
 import com.deepfish.mail.MailFactory;
 import com.deepfish.mail.MailService;
 import com.deepfish.talent.domain.opportunity.Opportunity;
@@ -50,20 +54,24 @@ public class OpportunityEventHandler {
       }
 
       // [previous state] data specific behavior
-      if (OpportunityStatus.PENDING.equals(previousTalentStatus)) {
-        if (OpportunityStatus.ACCEPTED.equals(opportunity.getTalentStatus())) {
+      if (PENDING.equals(previousTalentStatus)) {
+        if (ACCEPTED.equals(opportunity.getTalentStatus())) {
           mailService.send(mailFactory.getTalentAcceptedOpportunityMail(opportunity));
           mailService.send(mailFactory.getAdminTalentAcceptedOpportunityMail(opportunity));
-        } else if (OpportunityStatus.DECLINED.equals(opportunity.getTalentStatus())) {
+        } else if (DECLINED.equals(opportunity.getTalentStatus())) {
           mailService.send(mailFactory.getAdminTalentDeclinedOpportunityMail(opportunity));
         }
       }
 
-      if (OpportunityStatus.PENDING.equals(previousEmployerStatus)) {
-        if (OpportunityStatus.ACCEPTED.equals(opportunity.getEmployerStatus())) {
+      if (PENDING.equals(previousEmployerStatus)) {
+        if (ACCEPTED.equals(opportunity.getEmployerStatus())) {
           mailService.send(mailFactory.getAdminEmployerAcceptedTalentMail(opportunity));
-        } else if (OpportunityStatus.DECLINED.equals(opportunity.getEmployerStatus())) {
+        } else if (DECLINED.equals(opportunity.getEmployerStatus())) {
           mailService.send(mailFactory.getAdminEmployerDeclinedTalentMail(opportunity));
+        }
+      } else if (ACCEPTED.equals(previousEmployerStatus)) {
+        if (DECLINED.equals(opportunity.getEmployerStatus())) {
+          mailService.send(mailFactory.getAdminEmployerDisqualifiedTalentMail(opportunity));
         }
       }
     }
