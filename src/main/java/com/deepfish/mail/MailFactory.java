@@ -34,4 +34,6 @@ public interface MailFactory {
   Email getAdminEmployerDeclinedTalentMail(Opportunity opportunity);
 
   Email getAdminEmployerDisqualifiedTalentMail(Opportunity opportunity);
+
+  Email getAdminEmployerRequestMail(Employer employer, Talent talent, String message);
 }
