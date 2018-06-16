@@ -9,7 +9,6 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.UUID;
 import org.simplejavamail.email.Email;
-import org.simplejavamail.email.EmailBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -71,13 +70,8 @@ public class DefaultEmployerService implements EmployerService {
     mailService.send(employerWelcomeMail);
 
     // send admin notification mail
-    Email adminNotification = EmailBuilder
-        .startingBlank()
-        .toMultiple("david@deepfish.fr", "martin@deepfish.fr")
-        .withSubject("[Deepfish notification] new employer")
-        .withPlainText("A new employer has just subscribed Deepfish")
-        .buildEmail();
-    mailService.send(adminNotification);
+    Email adminNewEmployerMail = mailFactory.getAdminNewEmployerMail(employer);
+    mailService.send(adminNewEmployerMail);
 
     return employer;
   }

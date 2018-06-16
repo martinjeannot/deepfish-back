@@ -176,7 +176,7 @@ public class PebbleMailFactory implements MailFactory {
 
     return EmailBuilder
         .startingBlank()
-        .toMultiple(DAVID_EMAIL, MARTIND_EMAIL, LUIGI_EMAIL)
+        .toMultiple(DAVID_EMAIL, LUIGI_EMAIL)
         .withSubject(subject)
         .withHTMLText(writer.toString())
         .buildEmail();
@@ -287,6 +287,61 @@ public class PebbleMailFactory implements MailFactory {
     return EmailBuilder
         .startingBlank()
         .toMultiple(DAVID_EMAIL, MARTIND_EMAIL, LUIGI_EMAIL)
+        .withSubject(subject)
+        .withHTMLText(writer.toString())
+        .buildEmail();
+  }
+
+  private final PebbleTemplate adminEmployerDisqualifiedTalentMailTemplate = pebbleEngine
+      .getTemplate("mails/admin/employerDisqualifiedTalent.html");
+
+  @Override
+  public Email getAdminEmployerDisqualifiedTalentMail(Opportunity opportunity) {
+    String subject =
+        opportunity.getRequirement().getCompany().getName() + " a disqualifié le talent "
+            + opportunity.getTalent().getLastName();
+    Map<String, Object> context = new HashMap<>();
+    context.put("title", subject);
+    context.put("company", opportunity.getRequirement().getCompany());
+    context.put("talent", opportunity.getTalent());
+    context.put("opportunity", opportunity);
+    Writer writer = new StringWriter();
+    try {
+      adminEmployerDisqualifiedTalentMailTemplate.evaluate(writer, context);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
+    return EmailBuilder
+        .startingBlank()
+        .toMultiple(DAVID_EMAIL, MARTIND_EMAIL, LUIGI_EMAIL)
+        .withSubject(subject)
+        .withHTMLText(writer.toString())
+        .buildEmail();
+  }
+
+  private final PebbleTemplate adminEmployerRequestMailTemplate = pebbleEngine
+      .getTemplate("mails/admin/employerRequest.html");
+
+  @Override
+  public Email getAdminEmployerRequestMail(Employer employer, Talent talent, String message) {
+    String subject =
+        employer.getCompany().getName() + " a des questions sur " + talent.getLastName();
+    Map<String, Object> context = new HashMap<>();
+    context.put("title", subject);
+    context.put("employer", employer);
+    context.put("talent", talent);
+    context.put("message", message);
+    Writer writer = new StringWriter();
+    try {
+      adminEmployerRequestMailTemplate.evaluate(writer, context);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
+    return EmailBuilder
+        .startingBlank()
+        .toMultiple(DAVID_EMAIL, LUIGI_EMAIL)
         .withSubject(subject)
         .withHTMLText(writer.toString())
         .buildEmail();

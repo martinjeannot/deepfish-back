@@ -27,8 +27,8 @@ public interface TalentRepository extends PagingAndSortingRepository<Talent, UUI
       @Param("firstName") String firstName,
       Pageable pageable);
 
-  @PreAuthorize("hasRole('ADMIN') or hasRole('TALENT')")
-  @PostAuthorize("hasRole('ADMIN') or returnObject.linkedInId == principal")
+  @PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYER') or hasRole('TALENT')")
+  @PostAuthorize("hasRole('ADMIN') or hasRole('EMPLOYER') or returnObject.linkedInId == principal")
   @Override
   Talent findOne(UUID uuid);
 
