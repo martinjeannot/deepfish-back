@@ -176,7 +176,7 @@ public class PebbleMailFactory implements MailFactory {
 
     return EmailBuilder
         .startingBlank()
-        .toMultiple(DAVID_EMAIL, MARTIND_EMAIL, LUIGI_EMAIL)
+        .toMultiple(DAVID_EMAIL, LUIGI_EMAIL)
         .withSubject(subject)
         .withHTMLText(writer.toString())
         .buildEmail();
@@ -341,7 +341,7 @@ public class PebbleMailFactory implements MailFactory {
 
     return EmailBuilder
         .startingBlank()
-        .toMultiple(DAVID_EMAIL, MARTIND_EMAIL, LUIGI_EMAIL)
+        .toMultiple(DAVID_EMAIL, LUIGI_EMAIL)
         .withSubject(subject)
         .withHTMLText(writer.toString())
         .buildEmail();

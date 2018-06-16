@@ -74,6 +74,7 @@ repositories {
 
 ext {
     mapstructVersion = '1.2.0.Final'
+    pebbleVersion = '2.5.1'
     querydslVersion = '4.1.4'
     sendgridVersion = '4.1.2'
     simplejavamailVersion = '5.0.1'
@@ -106,7 +107,7 @@ dependencies {
     compile("org.mapstruct:mapstruct-jdk8:${mapstructVersion}")
     apt("org.mapstruct:mapstruct-processor:${mapstructVersion}", "org.projectlombok:lombok")
     compile('com.fasterxml.jackson.datatype:jackson-datatype-jsr310')
-    compile('io.pebbletemplates:pebble:2.5.1')
+    compile("io.pebbletemplates:pebble:${pebbleVersion}")
 }
 
 dependencyManagement {
