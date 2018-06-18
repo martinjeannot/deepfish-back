@@ -4,17 +4,16 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 -- USER ============================================================================================
 INSERT INTO users (id, username, password, first_name, last_name, phone_number, authorities, account_non_expired, account_non_locked, credentials_non_expired, enabled, created_at, last_signed_in_at) VALUES ('eb4b1008-4760-4bde-a3c0-e62b65796add', 'admin@deepfish.fr', '$2a$10$zsz1JpJoBGfa0arhyikjN.8w4umkcxWlvnMT/LUaNWE69W0fa1Lom', 'Martin', 'Jeannot', '0000000000', 'ROLE_SUPER_ADMIN,ROLE_ADMIN', TRUE, TRUE, TRUE, TRUE, '2018-01-01 00:00:00.000', '2018-01-01 00:00:00.000');
 INSERT INTO users (id, username, password, first_name, last_name, phone_number, authorities, account_non_expired, account_non_locked, credentials_non_expired, enabled, created_at, last_signed_in_at) VALUES ('af4f0340-543e-4d99-bed7-597844e250da', 'david@deepfish.fr', '$2a$10$62/Q4wB6DqOn40816.2g2OmSMkhctcCb2duyHmdj25bWkoTanUXDi', 'David', 'Branellec', '0000000000', 'ROLE_SUPER_ADMIN,ROLE_ADMIN', TRUE, TRUE, TRUE, TRUE, '2018-01-01 00:00:00.000', '2018-01-01 00:00:00.000');
-INSERT INTO users (id, username, password, first_name, last_name, phone_number, authorities, account_non_expired, account_non_locked, credentials_non_expired, enabled, created_at, last_signed_in_at) VALUES ('b820b722-6542-4f92-b170-94264d4c08bb', 'martin@deepfish.fr', '$2a$10$xviFV3EsK8R9NMq7xZ5SZuKh6hmYuHtHQMGo15qjSemZUVbL8s5ay', 'Martin', 'Dimet', '0000000000', 'ROLE_SUPER_ADMIN,ROLE_ADMIN', TRUE, TRUE, TRUE, TRUE, '2018-01-01 00:00:00.000', '2018-01-01 00:00:00.000');
 
 -- COMPANY MATURITY LEVEL ==========================================================================
 INSERT INTO company_maturity_level (id, l10n_key) VALUES ('6ae9ce1a-cbef-41b7-bf3a-6ea6f85bcda9', 'Jeune Startup');
 INSERT INTO company_maturity_level (id, l10n_key) VALUES ('44df03f2-d552-4143-a7cb-5fc926a57542', 'Startup Mature/PME');
 INSERT INTO company_maturity_level (id, l10n_key) VALUES ('a79199a8-3783-416f-a0fa-e9727627f8b2', 'Grand Groupe');
 
--- JOB =============================================================================================
-INSERT INTO job (id, l10n_key) VALUES ('3ddd469d-3683-4b7a-8aa2-060ce3adfc80', 'Pre-Sales');
-INSERT INTO job (id, l10n_key) VALUES ('a4830521-c50e-4b91-ac90-da922d28c49e', 'Sales');
-INSERT INTO job (id, l10n_key) VALUES ('e1c36e80-6cf7-4715-9239-a152e6cda361', 'Customer Success');
+-- JOB TYPE ========================================================================================
+INSERT INTO job_type (id, l10n_key) VALUES ('3ddd469d-3683-4b7a-8aa2-060ce3adfc80', 'Pre-Sales');
+INSERT INTO job_type (id, l10n_key) VALUES ('a4830521-c50e-4b91-ac90-da922d28c49e', 'Sales');
+INSERT INTO job_type (id, l10n_key) VALUES ('e1c36e80-6cf7-4715-9239-a152e6cda361', 'Customer Success');
 
 -- COMMODITY TYPE ==================================================================================
 INSERT INTO commodity_type (id, l10n_key) VALUES ('17102f56-bb40-4766-bcef-89b34b270bb8', 'Saas / Licence');

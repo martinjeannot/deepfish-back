@@ -47,7 +47,7 @@ public class Conditions {
   private Set<CompanyMaturityLevel> companyMaturityLevels = new HashSet<>();
 
   @ManyToMany
-  private Set<Job> jobs = new HashSet<>();
+  private Set<JobType> jobTypes = new HashSet<>();
 
   @ManyToMany
   private Set<CommodityType> commodityTypes = new HashSet<>();

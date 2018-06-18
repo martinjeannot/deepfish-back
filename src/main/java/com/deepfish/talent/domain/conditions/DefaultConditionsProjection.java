@@ -15,7 +15,7 @@ public interface DefaultConditionsProjection {
 
   Set<CompanyMaturityLevel> getCompanyMaturityLevels();
 
-  Set<Job> getJobs();
+  Set<JobType> getJobTypes();
 
   Set<CommodityType> getCommodityTypes();
 
