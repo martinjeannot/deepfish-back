@@ -1,7 +1,7 @@
 package com.deepfish.employer.domain;
 
 import com.deepfish.company.domain.Company;
-import com.deepfish.talent.domain.conditions.Job;
+import com.deepfish.talent.domain.conditions.JobType;
 import com.querydsl.core.annotations.QueryEntity;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -44,7 +44,7 @@ public class Requirement {
 
   @NotNull
   @ManyToOne
-  private Job job;
+  private JobType jobType;
 
   @NotNull
   @ManyToOne
