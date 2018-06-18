@@ -73,6 +73,7 @@ repositories {
 }
 
 ext {
+    flywayVersion = '5.1.1'
     mapstructVersion = '1.2.0.Final'
     pebbleVersion = '2.5.1'
     querydslVersion = '4.1.4'
@@ -99,6 +100,7 @@ dependencies {
     querydslapt("com.querydsl:querydsl-apt:${querydslVersion}")
     //runtime('com.h2database:h2')
     runtime('org.postgresql:postgresql')
+    compile("org.flywaydb:flyway-core:${flywayVersion}")
     // TEST
     //testCompile('org.springframework.boot:spring-boot-starter-test')
     //testCompile('org.springframework.security:spring-security-test')

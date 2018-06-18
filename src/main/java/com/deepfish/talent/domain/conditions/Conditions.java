@@ -9,7 +9,10 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
@@ -34,6 +37,7 @@ public class Conditions {
 
   @MapsId
   @OneToOne
+  @JoinColumn(foreignKey = @ForeignKey(name = "FK_conditions__talent__talent_id"))
   private Talent talent;
 
   @NotNull
@@ -44,6 +48,9 @@ public class Conditions {
   private LocalDate canStartOn = LocalDate.now();
 
   @ManyToMany
+  @JoinTable(
+      joinColumns = @JoinColumn(foreignKey = @ForeignKey(name = "FK_conditions_company_maturity_levels__conditions__conditions_talent_id")),
+      inverseJoinColumns = @JoinColumn(foreignKey = @ForeignKey(name = "FK_conditions_company_maturity_levels__company_maturity_level__company_maturity_levels_id")))
   private Set<CompanyMaturityLevel> companyMaturityLevels = new HashSet<>();
 
   @ManyToMany
