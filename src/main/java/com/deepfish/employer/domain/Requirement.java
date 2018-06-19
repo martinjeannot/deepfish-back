@@ -8,8 +8,10 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -37,6 +39,7 @@ public class Requirement {
 
   @NotNull
   @ManyToOne
+  @JoinColumn(foreignKey = @ForeignKey(name = "FK_requirement__company__company_id"))
   private Company company;
 
   @NotNull
@@ -44,10 +47,12 @@ public class Requirement {
 
   @NotNull
   @ManyToOne
+  @JoinColumn(foreignKey = @ForeignKey(name = "FK_requirement__job_type__job_type_id"))
   private JobType jobType;
 
   @NotNull
   @ManyToOne
+  @JoinColumn(foreignKey = @ForeignKey(name = "FK_requirement__seniority__seniority_id"))
   private Seniority seniority;
 
   @NotBlank

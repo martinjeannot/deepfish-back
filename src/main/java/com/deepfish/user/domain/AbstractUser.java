@@ -8,7 +8,6 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.UUID;
-import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -40,7 +39,6 @@ public abstract class AbstractUser implements UserDetails, Identifiable<UUID> {
   private String password;
 
   @NotBlank
-  @Column(unique = true)
   private String username;
 
   @NotBlank

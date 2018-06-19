@@ -40,7 +40,6 @@ public class AbstractTalent extends AbstractUser {
    * from one to another
    */
   @NotBlank
-  @Column(unique = true)
   //@Setter(AccessLevel.NONE) FIXME after migration
   private String linkedInId;
 

@@ -14,8 +14,10 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
@@ -47,14 +49,17 @@ public class Opportunity {
 
   @NotNull
   @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(foreignKey = @ForeignKey(name = "FK_opportunity__user__creator_id"))
   private User creator;
 
   @NotNull
   @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(foreignKey = @ForeignKey(name = "FK_opportunity__talent__talent_id"))
   private Talent talent;
 
   @NotNull
   @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(foreignKey = @ForeignKey(name = "FK_opportunity__requirement__requirement_id"))
   private Requirement requirement;
 
   @NotNull

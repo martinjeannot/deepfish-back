@@ -49,19 +49,31 @@ public class Conditions {
 
   @ManyToMany
   @JoinTable(
-      joinColumns = @JoinColumn(foreignKey = @ForeignKey(name = "FK_conditions_company_maturity_levels__conditions__conditions_talent_id")),
-      inverseJoinColumns = @JoinColumn(foreignKey = @ForeignKey(name = "FK_conditions_company_maturity_levels__company_maturity_level__company_maturity_levels_id")))
+      joinColumns = @JoinColumn(foreignKey = @ForeignKey(name = "FK_conditions_company_maturity_levels__conditions")),
+      inverseJoinColumns = @JoinColumn(foreignKey = @ForeignKey(name = "FK_conditions_company_maturity_levels__company_maturity_level")))
   private Set<CompanyMaturityLevel> companyMaturityLevels = new HashSet<>();
 
   @ManyToMany
+  @JoinTable(
+      joinColumns = @JoinColumn(foreignKey = @ForeignKey(name = "FK_conditions_job_types__conditions")),
+      inverseJoinColumns = @JoinColumn(foreignKey = @ForeignKey(name = "FK_conditions_job_types__job_type")))
   private Set<JobType> jobTypes = new HashSet<>();
 
   @ManyToMany
+  @JoinTable(
+      joinColumns = @JoinColumn(foreignKey = @ForeignKey(name = "FK_conditions_commodity_types__conditions")),
+      inverseJoinColumns = @JoinColumn(foreignKey = @ForeignKey(name = "FK_conditions_commodity_types__commodity_type")))
   private Set<CommodityType> commodityTypes = new HashSet<>();
 
   @ManyToMany
+  @JoinTable(
+      joinColumns = @JoinColumn(foreignKey = @ForeignKey(name = "FK_conditions_task_types__conditions")),
+      inverseJoinColumns = @JoinColumn(foreignKey = @ForeignKey(name = "FK_conditions_task_types__task_type")))
   private Set<TaskType> taskTypes = new HashSet<>();
 
   @ManyToMany
+  @JoinTable(
+      joinColumns = @JoinColumn(foreignKey = @ForeignKey(name = "FK_conditions_fixed_locations__conditions")),
+      inverseJoinColumns = @JoinColumn(foreignKey = @ForeignKey(name = "FK_conditions_fixed_locations__fixed_location")))
   private Set<FixedLocation> fixedLocations = new HashSet<>();
 }
