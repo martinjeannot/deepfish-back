@@ -16,10 +16,12 @@ import org.springframework.security.access.prepost.PreAuthorize;
 public interface TalentRepository extends PagingAndSortingRepository<Talent, UUID>,
     QueryDslPredicateExecutor<Talent> {
 
-  Talent findByLinkedInIdOrEmail(String linkedInId, String email);
-
   @PreAuthorize("hasRole('ADMIN') or hasRole('TRUSTED_CLIENT')")
   Talent findByUsername(String username);
+
+  Talent findByEmail(String email);
+
+  Talent findByFirstNameAndLastName(String firstName, String lastName);
 
   Page<Talent> findByEmailContainingOrLastNameContainingOrFirstNameContainingAllIgnoreCase(
       @Param("email") String email,
