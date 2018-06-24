@@ -79,16 +79,22 @@ public class DefaultTalentService implements TalentService {
   @Override
   public Talent signInFromLinkedin(Map<String, Object> basicProfile) {
     // check if talent exists
-    Talent talent = talentRepository.findByLinkedInIdOrEmail(
-        (String) basicProfile.get("id"),
-        (String) basicProfile.get("emailAddress"));
+    Talent talent = talentRepository.findByUsername((String) basicProfile.get("id"));
+    if (talent == null) {
+      talent = talentRepository.findByEmail((String) basicProfile.get("emailAddress"));
+    }
+    if (talent == null) {
+      talent = talentRepository.findByFirstNameAndLastName(
+          (String) basicProfile.get("firstName"),
+          (String) basicProfile.get("lastName"));
+    }
     if (talent == null) {
       // sign up
       return signUpFromLinkedIn(basicProfile);
     } else {
       // update talent profile
-      talent.setLinkedInId((String) basicProfile.get("id"));
       talent.setUsername((String) basicProfile.get("id"));
+      talent.setLinkedInId((String) basicProfile.get("id"));
       talent.setLastName((String) basicProfile.get("lastName"));
       talent.setFirstName((String) basicProfile.get("firstName"));
       talent.setBasicProfile(basicProfile);
