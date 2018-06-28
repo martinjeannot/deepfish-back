@@ -1,10 +1,11 @@
 package com.deepfish.talent.repositories;
 
 import com.deepfish.talent.domain.Talent;
+import java.util.Optional;
 import java.util.UUID;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.querydsl.QueryDslPredicateExecutor;
+import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
@@ -14,7 +15,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 @RepositoryRestResource
 @PreAuthorize("hasRole('ADMIN')")
 public interface TalentRepository extends PagingAndSortingRepository<Talent, UUID>,
-    QueryDslPredicateExecutor<Talent> {
+    QuerydslPredicateExecutor<Talent> {
 
   @PreAuthorize("hasRole('ADMIN') or hasRole('TRUSTED_CLIENT')")
   Talent findByUsername(String username);
@@ -32,7 +33,7 @@ public interface TalentRepository extends PagingAndSortingRepository<Talent, UUI
   @PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYER') or hasRole('TALENT')")
   @PostAuthorize("hasRole('ADMIN') or hasRole('EMPLOYER') or returnObject.linkedInId == principal")
   @Override
-  Talent findOne(UUID uuid);
+  Optional<Talent> findById(UUID uuid);
 
   @PreAuthorize("hasRole('ADMIN') or #entity.linkedInId == principal")
   @Override

@@ -5,7 +5,7 @@ import com.deepfish.talent.domain.QueryableTalent;
 import com.querydsl.core.BooleanBuilder;
 import java.util.Arrays;
 import java.util.UUID;
-import org.springframework.data.querydsl.QueryDslPredicateExecutor;
+import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.querydsl.binding.QuerydslBinderCustomizer;
 import org.springframework.data.querydsl.binding.QuerydslBindings;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -16,7 +16,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 @PreAuthorize("hasRole('ADMIN')")
 public interface QueryableTalentRepository extends
     PagingAndSortingRepository<QueryableTalent, UUID>,
-    QueryDslPredicateExecutor<QueryableTalent>,
+    QuerydslPredicateExecutor<QueryableTalent>,
     QuerydslBinderCustomizer<QQueryableTalent> {
 
   @Override

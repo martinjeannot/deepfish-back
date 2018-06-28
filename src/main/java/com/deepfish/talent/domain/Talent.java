@@ -12,11 +12,12 @@ import lombok.experimental.Accessors;
 
 @Entity
 @QueryEntity
+// could/should be under @data, see https://github.com/rzwitserloot/lombok/issues/1703
+@NoArgsConstructor
 @Data
 @Accessors(chain = true)
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
-@NoArgsConstructor
 public class Talent extends AbstractTalent {
 
   public Talent(String linkedInId) {

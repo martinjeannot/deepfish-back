@@ -71,7 +71,7 @@ public class DefaultTalentService implements TalentService {
 
   @Override
   public Talent deactivate(UUID talentId) {
-    Talent talent = talentRepository.findOne(talentId);
+    Talent talent = talentRepository.findById(talentId).orElse(null);
     talent.deactivate();
     return talentRepository.save(talent);
   }
@@ -142,7 +142,7 @@ public class DefaultTalentService implements TalentService {
 
   @Override
   public float updateProfileCompleteness(UUID talentId) {
-    Talent talent = talentRepository.findOne(talentId);
+    Talent talent = talentRepository.findById(talentId).orElse(null);
     talent.setProfileCompleteness(10); // TODO
     talent = talentRepository.save(talent);
     return talent.getProfileCompleteness();

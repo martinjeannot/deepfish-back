@@ -1,7 +1,6 @@
 buildscript {
     ext {
-        springBootVersion = '1.5.10.RELEASE'
-        querydslVersion = "4.1.4"
+        springBootVersion = '2.0.3.RELEASE'
         metaModelsSourcesDir = file("metamodels")
     }
     repositories {
@@ -20,7 +19,7 @@ plugins {
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
-
+apply plugin: 'io.spring.dependency-management'
 
 group = 'com.deepfish'
 version = '0.0.1-SNAPSHOT'
@@ -73,37 +72,40 @@ repositories {
 }
 
 ext {
+    // update lombok when this is resolved : https://github.com/rzwitserloot/lombok/issues/1703
+    lombokVersion = '1.16.22'
     mapstructVersion = '1.2.0.Final'
     pebbleVersion = '2.5.1'
     querydslVersion = '4.1.4'
     sendgridVersion = '4.1.2'
     simplejavamailVersion = '5.0.1'
-    springCloudVersion = 'Edgware.RELEASE'
+    springCloudVersion = 'Finchley.RELEASE'
     vladmihalceaHibernateTypesVersion = '2.0.0'
 }
 
 dependencies {
-    // WEB / REST
-    compile('org.springframework.boot:spring-boot-starter-web')
-    compile('org.springframework.boot:spring-boot-starter-security')
-    compile('org.springframework.cloud:spring-cloud-starter-oauth2')
+    runtime("org.springframework.boot:spring-boot-properties-migrator")
+    //compile('org.springframework.boot:spring-boot-starter-batch')
+    compile('org.springframework.boot:spring-boot-starter-data-jpa')
     compile('org.springframework.boot:spring-boot-starter-data-rest')
-    // SERVICES
+    //compile('org.springframework.boot:spring-boot-starter-mail')
+    //compile('org.springframework.boot:spring-boot-starter-quartz')
+    compile('org.springframework.boot:spring-boot-starter-security')
+    compile('org.springframework.boot:spring-boot-starter-web')
+    compile('org.flywaydb:flyway-core')
+    compile('org.springframework.cloud:spring-cloud-starter-oauth2')
+    runtime('org.postgresql:postgresql')
+    compileOnly("org.projectlombok:lombok:${lombokVersion}")
+    //testCompile('org.springframework.boot:spring-boot-starter-test')
+    //testCompile('org.springframework.batch:spring-batch-test')
+    //testCompile('org.springframework.security:spring-security-test')
+
     compile("org.simplejavamail:simple-java-mail:${simplejavamailVersion}")
     compile("com.sendgrid:sendgrid-java:${sendgridVersion}")
-    // PERSISTENCE
-    compile('org.springframework.boot:spring-boot-starter-data-jpa')
     compile('org.hibernate:hibernate-java8')
     compile("com.vladmihalcea:hibernate-types-5:${vladmihalceaHibernateTypesVersion}")
     compile("com.querydsl:querydsl-jpa:${querydslVersion}")
     querydslapt("com.querydsl:querydsl-apt:${querydslVersion}")
-    //runtime('com.h2database:h2')
-    runtime('org.postgresql:postgresql')
-    // TEST
-    //testCompile('org.springframework.boot:spring-boot-starter-test')
-    //testCompile('org.springframework.security:spring-security-test')
-    // MISC
-    compileOnly("org.projectlombok:lombok")
     compile("org.mapstruct:mapstruct-jdk8:${mapstructVersion}")
     apt("org.mapstruct:mapstruct-processor:${mapstructVersion}", "org.projectlombok:lombok")
     compile('com.fasterxml.jackson.datatype:jackson-datatype-jsr310')

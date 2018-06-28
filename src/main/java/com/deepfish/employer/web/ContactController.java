@@ -43,8 +43,8 @@ public class ContactController {
   @PostMapping("employers/contact")
   @ResponseBody
   public ResponseEntity sendMessageToAdmins(@Valid @RequestBody ContactForm contactForm) {
-    Employer employer = employerRepository.findOne(contactForm.getEmployerId());
-    Talent talent = talentRepository.findOne(contactForm.getTalentId());
+    Employer employer = employerRepository.findById(contactForm.getEmployerId()).orElse(null);
+    Talent talent = talentRepository.findById(contactForm.getTalentId()).orElse(null);
     Email adminEmployerRequestMail = mailFactory
         .getAdminEmployerRequestMail(employer, talent, contactForm.getMessage());
     mailService.send(adminEmployerRequestMail);
