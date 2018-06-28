@@ -18,9 +18,9 @@ logging:
 # ----------------------------------------
 
 security:
-  basic:
-    enabled: false
-  ignored: /**
+  #basic:
+  #  enabled: false
+  #ignored: /**
   oauth2:
     resource:
       id: oauth2_id
