@@ -44,3 +44,9 @@ spring:
     # DATA REST (RepositoryRestProperties)
     rest:
       detection-strategy: annotated
+  # ----------------------------------------
+  # INTEGRATION PROPERTIES
+  # ----------------------------------------
+  batch:
+    job:
+      enabled: false
