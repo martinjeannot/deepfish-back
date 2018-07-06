@@ -8,6 +8,8 @@ import com.mitchellbosecke.pebble.template.PebbleTemplate;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.time.LocalDate;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import org.simplejavamail.email.Email;
@@ -96,6 +98,31 @@ public class PebbleMailFactory implements MailFactory {
 
     return EmailBuilder
         .startingBlank()
+        .to(opportunity.getTalent().getEmail())
+        .withSubject(subject)
+        .withHTMLText(writer.toString())
+        .buildEmail();
+  }
+
+  private final PebbleTemplate talentOpportunityPendingFor24hMailTemplate = pebbleEngine
+      .getTemplate("mails/talent/opportunityPendingFor24h.html");
+
+  @Override
+  public Email getTalentOpportunityPendingFor24hMail(Opportunity opportunity) {
+    String subject = "Opportunité en attente sur Deepfish";
+    Map<String, Object> context = new HashMap<>();
+    context.put("title", subject);
+    context.put("talent", opportunity.getTalent());
+    Writer writer = new StringWriter();
+    try {
+      talentOpportunityPendingFor24hMailTemplate.evaluate(writer, context);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
+    return EmailBuilder
+        .startingBlank()
+        .from(DAVID_EMAIL)
         .to(opportunity.getTalent().getEmail())
         .withSubject(subject)
         .withHTMLText(writer.toString())
@@ -342,6 +369,30 @@ public class PebbleMailFactory implements MailFactory {
     return EmailBuilder
         .startingBlank()
         .toMultiple(DAVID_EMAIL, LUIGI_EMAIL)
+        .withSubject(subject)
+        .withHTMLText(writer.toString())
+        .buildEmail();
+  }
+
+  private final PebbleTemplate adminOpportunitiesPendingFor48hMailTemplate = pebbleEngine
+      .getTemplate("mails/admin/opportunitiesPendingFor48h.html");
+
+  @Override
+  public Email getAdminOpportunitiesPendingFor48hMail(Collection<String> talents) {
+    String subject = "Relances MDEA par LKD du " + LocalDate.now().toString();
+    Map<String, Object> context = new HashMap<>();
+    context.put("title", subject);
+    context.put("talents", talents);
+    Writer writer = new StringWriter();
+    try {
+      adminOpportunitiesPendingFor48hMailTemplate.evaluate(writer, context);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
+    return EmailBuilder
+        .startingBlank()
+        .to(DAVID_EMAIL)
         .withSubject(subject)
         .withHTMLText(writer.toString())
         .buildEmail();

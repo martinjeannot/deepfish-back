@@ -3,6 +3,7 @@ package com.deepfish.mail;
 import com.deepfish.employer.domain.Employer;
 import com.deepfish.talent.domain.Talent;
 import com.deepfish.talent.domain.opportunity.Opportunity;
+import java.util.Collection;
 import org.simplejavamail.email.Email;
 
 public interface MailFactory {
@@ -14,6 +15,8 @@ public interface MailFactory {
   Email getTalentNewOpportunityMail(Opportunity opportunity);
 
   Email getTalentAcceptedOpportunityMail(Opportunity opportunity);
+
+  Email getTalentOpportunityPendingFor24hMail(Opportunity opportunity);
 
   // EMPLOYER ======================================================================================
 
@@ -36,4 +39,6 @@ public interface MailFactory {
   Email getAdminEmployerDisqualifiedTalentMail(Opportunity opportunity);
 
   Email getAdminEmployerRequestMail(Employer employer, Talent talent, String message);
+
+  Email getAdminOpportunitiesPendingFor48hMail(Collection<String> talents);
 }
