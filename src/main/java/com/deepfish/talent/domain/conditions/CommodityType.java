@@ -20,4 +20,6 @@ public class CommodityType {
 
   @NotBlank
   private String l10nKey;
+
+  private int orderIndex;
 }

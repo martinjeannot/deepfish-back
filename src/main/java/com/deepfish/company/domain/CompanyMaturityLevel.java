@@ -20,4 +20,6 @@ public class CompanyMaturityLevel {
 
   @NotBlank
   private String l10nKey;
+
+  private int orderIndex;
 }

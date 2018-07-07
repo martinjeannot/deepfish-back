@@ -20,4 +20,6 @@ public class JobType {
 
   @NotBlank
   private String l10nKey;
+
+  private int orderIndex;
 }
