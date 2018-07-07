@@ -21,8 +21,6 @@ public class PebbleMailFactory implements MailFactory {
 
   private static final String DAVID_EMAIL = "david@deepfish.fr";
 
-  private static final String MARTIND_EMAIL = "martin@deepfish.fr";
-
   private static final String LUIGI_EMAIL = "louisguillaume@deepfish.co";
 
   private final PebbleEngine pebbleEngine = new PebbleEngine.Builder().build();
@@ -150,7 +148,7 @@ public class PebbleMailFactory implements MailFactory {
 
     return EmailBuilder
         .startingBlank()
-        .from("martin@deepfish.fr")
+        .from("david@deepfish.fr")
         .to(employer.getUsername())
         .withSubject(subject)
         .withHTMLText(writer.toString())
@@ -230,7 +228,7 @@ public class PebbleMailFactory implements MailFactory {
 
     return EmailBuilder
         .startingBlank()
-        .toMultiple(DAVID_EMAIL, MARTIND_EMAIL, LUIGI_EMAIL)
+        .toMultiple(DAVID_EMAIL, LUIGI_EMAIL)
         .withSubject(subject)
         .withHTMLText(writer.toString())
         .buildEmail();
@@ -258,7 +256,7 @@ public class PebbleMailFactory implements MailFactory {
 
     return EmailBuilder
         .startingBlank()
-        .toMultiple(DAVID_EMAIL, MARTIND_EMAIL, LUIGI_EMAIL)
+        .toMultiple(DAVID_EMAIL, LUIGI_EMAIL)
         .withSubject(subject)
         .withHTMLText(writer.toString())
         .buildEmail();
@@ -285,7 +283,7 @@ public class PebbleMailFactory implements MailFactory {
 
     return EmailBuilder
         .startingBlank()
-        .toMultiple(DAVID_EMAIL, MARTIND_EMAIL, LUIGI_EMAIL)
+        .toMultiple(DAVID_EMAIL, LUIGI_EMAIL)
         .withSubject(subject)
         .withHTMLText(writer.toString())
         .buildEmail();
@@ -313,7 +311,7 @@ public class PebbleMailFactory implements MailFactory {
 
     return EmailBuilder
         .startingBlank()
-        .toMultiple(DAVID_EMAIL, MARTIND_EMAIL, LUIGI_EMAIL)
+        .toMultiple(DAVID_EMAIL, LUIGI_EMAIL)
         .withSubject(subject)
         .withHTMLText(writer.toString())
         .buildEmail();
@@ -341,7 +339,7 @@ public class PebbleMailFactory implements MailFactory {
 
     return EmailBuilder
         .startingBlank()
-        .toMultiple(DAVID_EMAIL, MARTIND_EMAIL, LUIGI_EMAIL)
+        .toMultiple(DAVID_EMAIL, LUIGI_EMAIL)
         .withSubject(subject)
         .withHTMLText(writer.toString())
         .buildEmail();
