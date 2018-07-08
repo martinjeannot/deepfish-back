@@ -1,7 +1,7 @@
 package com.deepfish.employer.domain;
 
 import com.deepfish.company.domain.Company;
-import com.deepfish.talent.domain.conditions.Job;
+import com.deepfish.talent.domain.conditions.JobType;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -18,7 +18,7 @@ public interface DefaultRequirementProjection {
 
   String getName();
 
-  Job getJob();
+  JobType getJobType();
 
   Seniority getSeniority();
 

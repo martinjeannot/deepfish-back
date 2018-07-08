@@ -1,6 +1,8 @@
 package com.deepfish.talent.repositories;
 
 import com.deepfish.talent.domain.opportunity.Opportunity;
+import com.deepfish.talent.domain.opportunity.OpportunityStatus;
+import java.time.LocalDateTime;
 import java.util.UUID;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,5 +23,11 @@ public interface OpportunityRepository extends PagingAndSortingRepository<Opport
 
   Page<Opportunity> findByRequirementId(
       @Param("requirementId") UUID requirementId,
+      Pageable pageable);
+
+  Page<Opportunity> findByTalentStatusAndCreatedAtBetween(
+      OpportunityStatus talentStatus,
+      LocalDateTime createdAtAfter,
+      LocalDateTime createdAtBefore,
       Pageable pageable);
 }

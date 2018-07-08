@@ -5,7 +5,9 @@ import com.querydsl.core.annotations.QueryEntity;
 import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
@@ -30,6 +32,7 @@ public class Qualification {
 
   @MapsId
   @OneToOne
+  @JoinColumn(foreignKey = @ForeignKey(name = "FK_qualification__talent__talent_id"))
   private Talent talent;
 
   private int ranking;

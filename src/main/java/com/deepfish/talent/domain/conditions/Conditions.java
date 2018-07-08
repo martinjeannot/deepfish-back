@@ -9,7 +9,10 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
@@ -34,6 +37,7 @@ public class Conditions {
 
   @MapsId
   @OneToOne
+  @JoinColumn(foreignKey = @ForeignKey(name = "FK_conditions__talent__talent_id"))
   private Talent talent;
 
   @NotNull
@@ -44,17 +48,32 @@ public class Conditions {
   private LocalDate canStartOn = LocalDate.now();
 
   @ManyToMany
+  @JoinTable(
+      joinColumns = @JoinColumn(foreignKey = @ForeignKey(name = "FK_conditions_company_maturity_levels__conditions")),
+      inverseJoinColumns = @JoinColumn(foreignKey = @ForeignKey(name = "FK_conditions_company_maturity_levels__company_maturity_level")))
   private Set<CompanyMaturityLevel> companyMaturityLevels = new HashSet<>();
 
   @ManyToMany
-  private Set<Job> jobs = new HashSet<>();
+  @JoinTable(
+      joinColumns = @JoinColumn(foreignKey = @ForeignKey(name = "FK_conditions_job_types__conditions")),
+      inverseJoinColumns = @JoinColumn(foreignKey = @ForeignKey(name = "FK_conditions_job_types__job_type")))
+  private Set<JobType> jobTypes = new HashSet<>();
 
   @ManyToMany
+  @JoinTable(
+      joinColumns = @JoinColumn(foreignKey = @ForeignKey(name = "FK_conditions_commodity_types__conditions")),
+      inverseJoinColumns = @JoinColumn(foreignKey = @ForeignKey(name = "FK_conditions_commodity_types__commodity_type")))
   private Set<CommodityType> commodityTypes = new HashSet<>();
 
   @ManyToMany
+  @JoinTable(
+      joinColumns = @JoinColumn(foreignKey = @ForeignKey(name = "FK_conditions_task_types__conditions")),
+      inverseJoinColumns = @JoinColumn(foreignKey = @ForeignKey(name = "FK_conditions_task_types__task_type")))
   private Set<TaskType> taskTypes = new HashSet<>();
 
   @ManyToMany
+  @JoinTable(
+      joinColumns = @JoinColumn(foreignKey = @ForeignKey(name = "FK_conditions_fixed_locations__conditions")),
+      inverseJoinColumns = @JoinColumn(foreignKey = @ForeignKey(name = "FK_conditions_fixed_locations__fixed_location")))
   private Set<FixedLocation> fixedLocations = new HashSet<>();
 }

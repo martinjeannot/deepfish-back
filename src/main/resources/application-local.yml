@@ -60,9 +60,18 @@ spring:
   # DATASOURCE (DataSourceAutoConfiguration, DataSourceProperties)
   datasource:
     password: postgres
-    url: jdbc:postgresql://localhost:5432/deepfish_dev
+    url: jdbc:postgresql://localhost:5432/deepfish_dev3
     username: postgres
   # JPA (JpaBaseConfiguration, HibernateJpaAutoConfiguration)
   jpa:
+    # show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
+    #properties:
+    #  javax:
+    #    persistence:
+    #      schema-generation:
+    #        create-source: metadata
+    #        scripts:
+    #          action: create
+    #          create-target: create.sql

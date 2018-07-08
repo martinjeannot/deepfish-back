@@ -52,10 +52,10 @@ public interface QueryableTalentRepository extends
           .andNot(talent.conditions.companyMaturityLevels.contains(companyMaturityLevel)));
       return predicate;
     });
-    // Jobs
-    bindings.bind(talent.conditions.jobs).first((path, jobs) -> {
+    // Job types
+    bindings.bind(talent.conditions.jobTypes).first((path, jobTypes) -> {
       BooleanBuilder predicate = new BooleanBuilder();
-      jobs.forEach(job -> predicate.or(path.contains(job)));
+      jobTypes.forEach(jobType -> predicate.or(path.contains(jobType)));
       return predicate;
     });
     // Commodity types

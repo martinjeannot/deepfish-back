@@ -4,6 +4,8 @@ import com.deepfish.talent.domain.conditions.Conditions;
 import com.deepfish.talent.domain.qualification.Qualification;
 import com.querydsl.core.annotations.QueryEntity;
 import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -11,6 +13,10 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 @Entity
+@Table(uniqueConstraints = {
+    @UniqueConstraint(name = "UK_talent__username", columnNames = {"username"}),
+    @UniqueConstraint(name = "UK_talent__linked_in_id", columnNames = {"linkedInId"}),
+})
 @QueryEntity
 @Data
 @Accessors(chain = true)

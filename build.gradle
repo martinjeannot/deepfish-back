@@ -20,6 +20,7 @@ plugins {
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
 
 
 group = 'com.deepfish'
@@ -73,6 +74,7 @@ repositories {
 }
 
 ext {
+    flywayVersion = '5.1.1'
     mapstructVersion = '1.2.0.Final'
     pebbleVersion = '2.5.1'
     querydslVersion = '4.1.4'
@@ -99,6 +101,10 @@ dependencies {
     querydslapt("com.querydsl:querydsl-apt:${querydslVersion}")
     //runtime('com.h2database:h2')
     runtime('org.postgresql:postgresql')
+    compile("org.flywaydb:flyway-core:${flywayVersion}")
+    // BATCH
+    compile('org.springframework.boot:spring-boot-starter-batch')
+    compile('org.springframework.boot:spring-boot-starter-quartz:2.0.3.RELEASE')
     // TEST
     //testCompile('org.springframework.boot:spring-boot-starter-test')
     //testCompile('org.springframework.security:spring-security-test')

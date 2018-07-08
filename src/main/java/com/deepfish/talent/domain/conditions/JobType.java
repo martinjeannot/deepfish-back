@@ -11,7 +11,7 @@ import org.hibernate.validator.constraints.NotBlank;
 
 @Entity
 @Data
-public class Job {
+public class JobType {
 
   @Id
   @GeneratedValue
@@ -20,4 +20,6 @@ public class Job {
 
   @NotBlank
   private String l10nKey;
+
+  private int orderIndex;
 }
