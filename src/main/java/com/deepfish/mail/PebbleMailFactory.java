@@ -127,6 +127,32 @@ public class PebbleMailFactory implements MailFactory {
         .buildEmail();
   }
 
+  private final PebbleTemplate talentPendingOpportunityFollowUp2ndMailTemplate = pebbleEngine
+      .getTemplate("mails/talent/pendingOpportunityFollowUp2nd.html");
+
+  @Override
+  public Email getTalentPendingOpportunityFollowUp2ndMail(Opportunity opportunity) {
+    String subject = "RAPPEL - " + opportunity.getTalent().getFirstName()
+        + ", une opportunité t'attend sur Deepfish !";
+    Map<String, Object> context = new HashMap<>();
+    context.put("title", subject);
+    context.put("talent", opportunity.getTalent());
+    Writer writer = new StringWriter();
+    try {
+      talentPendingOpportunityFollowUp2ndMailTemplate.evaluate(writer, context);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
+    return EmailBuilder
+        .startingBlank()
+        .from(DAVID_EMAIL)
+        .to(opportunity.getTalent().getEmail())
+        .withSubject(subject)
+        .withHTMLText(writer.toString())
+        .buildEmail();
+  }
+
   // EMPLOYER ======================================================================================
 
   private final PebbleTemplate employerWelcomeMailTemplate = pebbleEngine

@@ -36,6 +36,8 @@ public class OpportunityFollowUpJobConfiguration {
 
   private static final String PENDING_FOR_144H_STEP_NAME = "opportunityPendingFor144hStep";
 
+  private static final String PENDING_FOR_192H_STEP_NAME = "opportunityPendingFor192hStep";
+
   private final JobBuilderFactory jobBuilderFactory;
 
   private final StepBuilderFactory stepBuilderFactory;
@@ -51,7 +53,8 @@ public class OpportunityFollowUpJobConfiguration {
   @Bean
   public Job opportunityFollowUpJob(Step authenticationStep, Step opportunityPendingFor24hStep,
       Step opportunityPendingFor48hStep, Step opportunityPendingFor96hStep,
-      Step opportunityPendingFor144hStep, Step clearAuthenticationStep) {
+      Step opportunityPendingFor144hStep, Step opportunityPendingFor192hStep,
+      Step clearAuthenticationStep) {
     return jobBuilderFactory
         .get(JOB_NAME)
         .start(authenticationStep)
@@ -59,6 +62,7 @@ public class OpportunityFollowUpJobConfiguration {
         .next(opportunityPendingFor48hStep)
         .next(opportunityPendingFor96hStep)
         .next(opportunityPendingFor144hStep)
+        .next(opportunityPendingFor192hStep)
         .next(clearAuthenticationStep)
         .build();
   }
@@ -126,7 +130,7 @@ public class OpportunityFollowUpJobConfiguration {
         LocalDate.now().minusDays(5).atTime(12, 0), LocalDate.now().minusDays(4).atTime(12, 0));
   }
 
-  // OPPORTUNITY PENDING FOR 144H STEP ==============================================================
+  // OPPORTUNITY PENDING FOR 144H STEP =============================================================
 
   @Bean
   public Step opportunityPendingFor144hStep(
@@ -145,6 +149,27 @@ public class OpportunityFollowUpJobConfiguration {
       OpportunityRepository opportunityRepository) {
     return getPendingOpportunityItemReader(opportunityRepository,
         LocalDate.now().minusDays(7).atTime(12, 0), LocalDate.now().minusDays(6).atTime(12, 0));
+  }
+
+  // OPPORTUNITY PENDING FOR 192H STEP =============================================================
+
+  @Bean
+  public Step opportunityPendingFor192hStep(
+      ItemReader<Opportunity> opportunityPendingFor192hItemReader, MailFactory mailFactory,
+      MailService mailService) {
+    return stepBuilderFactory
+        .get(PENDING_FOR_192H_STEP_NAME)
+        .<Opportunity, Opportunity>chunk(100)
+        .reader(opportunityPendingFor192hItemReader)
+        .processor(new OpportunityPendingFor192hItemProcessor(mailFactory, mailService))
+        .build();
+  }
+
+  @Bean
+  public ItemReader<Opportunity> opportunityPendingFor192hItemReader(
+      OpportunityRepository opportunityRepository) {
+    return getPendingOpportunityItemReader(opportunityRepository,
+        LocalDate.now().minusDays(9).atTime(12, 0), LocalDate.now().minusDays(8).atTime(12, 0));
   }
 
   // SCHEDULING ====================================================================================
