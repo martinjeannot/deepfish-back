@@ -32,7 +32,7 @@ public class OpportunityPendingFor24hItemProcessor implements
   public Opportunity process(Opportunity item) throws Exception {
     UUID talentId = item.getTalent().getId();
     if (!talentIds.contains(talentId)) {
-      Email followUpMail = mailFactory.getTalentOpportunityPendingFor24hMail(item);
+      Email followUpMail = mailFactory.getTalentPendingOpportunityFollowUp1stMail(item);
       mailService.send(followUpMail);
       talentIds.add(talentId);
     }

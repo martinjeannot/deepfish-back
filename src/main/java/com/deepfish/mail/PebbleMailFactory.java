@@ -102,18 +102,18 @@ public class PebbleMailFactory implements MailFactory {
         .buildEmail();
   }
 
-  private final PebbleTemplate talentOpportunityPendingFor24hMailTemplate = pebbleEngine
-      .getTemplate("mails/talent/opportunityPendingFor24h.html");
+  private final PebbleTemplate talentPendingOpportunityFollowUp1stMailTemplate = pebbleEngine
+      .getTemplate("mails/talent/pendingOpportunityFollowUp1st.html");
 
   @Override
-  public Email getTalentOpportunityPendingFor24hMail(Opportunity opportunity) {
+  public Email getTalentPendingOpportunityFollowUp1stMail(Opportunity opportunity) {
     String subject = "Opportunité en attente sur Deepfish";
     Map<String, Object> context = new HashMap<>();
     context.put("title", subject);
     context.put("talent", opportunity.getTalent());
     Writer writer = new StringWriter();
     try {
-      talentOpportunityPendingFor24hMailTemplate.evaluate(writer, context);
+      talentPendingOpportunityFollowUp1stMailTemplate.evaluate(writer, context);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -398,18 +398,18 @@ public class PebbleMailFactory implements MailFactory {
         .buildEmail();
   }
 
-  private final PebbleTemplate adminOpportunitiesPendingFor48hMailTemplate = pebbleEngine
-      .getTemplate("mails/admin/opportunitiesPendingFor48h.html");
+  private final PebbleTemplate adminTalentPendingOpportunitiesFollowUpLinkedInMailTemplate = pebbleEngine
+      .getTemplate("mails/admin/talentPendingOpportunitiesFollowUpLinkedIn.html");
 
   @Override
-  public Email getAdminOpportunitiesPendingFor48hMail(Collection<String> talents) {
-    String subject = "Relances MDEA par LKD du " + LocalDate.now().toString();
+  public Email getAdminTalentPendingOpportunitiesFollowUpLinkedInMail(Collection<String> talents) {
+    String subject = "[Pending opportunities follow-up] LinkedIn - " + LocalDate.now().toString();
     Map<String, Object> context = new HashMap<>();
     context.put("title", subject);
     context.put("talents", talents);
     Writer writer = new StringWriter();
     try {
-      adminOpportunitiesPendingFor48hMailTemplate.evaluate(writer, context);
+      adminTalentPendingOpportunitiesFollowUpLinkedInMailTemplate.evaluate(writer, context);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
