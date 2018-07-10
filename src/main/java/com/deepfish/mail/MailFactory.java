@@ -43,4 +43,6 @@ public interface MailFactory {
   Email getAdminOpportunitiesPendingFor48hMail(Collection<String> talents);
 
   Email getAdminTalentPendingOpportunitiesFollowUpSMSMail(Collection<String> talents);
+
+  Email getAdminTalentPendingOpportunitiesFollowUpCallMail(Collection<String> talents);
 }

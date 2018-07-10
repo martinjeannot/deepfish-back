@@ -34,6 +34,8 @@ public class OpportunityFollowUpJobConfiguration {
 
   private static final String PENDING_FOR_96H_STEP_NAME = "opportunityPendingFor96hStep";
 
+  private static final String PENDING_FOR_144H_STEP_NAME = "opportunityPendingFor144hStep";
+
   private final JobBuilderFactory jobBuilderFactory;
 
   private final StepBuilderFactory stepBuilderFactory;
@@ -49,13 +51,14 @@ public class OpportunityFollowUpJobConfiguration {
   @Bean
   public Job opportunityFollowUpJob(Step authenticationStep, Step opportunityPendingFor24hStep,
       Step opportunityPendingFor48hStep, Step opportunityPendingFor96hStep,
-      Step clearAuthenticationStep) {
+      Step opportunityPendingFor144hStep, Step clearAuthenticationStep) {
     return jobBuilderFactory
         .get(JOB_NAME)
         .start(authenticationStep)
         .next(opportunityPendingFor24hStep)
         .next(opportunityPendingFor48hStep)
         .next(opportunityPendingFor96hStep)
+        .next(opportunityPendingFor144hStep)
         .next(clearAuthenticationStep)
         .build();
   }
@@ -121,6 +124,27 @@ public class OpportunityFollowUpJobConfiguration {
       OpportunityRepository opportunityRepository) {
     return getPendingOpportunityItemReader(opportunityRepository,
         LocalDate.now().minusDays(5).atTime(12, 0), LocalDate.now().minusDays(4).atTime(12, 0));
+  }
+
+  // OPPORTUNITY PENDING FOR 144H STEP ==============================================================
+
+  @Bean
+  public Step opportunityPendingFor144hStep(
+      ItemReader<Opportunity> opportunityPendingFor144hItemReader, MailFactory mailFactory,
+      MailService mailService) {
+    return stepBuilderFactory
+        .get(PENDING_FOR_144H_STEP_NAME)
+        .<Opportunity, Opportunity>chunk(100)
+        .reader(opportunityPendingFor144hItemReader)
+        .processor(new OpportunityPendingFor144hItemProcessor(mailFactory, mailService))
+        .build();
+  }
+
+  @Bean
+  public ItemReader<Opportunity> opportunityPendingFor144hItemReader(
+      OpportunityRepository opportunityRepository) {
+    return getPendingOpportunityItemReader(opportunityRepository,
+        LocalDate.now().minusDays(7).atTime(12, 0), LocalDate.now().minusDays(6).atTime(12, 0));
   }
 
   // SCHEDULING ====================================================================================
