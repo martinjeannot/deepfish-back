@@ -395,4 +395,28 @@ public class PebbleMailFactory implements MailFactory {
         .withHTMLText(writer.toString())
         .buildEmail();
   }
+
+  private final PebbleTemplate adminTalentPendingOpportunitiesFollowUpSMSMailTemplate = pebbleEngine
+      .getTemplate("mails/admin/talentPendingOpportunitiesFollowUpSMS.html");
+
+  @Override
+  public Email getAdminTalentPendingOpportunitiesFollowUpSMSMail(Collection<String> talents) {
+    String subject = "[Pending opportunities follow-up] SMS - " + LocalDate.now().toString();
+    Map<String, Object> context = new HashMap<>();
+    context.put("title", subject);
+    context.put("talents", talents);
+    Writer writer = new StringWriter();
+    try {
+      adminTalentPendingOpportunitiesFollowUpSMSMailTemplate.evaluate(writer, context);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
+    return EmailBuilder
+        .startingBlank()
+        .to(DAVID_EMAIL)
+        .withSubject(subject)
+        .withHTMLText(writer.toString())
+        .buildEmail();
+  }
 }

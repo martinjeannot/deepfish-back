@@ -41,4 +41,6 @@ public interface MailFactory {
   Email getAdminEmployerRequestMail(Employer employer, Talent talent, String message);
 
   Email getAdminOpportunitiesPendingFor48hMail(Collection<String> talents);
+
+  Email getAdminTalentPendingOpportunitiesFollowUpSMSMail(Collection<String> talents);
 }
