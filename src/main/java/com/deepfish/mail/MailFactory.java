@@ -16,7 +16,9 @@ public interface MailFactory {
 
   Email getTalentAcceptedOpportunityMail(Opportunity opportunity);
 
-  Email getTalentOpportunityPendingFor24hMail(Opportunity opportunity);
+  Email getTalentPendingOpportunityFollowUp1stMail(Opportunity opportunity);
+
+  Email getTalentPendingOpportunityFollowUp2ndMail(Opportunity opportunity);
 
   // EMPLOYER ======================================================================================
 
@@ -40,5 +42,9 @@ public interface MailFactory {
 
   Email getAdminEmployerRequestMail(Employer employer, Talent talent, String message);
 
-  Email getAdminOpportunitiesPendingFor48hMail(Collection<String> talents);
+  Email getAdminTalentPendingOpportunitiesFollowUpLinkedInMail(Collection<String> talents);
+
+  Email getAdminTalentPendingOpportunitiesFollowUpSMSMail(Collection<String> talents);
+
+  Email getAdminTalentPendingOpportunitiesFollowUpCallMail(Collection<String> talents);
 }

@@ -14,11 +14,11 @@ import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.annotation.AfterStep;
 import org.springframework.batch.item.ItemProcessor;
 
-public class OpportunityPendingFor48hItemProcessor implements
+public class OpportunityPendingFor144hItemProcessor implements
     ItemProcessor<Opportunity, Opportunity> {
 
   private static final Logger LOGGER = LoggerFactory
-      .getLogger(OpportunityPendingFor48hItemProcessor.class);
+      .getLogger(OpportunityPendingFor144hItemProcessor.class);
 
   private final MailFactory mailFactory;
 
@@ -26,7 +26,7 @@ public class OpportunityPendingFor48hItemProcessor implements
 
   private final Map<UUID, String> talentMap = new HashMap<>();
 
-  public OpportunityPendingFor48hItemProcessor(MailFactory mailFactory, MailService mailService) {
+  public OpportunityPendingFor144hItemProcessor(MailFactory mailFactory, MailService mailService) {
     this.mailFactory = mailFactory;
     this.mailService = mailService;
   }
@@ -35,8 +35,9 @@ public class OpportunityPendingFor48hItemProcessor implements
   public Opportunity process(Opportunity item) throws Exception {
     UUID talentId = item.getTalent().getId();
     if (!talentMap.containsKey(talentId)) {
-      talentMap.put(item.getTalent().getId(),
-          item.getTalent().getFirstName() + " " + item.getTalent().getLastName());
+      talentMap.put(talentId,
+          item.getTalent().getFirstName() + " " + item.getTalent().getLastName() + " "
+              + formatPhoneNumber(item.getTalent().getPhoneNumber()));
     }
     return item;
   }
@@ -44,8 +45,17 @@ public class OpportunityPendingFor48hItemProcessor implements
   @AfterStep
   ExitStatus afterStep(StepExecution stepExecution) {
     Email followUpMail = mailFactory
-        .getAdminTalentPendingOpportunitiesFollowUpLinkedInMail(talentMap.values());
+        .getAdminTalentPendingOpportunitiesFollowUpCallMail(talentMap.values());
     mailService.send(followUpMail);
     return ExitStatus.COMPLETED;
+  }
+
+  private String formatPhoneNumber(String phoneNumber) {
+    switch (phoneNumber.length()) {
+      case 10:
+        return phoneNumber.replaceAll("(.{2})", "$1 ");
+      default:
+        return phoneNumber;
+    }
   }
 }

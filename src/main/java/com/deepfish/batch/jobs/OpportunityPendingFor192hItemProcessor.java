@@ -11,11 +11,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.item.ItemProcessor;
 
-public class OpportunityPendingFor24hItemProcessor implements
+public class OpportunityPendingFor192hItemProcessor implements
     ItemProcessor<Opportunity, Opportunity> {
 
   private static final Logger LOGGER = LoggerFactory
-      .getLogger(OpportunityPendingFor24hItemProcessor.class);
+      .getLogger(OpportunityPendingFor192hItemProcessor.class);
 
   private final MailFactory mailFactory;
 
@@ -23,7 +23,7 @@ public class OpportunityPendingFor24hItemProcessor implements
 
   private final List<UUID> talentIds = new ArrayList<>();
 
-  public OpportunityPendingFor24hItemProcessor(MailFactory mailFactory, MailService mailService) {
+  public OpportunityPendingFor192hItemProcessor(MailFactory mailFactory, MailService mailService) {
     this.mailFactory = mailFactory;
     this.mailService = mailService;
   }
@@ -32,7 +32,7 @@ public class OpportunityPendingFor24hItemProcessor implements
   public Opportunity process(Opportunity item) throws Exception {
     UUID talentId = item.getTalent().getId();
     if (!talentIds.contains(talentId)) {
-      Email followUpMail = mailFactory.getTalentPendingOpportunityFollowUp1stMail(item);
+      Email followUpMail = mailFactory.getTalentPendingOpportunityFollowUp2ndMail(item);
       mailService.send(followUpMail);
       talentIds.add(talentId);
     }

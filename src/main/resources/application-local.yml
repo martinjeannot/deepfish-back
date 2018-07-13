@@ -60,7 +60,7 @@ spring:
   # DATASOURCE (DataSourceAutoConfiguration, DataSourceProperties)
   datasource:
     password: postgres
-    url: jdbc:postgresql://localhost:5432/deepfish_dev3
+    url: jdbc:postgresql://localhost:5432/deepfish_dev2
     username: postgres
   # JPA (JpaBaseConfiguration, HibernateJpaAutoConfiguration)
   jpa:
