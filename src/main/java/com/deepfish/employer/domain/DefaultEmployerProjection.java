@@ -22,5 +22,7 @@ public interface DefaultEmployerProjection {
 
   LocalDateTime getCreatedAt();
 
+  LocalDateTime getLastSignedInAt();
+
   Company getCompany();
 }
