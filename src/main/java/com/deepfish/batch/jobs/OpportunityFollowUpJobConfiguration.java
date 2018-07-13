@@ -14,6 +14,7 @@ import java.util.Map;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
+import org.springframework.batch.core.configuration.annotation.JobScope;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.data.RepositoryItemReader;
@@ -81,6 +82,7 @@ public class OpportunityFollowUpJobConfiguration {
         .build();
   }
 
+  @JobScope
   @Bean
   public ItemReader<Opportunity> opportunityPendingFor24hItemReader(
       OpportunityRepository opportunityRepository) {
@@ -102,6 +104,7 @@ public class OpportunityFollowUpJobConfiguration {
         .build();
   }
 
+  @JobScope
   @Bean
   public ItemReader<Opportunity> opportunityPendingFor48hItemReader(
       OpportunityRepository opportunityRepository) {
@@ -123,6 +126,7 @@ public class OpportunityFollowUpJobConfiguration {
         .build();
   }
 
+  @JobScope
   @Bean
   public ItemReader<Opportunity> opportunityPendingFor96hItemReader(
       OpportunityRepository opportunityRepository) {
@@ -144,6 +148,7 @@ public class OpportunityFollowUpJobConfiguration {
         .build();
   }
 
+  @JobScope
   @Bean
   public ItemReader<Opportunity> opportunityPendingFor144hItemReader(
       OpportunityRepository opportunityRepository) {
@@ -165,6 +170,7 @@ public class OpportunityFollowUpJobConfiguration {
         .build();
   }
 
+  @JobScope
   @Bean
   public ItemReader<Opportunity> opportunityPendingFor192hItemReader(
       OpportunityRepository opportunityRepository) {
