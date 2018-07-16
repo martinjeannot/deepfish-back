@@ -44,9 +44,11 @@ public class OpportunityPendingFor144hItemProcessor implements
 
   @AfterStep
   ExitStatus afterStep(StepExecution stepExecution) {
-    Email followUpMail = mailFactory
-        .getAdminTalentPendingOpportunitiesFollowUpCallMail(talentMap.values());
-    mailService.send(followUpMail);
+    if (!talentMap.isEmpty()) {
+      Email followUpMail = mailFactory
+          .getAdminTalentPendingOpportunitiesFollowUpCallMail(talentMap.values());
+      mailService.send(followUpMail);
+    }
     return ExitStatus.COMPLETED;
   }
 

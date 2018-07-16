@@ -70,6 +70,7 @@ public class OpportunityFollowUpJobConfiguration {
 
   // OPPORTUNITY PENDING FOR 24H STEP  =============================================================
 
+  @JobScope
   @Bean
   public Step opportunityPendingFor24hStep(
       ItemReader<Opportunity> opportunityPendingFor24hItemReader, MailFactory mailFactory,
@@ -92,6 +93,7 @@ public class OpportunityFollowUpJobConfiguration {
 
   // OPPORTUNITY PENDING FOR 48H STEP ==============================================================
 
+  @JobScope
   @Bean
   public Step opportunityPendingFor48hStep(
       ItemReader<Opportunity> opportunityPendingFor48hItemReader, MailFactory mailFactory,
@@ -114,6 +116,7 @@ public class OpportunityFollowUpJobConfiguration {
 
   // OPPORTUNITY PENDING FOR 96H STEP ==============================================================
 
+  @JobScope
   @Bean
   public Step opportunityPendingFor96hStep(
       ItemReader<Opportunity> opportunityPendingFor96hItemReader, MailFactory mailFactory,
@@ -136,6 +139,7 @@ public class OpportunityFollowUpJobConfiguration {
 
   // OPPORTUNITY PENDING FOR 144H STEP =============================================================
 
+  @JobScope
   @Bean
   public Step opportunityPendingFor144hStep(
       ItemReader<Opportunity> opportunityPendingFor144hItemReader, MailFactory mailFactory,
@@ -158,6 +162,7 @@ public class OpportunityFollowUpJobConfiguration {
 
   // OPPORTUNITY PENDING FOR 192H STEP =============================================================
 
+  @JobScope
   @Bean
   public Step opportunityPendingFor192hStep(
       ItemReader<Opportunity> opportunityPendingFor192hItemReader, MailFactory mailFactory,
