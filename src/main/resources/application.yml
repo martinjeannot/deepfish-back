@@ -13,6 +13,11 @@ logging:
     org:
       springframework: INFO
 
+# DEEPFISH
+deepfish:
+  front:
+    hash-mode: true
+
 # ----------------------------------------
 # SECURITY PROPERTIES
 # ----------------------------------------

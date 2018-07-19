@@ -21,6 +21,7 @@ deepfish:
       name: Deepfish Staging Sink
       address: morgandeepfish@gmail.com
   front:
+    scheme: https
     host: staging-app.deepfish.co
     port: 80
 

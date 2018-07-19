@@ -12,10 +12,14 @@
 </p>
 
 <p>
-  Voici la liste des talents MDEA (pending depuis ~6 jours) que vous pouvez relancer par tél ce jour :<br/>
+  Voici la liste des talents MDEA (pending depuis ~6 jours) que vous pouvez relancer par tél ce jour
+  :<br/>
 <ul>
   {% for talent in talents %}
-  <li>{{ talent }}</li>
+  <li>
+    <a target="_blank" rel="noopener noreferrer" href="{{ talent[1] }}">{{ talent[0] }}</a> au {{
+    talent[2] }}
+  </li>
   {% endfor %}
 </ul>
 </p>
