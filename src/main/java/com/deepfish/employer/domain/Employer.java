@@ -3,6 +3,7 @@ package com.deepfish.employer.domain;
 import com.deepfish.company.domain.Company;
 import com.deepfish.user.domain.AbstractUser;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
@@ -25,4 +26,8 @@ public class Employer extends AbstractUser {
   @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(foreignKey = @ForeignKey(name = "FK_employer__company__company_id"))
   private Company company;
+
+  @NotNull
+  @Column(columnDefinition = "text")
+  private String notes = "";
 }

@@ -402,7 +402,8 @@ public class PebbleMailFactory implements MailFactory {
       .getTemplate("mails/admin/talentPendingOpportunitiesFollowUpLinkedIn.html");
 
   @Override
-  public Email getAdminTalentPendingOpportunitiesFollowUpLinkedInMail(Collection<String> talents) {
+  public Email getAdminTalentPendingOpportunitiesFollowUpLinkedInMail(
+      Collection<String[]> talents) {
     String subject = "[Pending opportunities follow-up] LinkedIn - " + LocalDate.now().toString();
     Map<String, Object> context = new HashMap<>();
     context.put("title", subject);
@@ -426,7 +427,7 @@ public class PebbleMailFactory implements MailFactory {
       .getTemplate("mails/admin/talentPendingOpportunitiesFollowUpSMS.html");
 
   @Override
-  public Email getAdminTalentPendingOpportunitiesFollowUpSMSMail(Collection<String> talents) {
+  public Email getAdminTalentPendingOpportunitiesFollowUpSMSMail(Collection<String[]> talents) {
     String subject = "[Pending opportunities follow-up] SMS - " + LocalDate.now().toString();
     Map<String, Object> context = new HashMap<>();
     context.put("title", subject);
@@ -450,7 +451,7 @@ public class PebbleMailFactory implements MailFactory {
       .getTemplate("mails/admin/talentPendingOpportunitiesFollowUpCall.html");
 
   @Override
-  public Email getAdminTalentPendingOpportunitiesFollowUpCallMail(Collection<String> talents) {
+  public Email getAdminTalentPendingOpportunitiesFollowUpCallMail(Collection<String[]> talents) {
     String subject = "[Pending opportunities follow-up] Call - " + LocalDate.now().toString();
     Map<String, Object> context = new HashMap<>();
     context.put("title", subject);

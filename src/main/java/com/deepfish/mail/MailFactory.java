@@ -4,6 +4,7 @@ import com.deepfish.employer.domain.Employer;
 import com.deepfish.talent.domain.Talent;
 import com.deepfish.talent.domain.opportunity.Opportunity;
 import java.util.Collection;
+import java.util.Map.Entry;
 import org.simplejavamail.email.Email;
 
 public interface MailFactory {
@@ -42,9 +43,9 @@ public interface MailFactory {
 
   Email getAdminEmployerRequestMail(Employer employer, Talent talent, String message);
 
-  Email getAdminTalentPendingOpportunitiesFollowUpLinkedInMail(Collection<String> talents);
+  Email getAdminTalentPendingOpportunitiesFollowUpLinkedInMail(Collection<String[]> talents);
 
-  Email getAdminTalentPendingOpportunitiesFollowUpSMSMail(Collection<String> talents);
+  Email getAdminTalentPendingOpportunitiesFollowUpSMSMail(Collection<String[]> talents);
 
-  Email getAdminTalentPendingOpportunitiesFollowUpCallMail(Collection<String> talents);
+  Email getAdminTalentPendingOpportunitiesFollowUpCallMail(Collection<String[]> talents);
 }

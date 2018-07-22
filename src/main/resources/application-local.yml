@@ -36,6 +36,7 @@ deepfish:
       name: Deepfish Staging Sink
       address: deepfish-staging-sink@yopmail.com
   front:
+    scheme: http
     host: localhost
     port: 8081
 

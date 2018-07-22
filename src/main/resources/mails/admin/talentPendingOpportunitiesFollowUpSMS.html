@@ -16,7 +16,9 @@
   :<br/>
 <ul>
   {% for talent in talents %}
-  <li>{{ talent }}</li>
+  <li>
+    <a target="_blank" rel="noopener noreferrer" href="{{ talent[1] }}">{{ talent[0] }}</a>
+  </li>
   {% endfor %}
 </ul>
 </p>
