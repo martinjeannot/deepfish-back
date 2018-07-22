@@ -194,15 +194,17 @@ public class PendingOpportunitiesFollowUpJobConfiguration {
   // SCHEDULING ====================================================================================
 
   @Bean
-  public JobDetailFactoryBean opportunityFollowUpJobDetailFactoryBean() {
+  public JobDetailFactoryBean pendingOpportunitiesFollowUpJobDetailFactoryBean() {
     return BatchConfiguration.getJobDetailFactoryBean(JOB_NAME);
   }
 
   @Bean
-  public CronTriggerFactoryBean opportunityFollowUpJobTriggerFactoryBean() {
+  public CronTriggerFactoryBean pendingOpportunitiesFollowUpJobTriggerFactoryBean() {
     return BatchConfiguration
-        //.getCronTriggerFactoryBean(opportunityFollowUpJobDetailFactoryBean(), "0 0/1 * 1/1 * ? *");
-        .getCronTriggerFactoryBean(opportunityFollowUpJobDetailFactoryBean(), "0 0 7 1/1 * ? *");
+        //.getCronTriggerFactoryBean(pendingOpportunitiesFollowUpJobDetailFactoryBean(),
+        //    "0 0/1 * 1/1 * ? *");
+        .getCronTriggerFactoryBean(pendingOpportunitiesFollowUpJobDetailFactoryBean(),
+            "0 0 7 1/1 * ? *");
   }
 
   // UTILS =========================================================================================
