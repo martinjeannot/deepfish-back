@@ -13,13 +13,15 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 @Entity
 @Table(uniqueConstraints = {
     @UniqueConstraint(name = "UK_employer__username", columnNames = {"username"}),
 })
 @Data
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = true, exclude = "company")
+@ToString(callSuper = true, exclude = {"company"})
 public class Employer extends AbstractUser {
 
   @NotNull
