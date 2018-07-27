@@ -5,6 +5,7 @@ import com.deepfish.employer.domain.Requirement;
 import com.deepfish.talent.domain.Talent;
 import com.deepfish.talent.domain.opportunity.Opportunity;
 import java.util.Collection;
+import java.util.List;
 import org.simplejavamail.email.Email;
 
 public interface MailFactory {
@@ -36,6 +37,9 @@ public interface MailFactory {
   Email getAdminTalentAcceptedOpportunityMail(Opportunity opportunity);
 
   Email getAdminTalentDeclinedOpportunityMail(Opportunity opportunity);
+
+  Email getAdminTalentDeactivationMail(Talent talent, String declinationReason,
+      List<String> companyNames);
 
   Email getAdminEmployerAcceptedTalentMail(Opportunity opportunity);
 

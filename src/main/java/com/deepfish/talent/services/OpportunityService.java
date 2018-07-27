@@ -11,6 +11,7 @@ public interface OpportunityService {
    * Decline all pending opportunities and deactivate the given talent
    *
    * @param talentId the id of the talent
+   * @param bulkDeclinationReason the declination reason
    */
-  void declineInBulk(UUID talentId);
+  void declineInBulk(UUID talentId, String bulkDeclinationReason);
 }
