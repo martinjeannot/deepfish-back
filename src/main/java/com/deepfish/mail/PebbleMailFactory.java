@@ -1,6 +1,7 @@
 package com.deepfish.mail;
 
 import com.deepfish.employer.domain.Employer;
+import com.deepfish.employer.domain.Requirement;
 import com.deepfish.talent.domain.Talent;
 import com.deepfish.talent.domain.opportunity.Opportunity;
 import com.mitchellbosecke.pebble.PebbleEngine;
@@ -11,6 +12,7 @@ import java.io.Writer;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.simplejavamail.email.Email;
 import org.simplejavamail.email.EmailBuilder;
@@ -233,6 +235,31 @@ public class PebbleMailFactory implements MailFactory {
         .buildEmail();
   }
 
+  private final PebbleTemplate adminNewRequirementMailTemplate = pebbleEngine
+      .getTemplate("mails/admin/newRequirement.html");
+
+  @Override
+  public Email getAdminNewRequirementMail(Requirement requirement) {
+    String subject = requirement.getCompany().getName() + " - Nouveau besoin";
+    Map<String, Object> context = new HashMap<>();
+    context.put("title", subject);
+    context.put("requirement", requirement);
+    context.put("company", requirement.getCompany());
+    Writer writer = new StringWriter();
+    try {
+      adminNewRequirementMailTemplate.evaluate(writer, context);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
+    return EmailBuilder
+        .startingBlank()
+        .toMultiple(DAVID_EMAIL, LUIGI_EMAIL)
+        .withSubject(subject)
+        .withHTMLText(writer.toString())
+        .buildEmail();
+  }
+
   private final PebbleTemplate adminTalentAcceptedOpportunityMailTemplate = pebbleEngine
       .getTemplate("mails/admin/talentAcceptedOpportunity.html");
 
@@ -276,6 +303,33 @@ public class PebbleMailFactory implements MailFactory {
     Writer writer = new StringWriter();
     try {
       adminTalentDeclinedOpportunityMailTemplate.evaluate(writer, context);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
+    return EmailBuilder
+        .startingBlank()
+        .toMultiple(DAVID_EMAIL, LUIGI_EMAIL)
+        .withSubject(subject)
+        .withHTMLText(writer.toString())
+        .buildEmail();
+  }
+
+  private final PebbleTemplate adminTalentDeactivationMailTemplate = pebbleEngine
+      .getTemplate("mails/admin/talentDeactivation.html");
+
+  @Override
+  public Email getAdminTalentDeactivationMail(Talent talent, String declinationReason,
+      List<String> companyNames) {
+    String subject = talent.getLastName() + " s'est désactivé";
+    Map<String, Object> context = new HashMap<>();
+    context.put("title", subject);
+    context.put("talent", talent);
+    context.put("declinationReason", declinationReason);
+    context.put("companyNames", companyNames);
+    Writer writer = new StringWriter();
+    try {
+      adminTalentDeactivationMailTemplate.evaluate(writer, context);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }

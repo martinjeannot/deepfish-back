@@ -30,4 +30,6 @@ public interface OpportunityRepository extends PagingAndSortingRepository<Opport
       LocalDateTime createdAtAfter,
       LocalDateTime createdAtBefore,
       Pageable pageable);
+
+  long countByRequirementIdAndTalentStatus(UUID requirementId, OpportunityStatus talentStatus);
 }

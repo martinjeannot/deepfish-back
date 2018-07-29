@@ -21,7 +21,11 @@ public interface AdminItemOpportunityProjection {
 
   OpportunityStatus getTalentStatus();
 
+  String getTalentDeclinationReason();
+
   OpportunityStatus getEmployerStatus();
+
+  String getEmployerDeclinationReason();
 
   boolean isForwarded();
 }

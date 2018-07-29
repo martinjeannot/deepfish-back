@@ -93,7 +93,7 @@ public class PendingOpportunitiesFollowUpJobConfiguration {
   public ItemReader<Opportunity> pendingOpportunitiesFor1stMailingFollowUpItemReader(
       OpportunityRepository opportunityRepository) {
     return getPendingOpportunitiesItemReader(opportunityRepository,
-        LocalDate.now().minusDays(2).atTime(12, 0), LocalDate.now().minusDays(1).atTime(12, 0));
+        LocalDate.now().minusDays(3).atTime(12, 0), LocalDate.now().minusDays(2).atTime(12, 0));
   }
 
   // LINKED IN FOLLOW UP STEP ======================================================================
@@ -117,7 +117,7 @@ public class PendingOpportunitiesFollowUpJobConfiguration {
   public ItemReader<Opportunity> pendingOpportunitiesForLinkedInFollowUpItemReader(
       OpportunityRepository opportunityRepository) {
     return getPendingOpportunitiesItemReader(opportunityRepository,
-        LocalDate.now().minusDays(3).atTime(12, 0), LocalDate.now().minusDays(2).atTime(12, 0));
+        LocalDate.now().minusDays(4).atTime(12, 0), LocalDate.now().minusDays(3).atTime(12, 0));
   }
 
   // SMSING FOLLOW UP STEP =========================================================================
@@ -141,7 +141,7 @@ public class PendingOpportunitiesFollowUpJobConfiguration {
   public ItemReader<Opportunity> pendingOpportunitiesForSMSingFollowUpItemReader(
       OpportunityRepository opportunityRepository) {
     return getPendingOpportunitiesItemReader(opportunityRepository,
-        LocalDate.now().minusDays(5).atTime(12, 0), LocalDate.now().minusDays(4).atTime(12, 0));
+        LocalDate.now().minusDays(6).atTime(12, 0), LocalDate.now().minusDays(5).atTime(12, 0));
   }
 
   // CALLING FOLLOW UP STEP ========================================================================
@@ -165,7 +165,7 @@ public class PendingOpportunitiesFollowUpJobConfiguration {
   public ItemReader<Opportunity> pendingOpportunitiesForCallingFollowUpItemReader(
       OpportunityRepository opportunityRepository) {
     return getPendingOpportunitiesItemReader(opportunityRepository,
-        LocalDate.now().minusDays(7).atTime(12, 0), LocalDate.now().minusDays(6).atTime(12, 0));
+        LocalDate.now().minusDays(8).atTime(12, 0), LocalDate.now().minusDays(7).atTime(12, 0));
   }
 
   // SECOND MAILING FOLLOW UP STEP =================================================================
@@ -188,7 +188,7 @@ public class PendingOpportunitiesFollowUpJobConfiguration {
   public ItemReader<Opportunity> pendingOpportunitiesFor2ndMailingFollowUpItemReader(
       OpportunityRepository opportunityRepository) {
     return getPendingOpportunitiesItemReader(opportunityRepository,
-        LocalDate.now().minusDays(9).atTime(12, 0), LocalDate.now().minusDays(8).atTime(12, 0));
+        LocalDate.now().minusDays(11).atTime(12, 0), LocalDate.now().minusDays(10).atTime(12, 0));
   }
 
   // SCHEDULING ====================================================================================

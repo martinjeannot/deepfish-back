@@ -12,8 +12,4 @@ public interface AdminOpportunityProjection extends AdminItemOpportunityProjecti
   Requirement getRequirement();
 
   String getPitch();
-
-  String getTalentDeclinationReason();
-
-  String getEmployerDeclinationReason();
 }
