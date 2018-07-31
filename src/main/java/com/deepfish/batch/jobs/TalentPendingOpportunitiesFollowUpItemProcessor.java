@@ -1,6 +1,5 @@
 package com.deepfish.batch.jobs;
 
-import static com.deepfish.batch.jobs.PendingOpportunitiesFollowUpJobConfiguration.FIRST_MAILING_FOLLOW_UP_STEP_NAME;
 import static com.deepfish.batch.jobs.PendingOpportunitiesFollowUpJobConfiguration.SECOND_MAILING_FOLLOW_UP_STEP_NAME;
 
 import com.deepfish.mail.MailFactory;
@@ -43,9 +42,6 @@ public class TalentPendingOpportunitiesFollowUpItemProcessor implements
       talentIds.add(talentId);
       Email followUpMail;
       switch (stepExecution.getStepName()) {
-        case FIRST_MAILING_FOLLOW_UP_STEP_NAME:
-          followUpMail = mailFactory.getTalentPendingOpportunityFollowUp1stMail(item);
-          break;
         case SECOND_MAILING_FOLLOW_UP_STEP_NAME:
           followUpMail = mailFactory.getTalentPendingOpportunityFollowUp2ndMail(item);
           break;

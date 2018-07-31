@@ -18,8 +18,6 @@ public interface MailFactory {
 
   Email getTalentAcceptedOpportunityMail(Opportunity opportunity);
 
-  Email getTalentPendingOpportunityFollowUp1stMail(Opportunity opportunity);
-
   Email getTalentPendingOpportunityFollowUp2ndMail(Opportunity opportunity);
 
   // EMPLOYER ======================================================================================
