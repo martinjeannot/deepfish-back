@@ -15,6 +15,7 @@ import org.springframework.expression.spel.SpelNode;
 import org.springframework.expression.spel.ast.Literal;
 import org.springframework.expression.spel.ast.OpAnd;
 import org.springframework.expression.spel.ast.OpOr;
+import org.springframework.expression.spel.ast.OperatorNot;
 import org.springframework.expression.spel.standard.SpelExpression;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -110,6 +111,12 @@ public interface QueryableTalentRepository extends
             talent);
       } else {
         return getSearchPredicateFor(node.toStringAST(), talent);
+      }
+    } else if (node.getChildCount() == 1) {
+      if (OperatorNot.class.isAssignableFrom(node.getClass())) {
+        return traverseAST(node.getChild(0), talent).not();
+      } else {
+        throw new IllegalArgumentException("Unknown unary operator : " + node.getClass());
       }
     } else {
       BooleanBuilder predicate = new BooleanBuilder();
