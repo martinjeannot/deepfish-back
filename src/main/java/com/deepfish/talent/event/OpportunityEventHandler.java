@@ -56,7 +56,6 @@ public class OpportunityEventHandler {
       // [previous state] data specific behavior
       if (PENDING.equals(previousTalentStatus)) {
         if (ACCEPTED.equals(opportunity.getTalentStatus())) {
-          mailService.send(mailFactory.getTalentAcceptedOpportunityMail(opportunity));
           mailService.send(mailFactory.getAdminTalentAcceptedOpportunityMail(opportunity));
         } else if (DECLINED.equals(opportunity.getTalentStatus())) {
           mailService.send(mailFactory.getAdminTalentDeclinedOpportunityMail(opportunity));

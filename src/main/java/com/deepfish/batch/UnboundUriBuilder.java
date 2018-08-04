@@ -20,7 +20,7 @@ public class UnboundUriBuilder {
   @Value("${deepfish.front.hash-mode}")
   private boolean isHashMode;
 
-  @Value("#{'${deepfish.front.scheme}' + '://' + '${deepfish.front.host}' + ':' + '${deepfish.front.port}'}")
+  @Value("#{'${deepfish.front.scheme}' + '://' + '${deepfish.front.host}' + ('${deepfish.front.port}'.isEmpty() ? '' : ':' + '${deepfish.front.port}' )}")
   private String frontAppUrl;
 
   public String getTalentDataManagementUri(UUID talentId) {
