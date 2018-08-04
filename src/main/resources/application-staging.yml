@@ -23,7 +23,7 @@ deepfish:
   front:
     scheme: https
     host: staging-app.deepfish.co
-    port: 80
+    port:
 
 # ----------------------------------------
 # WEB PROPERTIES
