@@ -17,6 +17,7 @@ import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.JobScope;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.listener.ExecutionContextPromotionListener;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.data.RepositoryItemReader;
 import org.springframework.context.annotation.Bean;
@@ -28,15 +29,25 @@ import org.springframework.scheduling.quartz.JobDetailFactoryBean;
 @Configuration
 public class PendingOpportunitiesFollowUpJobConfiguration {
 
-  public static final String JOB_NAME = "PENDING_OPPORTUNITIES_FOLLOW_UP_JOB";
+  static final String JOB_NAME = "PENDING_OPPORTUNITIES_FOLLOW_UP_JOB";
 
-  public static final String LINKED_IN_FOLLOW_UP_STEP_NAME = "LINKED_IN_FOLLOW_UP_STEP";
+  static final String LINKED_IN_FOLLOW_UP_STEP_NAME = "LINKED_IN_FOLLOW_UP_STEP";
 
-  public static final String SMSING_FOLLOW_UP_STEP_NAME = "SMSING_FOLLOW_UP_STEP";
+  static final int LINKED_IN_FOLLOW_UP_STEP_DAY = 2;
 
-  public static final String CALLING_FOLLOW_UP_STEP_NAME = "CALLING_FOLLOW_UP_STEP";
+  static final String SMSING_FOLLOW_UP_STEP_NAME = "SMSING_FOLLOW_UP_STEP";
 
-  public static final String SECOND_MAILING_FOLLOW_UP_STEP_NAME = "SECOND_MAILING_FOLLOW_UP_STEP";
+  static final int SMSING_FOLLOW_UP_STEP_DAY = 4;
+
+  static final String CALLING_FOLLOW_UP_STEP_NAME = "CALLING_FOLLOW_UP_STEP";
+
+  static final int CALLING_FOLLOW_UP_STEP_DAY = 6;
+
+  static final String SECOND_MAILING_FOLLOW_UP_STEP_NAME = "SECOND_MAILING_FOLLOW_UP_STEP";
+
+  static final int SECOND_MAILING_FOLLOW_UP_STEP_DAY = 9;
+
+  static final String ALREADY_ADDRESSED_TALENT_IDS = "ALREADY_ADDRESSED_TALENT_IDS";
 
   private final JobBuilderFactory jobBuilderFactory;
 
@@ -53,20 +64,52 @@ public class PendingOpportunitiesFollowUpJobConfiguration {
   @Bean
   public Job pendingOpportunitiesFollowUpJob(
       Step authenticationStep,
+      Step preLinkedInFollowUpStep,
       Step linkedInFollowUpStep,
+      Step preSMSingFollowUpStep,
       Step smsingFollowUpStep,
+      Step preCallingFollowUpStep,
       Step callingFollowUpStep,
+      Step preSecondMailingFollowUpStep,
       Step secondMailingFollowUpStep,
       Step clearAuthenticationStep) {
     return jobBuilderFactory
         .get(JOB_NAME)
         .start(authenticationStep)
+        .next(preLinkedInFollowUpStep)
         .next(linkedInFollowUpStep)
+        .next(preSMSingFollowUpStep)
         .next(smsingFollowUpStep)
+        .next(preCallingFollowUpStep)
         .next(callingFollowUpStep)
+        .next(preSecondMailingFollowUpStep)
         .next(secondMailingFollowUpStep)
         .next(clearAuthenticationStep)
         .build();
+  }
+
+  // PRE LINKED IN FOLLOW UP STEP ==================================================================
+
+  @JobScope
+  @Bean
+  public Step preLinkedInFollowUpStep(
+      ItemReader<Opportunity> pendingOpportunitiesForPreLinkedInFollowUpItemReader) {
+    return stepBuilderFactory
+        .get("PRE_" + LINKED_IN_FOLLOW_UP_STEP_NAME)
+        .<Opportunity, Opportunity>chunk(100)
+        .reader(pendingOpportunitiesForPreLinkedInFollowUpItemReader)
+        .processor(new DummyPendingOpportunitiesFollowUpItemProcessor())
+        .listener(pendingOpportunitiesFollowUpJobExecutionContextPromotionListener())
+        .build();
+  }
+
+  @JobScope
+  @Bean
+  public ItemReader<Opportunity> pendingOpportunitiesForPreLinkedInFollowUpItemReader(
+      OpportunityRepository opportunityRepository) {
+    return getPendingOpportunitiesItemReader(opportunityRepository,
+        LocalDate.now().minusDays(LINKED_IN_FOLLOW_UP_STEP_DAY - 1).atStartOfDay(),
+        LocalDateTime.now());
   }
 
   // LINKED IN FOLLOW UP STEP ======================================================================
@@ -82,6 +125,7 @@ public class PendingOpportunitiesFollowUpJobConfiguration {
         .reader(pendingOpportunitiesForLinkedInFollowUpItemReader)
         .processor(new AdminPendingOpportunitiesFollowUpItemProcessor(uriBuilder, mailFactory,
             mailService))
+        .listener(pendingOpportunitiesFollowUpJobExecutionContextPromotionListener())
         .build();
   }
 
@@ -90,7 +134,33 @@ public class PendingOpportunitiesFollowUpJobConfiguration {
   public ItemReader<Opportunity> pendingOpportunitiesForLinkedInFollowUpItemReader(
       OpportunityRepository opportunityRepository) {
     return getPendingOpportunitiesItemReader(opportunityRepository,
-        LocalDate.now().minusDays(2).atStartOfDay(), LocalDate.now().minusDays(1).atStartOfDay());
+        LocalDate.now().minusDays(LINKED_IN_FOLLOW_UP_STEP_DAY).atStartOfDay(),
+        LocalDate.now().minusDays(LINKED_IN_FOLLOW_UP_STEP_DAY - 1).atStartOfDay());
+  }
+
+  // PRE SMSING FOLLOW UP STEP =====================================================================
+
+
+  @JobScope
+  @Bean
+  public Step preSMSingFollowUpStep(
+      ItemReader<Opportunity> pendingOpportunitiesForPreSMSingFollowUpItemReader) {
+    return stepBuilderFactory
+        .get("PRE_" + SMSING_FOLLOW_UP_STEP_NAME)
+        .<Opportunity, Opportunity>chunk(100)
+        .reader(pendingOpportunitiesForPreSMSingFollowUpItemReader)
+        .processor(new DummyPendingOpportunitiesFollowUpItemProcessor())
+        .listener(pendingOpportunitiesFollowUpJobExecutionContextPromotionListener())
+        .build();
+  }
+
+  @JobScope
+  @Bean
+  public ItemReader<Opportunity> pendingOpportunitiesForPreSMSingFollowUpItemReader(
+      OpportunityRepository opportunityRepository) {
+    return getPendingOpportunitiesItemReader(opportunityRepository,
+        LocalDate.now().minusDays(SMSING_FOLLOW_UP_STEP_DAY - 1).atStartOfDay(),
+        LocalDate.now().minusDays(LINKED_IN_FOLLOW_UP_STEP_DAY).atStartOfDay());
   }
 
   // SMSING FOLLOW UP STEP =========================================================================
@@ -106,6 +176,7 @@ public class PendingOpportunitiesFollowUpJobConfiguration {
         .reader(pendingOpportunitiesForSMSingFollowUpItemReader)
         .processor(new AdminPendingOpportunitiesFollowUpItemProcessor(uriBuilder, mailFactory,
             mailService))
+        .listener(pendingOpportunitiesFollowUpJobExecutionContextPromotionListener())
         .build();
   }
 
@@ -114,7 +185,32 @@ public class PendingOpportunitiesFollowUpJobConfiguration {
   public ItemReader<Opportunity> pendingOpportunitiesForSMSingFollowUpItemReader(
       OpportunityRepository opportunityRepository) {
     return getPendingOpportunitiesItemReader(opportunityRepository,
-        LocalDate.now().minusDays(4).atStartOfDay(), LocalDate.now().minusDays(3).atStartOfDay());
+        LocalDate.now().minusDays(SMSING_FOLLOW_UP_STEP_DAY).atStartOfDay(),
+        LocalDate.now().minusDays(SMSING_FOLLOW_UP_STEP_DAY - 1).atStartOfDay());
+  }
+
+  // PRE CALLING FOLLOW UP STEP ====================================================================
+
+  @JobScope
+  @Bean
+  public Step preCallingFollowUpStep(
+      ItemReader<Opportunity> pendingOpportunitiesForPreCallingFollowUpItemReader) {
+    return stepBuilderFactory
+        .get("PRE_" + CALLING_FOLLOW_UP_STEP_NAME)
+        .<Opportunity, Opportunity>chunk(100)
+        .reader(pendingOpportunitiesForPreCallingFollowUpItemReader)
+        .processor(new DummyPendingOpportunitiesFollowUpItemProcessor())
+        .listener(pendingOpportunitiesFollowUpJobExecutionContextPromotionListener())
+        .build();
+  }
+
+  @JobScope
+  @Bean
+  public ItemReader<Opportunity> pendingOpportunitiesForPreCallingFollowUpItemReader(
+      OpportunityRepository opportunityRepository) {
+    return getPendingOpportunitiesItemReader(opportunityRepository,
+        LocalDate.now().minusDays(CALLING_FOLLOW_UP_STEP_DAY - 1).atStartOfDay(),
+        LocalDate.now().minusDays(SMSING_FOLLOW_UP_STEP_DAY).atStartOfDay());
   }
 
   // CALLING FOLLOW UP STEP ========================================================================
@@ -130,6 +226,7 @@ public class PendingOpportunitiesFollowUpJobConfiguration {
         .reader(pendingOpportunitiesForCallingFollowUpItemReader)
         .processor(new AdminPendingOpportunitiesFollowUpItemProcessor(uriBuilder, mailFactory,
             mailService))
+        .listener(pendingOpportunitiesFollowUpJobExecutionContextPromotionListener())
         .build();
   }
 
@@ -138,7 +235,32 @@ public class PendingOpportunitiesFollowUpJobConfiguration {
   public ItemReader<Opportunity> pendingOpportunitiesForCallingFollowUpItemReader(
       OpportunityRepository opportunityRepository) {
     return getPendingOpportunitiesItemReader(opportunityRepository,
-        LocalDate.now().minusDays(6).atStartOfDay(), LocalDate.now().minusDays(5).atStartOfDay());
+        LocalDate.now().minusDays(CALLING_FOLLOW_UP_STEP_DAY).atStartOfDay(),
+        LocalDate.now().minusDays(CALLING_FOLLOW_UP_STEP_DAY - 1).atStartOfDay());
+  }
+
+  // PRE SECOND MAILING FOLLOW UP STEP =============================================================
+
+  @JobScope
+  @Bean
+  public Step preSecondMailingFollowUpStep(
+      ItemReader<Opportunity> pendingOpportunitiesForPre2ndMailingFollowUpItemReader) {
+    return stepBuilderFactory
+        .get("PRE_" + SECOND_MAILING_FOLLOW_UP_STEP_NAME)
+        .<Opportunity, Opportunity>chunk(100)
+        .reader(pendingOpportunitiesForPre2ndMailingFollowUpItemReader)
+        .processor(new DummyPendingOpportunitiesFollowUpItemProcessor())
+        .listener(pendingOpportunitiesFollowUpJobExecutionContextPromotionListener())
+        .build();
+  }
+
+  @JobScope
+  @Bean
+  public ItemReader<Opportunity> pendingOpportunitiesForPre2ndMailingFollowUpItemReader(
+      OpportunityRepository opportunityRepository) {
+    return getPendingOpportunitiesItemReader(opportunityRepository,
+        LocalDate.now().minusDays(SECOND_MAILING_FOLLOW_UP_STEP_DAY - 1).atStartOfDay(),
+        LocalDate.now().minusDays(CALLING_FOLLOW_UP_STEP_DAY).atStartOfDay());
   }
 
   // SECOND MAILING FOLLOW UP STEP =================================================================
@@ -153,6 +275,7 @@ public class PendingOpportunitiesFollowUpJobConfiguration {
         .<Opportunity, Opportunity>chunk(100)
         .reader(pendingOpportunitiesFor2ndMailingFollowUpItemReader)
         .processor(new TalentPendingOpportunitiesFollowUpItemProcessor(mailFactory, mailService))
+        .listener(pendingOpportunitiesFollowUpJobExecutionContextPromotionListener())
         .build();
   }
 
@@ -161,7 +284,8 @@ public class PendingOpportunitiesFollowUpJobConfiguration {
   public ItemReader<Opportunity> pendingOpportunitiesFor2ndMailingFollowUpItemReader(
       OpportunityRepository opportunityRepository) {
     return getPendingOpportunitiesItemReader(opportunityRepository,
-        LocalDate.now().minusDays(9).atStartOfDay(), LocalDate.now().minusDays(8).atStartOfDay());
+        LocalDate.now().minusDays(SECOND_MAILING_FOLLOW_UP_STEP_DAY).atStartOfDay(),
+        LocalDate.now().minusDays(SECOND_MAILING_FOLLOW_UP_STEP_DAY - 1).atStartOfDay());
   }
 
   // SCHEDULING ====================================================================================
@@ -182,6 +306,13 @@ public class PendingOpportunitiesFollowUpJobConfiguration {
 
   // UTILS =========================================================================================
 
+  @Bean
+  public ExecutionContextPromotionListener pendingOpportunitiesFollowUpJobExecutionContextPromotionListener() {
+    ExecutionContextPromotionListener executionContextPromotionListener = new ExecutionContextPromotionListener();
+    executionContextPromotionListener.setKeys(new String[]{ALREADY_ADDRESSED_TALENT_IDS});
+    return executionContextPromotionListener;
+  }
+
   private ItemReader<Opportunity> getPendingOpportunitiesItemReader(
       OpportunityRepository opportunityRepository, LocalDateTime createdAtAfter,
       LocalDateTime createdAtBefore) {
@@ -191,7 +322,7 @@ public class PendingOpportunitiesFollowUpJobConfiguration {
     reader.setArguments(Arrays.asList(OpportunityStatus.PENDING, createdAtAfter, createdAtBefore));
     reader.setPageSize(100);
     Map<String, Direction> sorts = new HashMap<>();
-    sorts.put("createdAt", Direction.ASC);
+    sorts.put("createdAt", Direction.DESC);
     reader.setSort(sorts);
     return reader;
   }

@@ -8,8 +8,8 @@ import com.deepfish.batch.UnboundUriBuilder;
 import com.deepfish.mail.MailFactory;
 import com.deepfish.mail.MailService;
 import com.deepfish.talent.domain.opportunity.Opportunity;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import org.simplejavamail.email.Email;
 import org.slf4j.Logger;
@@ -18,10 +18,9 @@ import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.annotation.AfterStep;
 import org.springframework.batch.core.annotation.BeforeStep;
-import org.springframework.batch.item.ItemProcessor;
 
-public class AdminPendingOpportunitiesFollowUpItemProcessor implements
-    ItemProcessor<Opportunity, Opportunity> {
+public class AdminPendingOpportunitiesFollowUpItemProcessor extends
+    AbstractPendingOpportunitiesFollowUpItemProcessor {
 
   private static final Logger LOGGER = LoggerFactory
       .getLogger(AdminPendingOpportunitiesFollowUpItemProcessor.class);
@@ -32,9 +31,7 @@ public class AdminPendingOpportunitiesFollowUpItemProcessor implements
 
   private final MailService mailService;
 
-  private final Map<UUID, String[]> talentMap = new HashMap<>();
-
-  private StepExecution stepExecution;
+  private final List<String[]> talents = new ArrayList<>();
 
   public AdminPendingOpportunitiesFollowUpItemProcessor(UnboundUriBuilder uriBuilder,
       MailFactory mailFactory, MailService mailService) {
@@ -46,55 +43,54 @@ public class AdminPendingOpportunitiesFollowUpItemProcessor implements
   @Override
   public Opportunity process(Opportunity item) throws Exception {
     UUID talentId = item.getTalent().getId();
-    if (!talentMap.containsKey(talentId)) {
-      switch (stepExecution.getStepName()) {
+    if (!getAlreadyAddressedTalentIds().contains(talentId)) {
+      getAlreadyAddressedTalentIds().add(talentId);
+      switch (getStepExecution().getStepName()) {
         case LINKED_IN_FOLLOW_UP_STEP_NAME:
         case SMSING_FOLLOW_UP_STEP_NAME:
-          talentMap.put(talentId,
+          talents.add(
               new String[]{item.getTalent().getFirstName() + " " + item.getTalent().getLastName(),
                   uriBuilder.getTalentDataManagementUri(talentId)});
           break;
         case CALLING_FOLLOW_UP_STEP_NAME:
-          talentMap.put(talentId,
+          talents.add(
               new String[]{item.getTalent().getFirstName() + " " + item.getTalent().getLastName(),
                   uriBuilder.getTalentDataManagementUri(talentId),
                   formatPhoneNumber(item.getTalent().getPhoneNumber())});
           break;
         default:
-          throw new IllegalArgumentException("Unknown step : " + stepExecution.getStepName());
+          throw new IllegalArgumentException("Unknown step : " + getStepExecution().getStepName());
       }
     }
     return item;
   }
 
   @BeforeStep
-  void beforeStep(StepExecution stepExecution) {
-    this.stepExecution = stepExecution;
+  protected void beforeStep(StepExecution stepExecution) {
+    super.beforeStep(stepExecution);
   }
 
   @AfterStep
-  ExitStatus afterStep(StepExecution stepExecution) {
-    if (!talentMap.isEmpty()) {
+  protected ExitStatus afterStep(StepExecution stepExecution) {
+    if (!talents.isEmpty()) {
       Email followUpMail;
       switch (stepExecution.getStepName()) {
         case LINKED_IN_FOLLOW_UP_STEP_NAME:
           followUpMail = mailFactory
-              .getAdminTalentPendingOpportunitiesFollowUpLinkedInMail(talentMap.values());
+              .getAdminTalentPendingOpportunitiesFollowUpLinkedInMail(talents);
           break;
         case SMSING_FOLLOW_UP_STEP_NAME:
-          followUpMail = mailFactory
-              .getAdminTalentPendingOpportunitiesFollowUpSMSMail(talentMap.values());
+          followUpMail = mailFactory.getAdminTalentPendingOpportunitiesFollowUpSMSMail(talents);
           break;
         case CALLING_FOLLOW_UP_STEP_NAME:
-          followUpMail = mailFactory
-              .getAdminTalentPendingOpportunitiesFollowUpCallMail(talentMap.values());
+          followUpMail = mailFactory.getAdminTalentPendingOpportunitiesFollowUpCallMail(talents);
           break;
         default:
           throw new IllegalArgumentException("Unknown step : " + stepExecution.getStepName());
       }
       mailService.send(followUpMail);
     }
-    return ExitStatus.COMPLETED;
+    return super.afterStep(stepExecution);
   }
 
   private String formatPhoneNumber(String phoneNumber) {
