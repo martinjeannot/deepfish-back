@@ -88,7 +88,8 @@ public class AdminPendingOpportunitiesFollowUpItemProcessor extends
         default:
           throw new IllegalArgumentException("Unknown step : " + stepExecution.getStepName());
       }
-      mailService.send(followUpMail);
+      // TODO admin mails deactivated upon request of sales team, MDEA process remains unknown/unclearly defined
+      // mailService.send(followUpMail);
     }
     return super.afterStep(stepExecution);
   }
