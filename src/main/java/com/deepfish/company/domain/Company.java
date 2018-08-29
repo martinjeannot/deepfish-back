@@ -39,4 +39,11 @@ public class Company {
   @NotNull
   @Column(columnDefinition = "text")
   private String description = "";
+
+  @Column(name = "logo_uri")
+  private String logoURI;
+
+  public String buildLogoURI(String extension) {
+    return "/companies/" + id.toString() + "/logo." + extension;
+  }
 }

@@ -24,6 +24,9 @@ deepfish:
     scheme: https
     host: staging-app.deepfish.co
     port:
+  aws:
+    s3:
+      bucket-name: staging-deepfish-static
 
 # ----------------------------------------
 # WEB PROPERTIES
@@ -42,6 +45,11 @@ linkedin:
   client:
     id: 77w79kdr6gql2h
     secret: 7ovNCwpTojlQLQXI
+
+# AWS
+aws:
+  accessKeyId: AKIAIMQSHSSRBOGANSYA
+  secretAccessKey: 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
 
 # ===================================================================
 # SPRING

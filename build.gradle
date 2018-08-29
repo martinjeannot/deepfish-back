@@ -93,6 +93,7 @@ dependencies {
     // SERVICES
     compile("org.simplejavamail:simple-java-mail:${simplejavamailVersion}")
     compile("com.sendgrid:sendgrid-java:${sendgridVersion}")
+    compile('software.amazon.awssdk:s3')
     // PERSISTENCE
     compile('org.springframework.boot:spring-boot-starter-data-jpa')
     compile('org.hibernate:hibernate-java8')
@@ -119,5 +120,6 @@ dependencies {
 dependencyManagement {
     imports {
         mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+        mavenBom 'software.amazon.awssdk:bom:2.0.0-preview-11'
     }
 }
