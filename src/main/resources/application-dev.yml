@@ -9,6 +9,11 @@
 
 # EMAIL
 simplejavamail:
+  smtp:
+    host: smtp.gmail.com
+    port: 587
+    password: d33pfish
+    username: morgandeepfish@gmail.com
   defaults:
     from:
       name: Deepfish Staging
