@@ -14,7 +14,7 @@ import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 
 @Configuration
-@Profile({"staging", "production"})
+@Profile({"production", "staging", "dev"})
 public class OnlineUploadConfiguration {
 
   @Bean

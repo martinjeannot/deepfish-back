@@ -1,0 +1,66 @@
+# ===================================================================
+# SPRING BOOT PROPERTIES
+# https://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+# ===================================================================
+
+# ----------------------------------------
+# CORE PROPERTIES
+# ----------------------------------------
+
+# EMAIL
+simplejavamail:
+  defaults:
+    from:
+      name: Deepfish Staging
+      address: morgandeepfish@gmail.com
+  transport.mode.logging.only: true
+
+# DEEPFISH
+deepfish:
+  mail:
+    sink:
+      name: Deepfish Staging Sink
+      address: morgandeepfish@gmail.com
+  front:
+    scheme: http
+    host: localhost
+    port: 8080
+  aws:
+    s3:
+      bucket-name: dev-deepfish-static
+
+# ----------------------------------------
+# WEB PROPERTIES
+# ----------------------------------------
+
+# EMBEDDED SERVER CONFIGURATION (ServerProperties)
+server:
+  port: 5000
+
+# ----------------------------------------
+# SECURITY PROPERTIES
+# ----------------------------------------
+
+# LINKEDIN
+linkedin:
+  client:
+    id: 77w79kdr6gql2h
+    secret: 7ovNCwpTojlQLQXI
+
+# AWS
+aws:
+  accessKeyId: AKIAIMQSHSSRBOGANSYA
+  secretAccessKey: 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
+
+# ===================================================================
+# SPRING
+# ===================================================================
+
+spring:
+  # ----------------------------------------
+  # DATA PROPERTIES
+  # ----------------------------------------
+  # JPA (JpaBaseConfiguration, HibernateJpaAutoConfiguration)
+  jpa:
+    hibernate:
+      ddl-auto: validate
