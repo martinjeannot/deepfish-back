@@ -9,10 +9,16 @@
 
 # EMAIL
 simplejavamail:
+  smtp:
+    host: smtp.gmail.com
+    port: 587
+    password: d33pfish
+    username: morgandeepfish@gmail.com
   defaults:
     from:
       name: Deepfish Staging
       address: morgandeepfish@gmail.com
+  transport.mode.logging.only: true
 
 # DEEPFISH
 deepfish:
@@ -21,12 +27,12 @@ deepfish:
       name: Deepfish Staging Sink
       address: morgandeepfish@gmail.com
   front:
-    scheme: https
-    host: staging-app.deepfish.co
-    port:
+    scheme: http
+    host: localhost
+    port: 8080
   aws:
     s3:
-      bucket-name: staging-deepfish-static
+      bucket-name: dev-deepfish-static
 
 # ----------------------------------------
 # WEB PROPERTIES
@@ -56,8 +62,6 @@ aws:
 # ===================================================================
 
 spring:
-  sendgrid:
-    api-key: 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
   # ----------------------------------------
   # DATA PROPERTIES
   # ----------------------------------------

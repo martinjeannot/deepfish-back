@@ -2,6 +2,7 @@ package com.deepfish.mail.config;
 
 import com.deepfish.mail.MailService;
 import com.deepfish.mail.SendGridMailService;
+import com.deepfish.mail.SinkMailServiceDecorator;
 import java.util.Properties;
 import org.simplejavamail.util.ConfigLoader;
 import org.simplejavamail.util.ConfigLoader.Property;
@@ -13,8 +14,8 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 
 @Configuration
-@Profile("production")
-public class ProductionMailConfiguration {
+@Profile("staging")
+public class SendGridSinkMailConfiguration {
 
   @Value("${simplejavamail.defaults.from.name:#{null}}")
   private String defaultFromName;
@@ -31,8 +32,12 @@ public class ProductionMailConfiguration {
   }
 
   @Bean
-  MailService mailService(@Value("${spring.sendgrid.api-key}") String sendGridApiKey) {
-    return new SendGridMailService(sendGridApiKey);
+  MailService mailService(
+      @Value("${spring.sendgrid.api-key}") String sendGridApiKey,
+      @Value("${deepfish.mail.sink.name}") String sinkName,
+      @Value("${deepfish.mail.sink.address}") String sinkAddress) {
+    return new SinkMailServiceDecorator(new SendGridMailService(sendGridApiKey), sinkName,
+        sinkAddress);
   }
 
   private static void setNullableProperty(final Properties emailProperties, final String key,

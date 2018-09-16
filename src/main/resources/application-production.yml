@@ -24,6 +24,9 @@ deepfish:
     scheme: https
     host: app.deepfish.co
     port:
+  aws:
+    s3:
+      bucket-name: deepfish-static
 
 # ----------------------------------------
 # WEB PROPERTIES
@@ -42,6 +45,11 @@ linkedin:
   client:
     id: 86rw9g7ie1fvw5
     secret: dbwQGTgIuFJmiffh
+
+# AWS
+aws:
+  accessKeyId: AKIAIMQSHSSRBOGANSYA
+  secretAccessKey: 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
 
 # ===================================================================
 # SPRING
