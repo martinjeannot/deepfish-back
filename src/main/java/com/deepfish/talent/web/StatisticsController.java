@@ -1,5 +1,7 @@
 package com.deepfish.talent.web;
 
+import java.util.List;
+import java.util.Objects;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
@@ -22,7 +24,8 @@ public class StatisticsController {
   public ResponseEntity getTalentAcquisitionStatistics(
       @RequestParam("created-at-after") String createdAtAfter,
       @RequestParam("created-at-before") String createdAtBefore,
-      @RequestParam("group-by") String groupBy) {
+      @RequestParam("group-by") String groupBy,
+      @RequestParam(name = "qualification-ranking", required = false) List<String> qualificationRankings) {
     String datePattern;
     String interval;
     switch (groupBy) {
@@ -45,10 +48,17 @@ public class StatisticsController {
       default:
         throw new IllegalArgumentException("Unknown group-by value : " + groupBy);
     }
+    String talentSqlString = "SELECT to_char(created_at, :date_pattern) AS dtime, count(1) AS talents FROM Talent ";
+    if (Objects.nonNull(qualificationRankings) && !qualificationRankings.isEmpty()) {
+      talentSqlString +=
+          "JOIN Qualification ON Qualification.talent_id = Talent.id WHERE Qualification.ranking in ("
+              + String.join(", ", qualificationRankings) + ") ";
+    }
+    talentSqlString += "GROUP BY dtime";
     Query query = entityManager.createNativeQuery(
         "SELECT dtime, coalesce(talents, 0) AS talents "
             + "FROM (SELECT to_char(time_series, :date_pattern) AS dtime FROM generate_series(cast(:start_date AS DATE), cast(:end_date AS DATE), cast(:time_interval AS INTERVAL)) time_series) all_times "
-            + "LEFT JOIN (SELECT to_char(created_at, :date_pattern) AS dtime, count(1) AS talents FROM Talent GROUP BY dtime) talents "
+            + "LEFT JOIN (" + talentSqlString + ") talents "
             + "USING (dtime) ORDER BY dtime");
     query.setParameter("date_pattern", datePattern);
     query.setParameter("start_date", createdAtAfter);
