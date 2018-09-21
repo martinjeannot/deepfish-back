@@ -22,6 +22,8 @@ public interface MailFactory {
 
   Email getEmployerWelcomeMail(Employer employer, String password);
 
+  Email getEmployerWelcomeFromTypeformMail(Employer employer, String password);
+
   Email getEmployerPasswordResetMail(Employer employer, String password);
 
   // ADMIN =========================================================================================

@@ -39,6 +39,15 @@ deepfish:
     scheme: http
     host: localhost
     port: 8081
+  typeform:
+    requirement:
+      public:
+        name: UbLSwYMjjWU6
+        company: SidH8tvsyZVA
+        email: jAYt9a0QjBuS
+        firstName: Zk45wzUmywQK
+        lastName: HtwdhlrLTFwG
+        phoneNumber: ak11MMqGNqic
 
 # ----------------------------------------
 # SECURITY PROPERTIES
@@ -61,7 +70,7 @@ spring:
   # DATASOURCE (DataSourceAutoConfiguration, DataSourceProperties)
   datasource:
     password: postgres
-    url: jdbc:postgresql://localhost:5432/deepfish_dev2
+    url: jdbc:postgresql://localhost:5432/deepfish_dev3
     username: postgres
   # JPA (JpaBaseConfiguration, HibernateJpaAutoConfiguration)
   jpa:

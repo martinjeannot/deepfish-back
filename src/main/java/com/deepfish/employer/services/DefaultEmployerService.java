@@ -55,7 +55,7 @@ public class DefaultEmployerService implements EmployerService {
   }
 
   @Override
-  public Employer signUp(Employer employer) {
+  public Employer signUp(Employer employer, boolean fromTypeform) {
     // generate random password
     String password = generateRandomPassword();
     employer.setPassword(password);
@@ -66,7 +66,9 @@ public class DefaultEmployerService implements EmployerService {
     create(employer);
 
     // send employer welcome mail
-    Email employerWelcomeMail = mailFactory.getEmployerWelcomeMail(employer, password);
+    Email employerWelcomeMail =
+        fromTypeform ? mailFactory.getEmployerWelcomeFromTypeformMail(employer, password)
+            : mailFactory.getEmployerWelcomeMail(employer, password);
     mailService.send(employerWelcomeMail);
 
     // send admin notification mail

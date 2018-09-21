@@ -27,6 +27,15 @@ deepfish:
   aws:
     s3:
       bucket-name: deepfish-static
+  typeform:
+    requirement:
+      public:
+        name: RHHxZfDImC8d
+        company: AGTe4wv1mFAx
+        email: ly9jKcRNvsiM
+        firstName: KxFKEYC8yYiy
+        lastName: FGiQ9GyUIgjM
+        phoneNumber: CRhwm0Sq8tEx
 
 # ----------------------------------------
 # WEB PROPERTIES
