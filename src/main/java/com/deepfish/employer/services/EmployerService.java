@@ -19,9 +19,11 @@ public interface EmployerService {
    * Sign a new employer up
    *
    * @param employer the employer to sign up
+   * @param fromTypeform {@code true} if the sign-up process originates from typeform, false
+   * otherwise
    * @return the newly registered employer
    */
-  Employer signUp(Employer employer);
+  Employer signUp(Employer employer, boolean fromTypeform);
 
   /**
    * Reset the password of the given employer's mail and send it by mail

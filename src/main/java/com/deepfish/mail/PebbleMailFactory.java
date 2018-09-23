@@ -133,6 +133,32 @@ public class PebbleMailFactory implements MailFactory {
         .buildEmail();
   }
 
+  private final PebbleTemplate employerWelcomeFromTypeformMailTemplate = pebbleEngine
+      .getTemplate("mails/employer/welcomeFromTypeform.html");
+
+  @Override
+  public Email getEmployerWelcomeFromTypeformMail(Employer employer, String password) {
+    String subject = "Deepfish - Plateforme de recrutement de commerciaux en startup";
+    Map<String, Object> context = new HashMap<>();
+    context.put("title", subject);
+    context.put("employer", employer);
+    context.put("password", password);
+    Writer writer = new StringWriter();
+    try {
+      employerWelcomeFromTypeformMailTemplate.evaluate(writer, context);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
+    return EmailBuilder
+        .startingBlank()
+        .from("david@deepfish.fr")
+        .to(employer.getUsername())
+        .withSubject(subject)
+        .withHTMLText(writer.toString())
+        .buildEmail();
+  }
+
   private final PebbleTemplate employerPasswordResetMailTemplate = pebbleEngine
       .getTemplate("mails/employer/passwordReset.html");
 

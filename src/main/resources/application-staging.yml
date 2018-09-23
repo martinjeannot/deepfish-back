@@ -27,6 +27,15 @@ deepfish:
   aws:
     s3:
       bucket-name: staging-deepfish-static
+  typeform:
+    requirement:
+      public:
+        name: UbLSwYMjjWU6
+        company: SidH8tvsyZVA
+        email: SidH8tvsyZVA
+        firstName: Zk45wzUmywQK
+        lastName: HtwdhlrLTFwG
+        phoneNumber: ak11MMqGNqic
 
 # ----------------------------------------
 # WEB PROPERTIES
