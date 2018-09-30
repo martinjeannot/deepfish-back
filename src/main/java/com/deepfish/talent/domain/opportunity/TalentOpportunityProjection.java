@@ -14,6 +14,8 @@ public interface TalentOpportunityProjection {
 
   OpportunityStatus getTalentStatus();
 
+  OpportunityStatus getEmployerStatus();
+
   Requirement getRequirement();
 
   String getPitch();
