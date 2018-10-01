@@ -48,7 +48,8 @@ public class OpportunityEventHandler {
             .valueOf((String) opportunity.getPreviousState().get("talentStatus"));
       }
       OpportunityStatus previousEmployerStatus = null;
-      if (opportunity.getPreviousState().containsKey("employerStatus")) {
+      if (opportunity.getPreviousState().containsKey("employerStatus")
+          && Objects.nonNull(opportunity.getPreviousState().get("employerStatus"))) {
         previousEmployerStatus = OpportunityStatus
             .valueOf((String) opportunity.getPreviousState().get("employerStatus"));
       }
