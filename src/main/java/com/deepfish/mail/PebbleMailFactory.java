@@ -1,7 +1,7 @@
 package com.deepfish.mail;
 
 import com.deepfish.employer.domain.Employer;
-import com.deepfish.employer.domain.Requirement;
+import com.deepfish.employer.domain.requirement.Requirement;
 import com.deepfish.talent.domain.Talent;
 import com.deepfish.talent.domain.opportunity.Opportunity;
 import com.mitchellbosecke.pebble.PebbleEngine;

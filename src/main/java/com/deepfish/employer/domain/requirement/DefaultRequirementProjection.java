@@ -1,4 +1,4 @@
-package com.deepfish.employer.domain;
+package com.deepfish.employer.domain.requirement;
 
 import com.deepfish.company.domain.Company;
 import com.deepfish.talent.domain.conditions.JobType;

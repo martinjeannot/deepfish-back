@@ -1,6 +1,6 @@
 package com.deepfish.talent.domain.opportunity;
 
-import com.deepfish.employer.domain.Requirement;
+import com.deepfish.employer.domain.requirement.Requirement;
 import com.deepfish.talent.domain.Talent;
 import com.deepfish.user.domain.User;
 import com.fasterxml.jackson.annotation.JsonProperty;

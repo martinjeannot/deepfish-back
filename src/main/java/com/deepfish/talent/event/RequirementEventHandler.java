@@ -1,6 +1,6 @@
 package com.deepfish.talent.event;
 
-import com.deepfish.employer.domain.Requirement;
+import com.deepfish.employer.domain.requirement.Requirement;
 import com.deepfish.mail.MailFactory;
 import com.deepfish.mail.MailService;
 import org.slf4j.Logger;

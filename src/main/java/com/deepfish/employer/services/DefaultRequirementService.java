@@ -1,7 +1,7 @@
 package com.deepfish.employer.services;
 
 import com.deepfish.employer.domain.Employer;
-import com.deepfish.employer.domain.Requirement;
+import com.deepfish.employer.domain.requirement.Requirement;
 import com.deepfish.employer.repositories.RequirementRepository;
 import java.util.List;
 import java.util.Map;
