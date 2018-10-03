@@ -10,6 +10,8 @@ import java.util.Map;
 import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -49,6 +51,10 @@ public class Requirement {
 
   @NotBlank
   private String name;
+
+  @NotNull
+  @Enumerated(EnumType.STRING)
+  private RequirementStatus status = RequirementStatus.OPEN;
 
   @ManyToOne
   @JoinColumn(foreignKey = @ForeignKey(name = "FK_requirement__job_type__job_type_id"))
