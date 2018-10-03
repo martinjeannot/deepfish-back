@@ -18,6 +18,8 @@ public interface DefaultRequirementProjection {
 
   String getName();
 
+  RequirementStatus getStatus();
+
   JobType getJobType();
 
   Seniority getSeniority();
