@@ -2,7 +2,7 @@ package com.deepfish.talent.web;
 
 import com.deepfish.talent.domain.opportunity.OpportunityStatus;
 import com.deepfish.talent.repositories.OpportunityRepository;
-import com.deepfish.talent.services.OpportunityService;
+import com.deepfish.talent.services.TalentService;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -18,13 +18,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RepositoryRestController
 public class OpportunityController {
 
-  private final OpportunityService opportunityService;
+  private final TalentService talentService;
 
   private final OpportunityRepository opportunityRepository;
 
-  public OpportunityController(OpportunityService opportunityService,
+  public OpportunityController(
+      TalentService talentService,
       OpportunityRepository opportunityRepository) {
-    this.opportunityService = opportunityService;
+    this.talentService = talentService;
     this.opportunityRepository = opportunityRepository;
   }
 
@@ -35,7 +36,7 @@ public class OpportunityController {
     if (!body.containsKey("bulkDeclinationReason")) {
       throw new IllegalArgumentException("No bulk declination reason found");
     }
-    opportunityService.declineInBulk(talentId, (String) body.get("bulkDeclinationReason"));
+    talentService.deactivate(talentId, (String) body.get("bulkDeclinationReason"));
     return ResponseEntity.ok(null);
   }
 

@@ -4,4 +4,5 @@ public enum OpportunityStatus {
   ACCEPTED,
   PENDING,
   DECLINED,
+  EXPIRED, // not used atm
 }

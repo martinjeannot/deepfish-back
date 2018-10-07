@@ -2,9 +2,12 @@ package com.deepfish.talent.domain;
 
 import com.deepfish.talent.domain.conditions.Conditions;
 import com.deepfish.talent.domain.qualification.Qualification;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.querydsl.core.annotations.QueryEntity;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -29,6 +32,10 @@ public class Talent extends AbstractTalent {
     setLinkedInId(linkedInId);
     setUsername(linkedInId);
   }
+
+  @Transient
+  @JsonProperty(access = Access.WRITE_ONLY)
+  private String deactivationReason;
 
   public void activate() {
     setActive(true);

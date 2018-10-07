@@ -18,12 +18,18 @@ public interface TalentService {
   Talent create(Talent talent);
 
   /**
+   * @see TalentService#deactivate(Talent, String)
+   */
+  Talent deactivate(UUID talentId, String deactivationReason);
+
+  /**
    * Deactivate the given talent
    *
-   * @param talentId the id of the talent
+   * @param talent the talent to deactivate
+   * @param deactivationReason his deactivation reason
    * @return the talent
    */
-  Talent deactivate(UUID talentId);
+  Talent deactivate(Talent talent, String deactivationReason);
 
   /**
    * Sign a talent in from his LinkedIn basic profile

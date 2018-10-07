@@ -1,7 +1,7 @@
 package com.deepfish.mail;
 
 import com.deepfish.employer.domain.Employer;
-import com.deepfish.employer.domain.Requirement;
+import com.deepfish.employer.domain.requirement.Requirement;
 import com.deepfish.talent.domain.Talent;
 import com.deepfish.talent.domain.opportunity.Opportunity;
 import com.mitchellbosecke.pebble.PebbleEngine;
@@ -295,13 +295,13 @@ public class PebbleMailFactory implements MailFactory {
       .getTemplate("mails/admin/talentDeactivation.html");
 
   @Override
-  public Email getAdminTalentDeactivationMail(Talent talent, String declinationReason,
+  public Email getAdminTalentDeactivationMail(Talent talent, String deactivationReason,
       List<String> companyNames) {
     String subject = talent.getLastName() + " s'est désactivé";
     Map<String, Object> context = new HashMap<>();
     context.put("title", subject);
     context.put("talent", talent);
-    context.put("declinationReason", declinationReason);
+    context.put("deactivationReason", deactivationReason);
     context.put("companyNames", companyNames);
     Writer writer = new StringWriter();
     try {

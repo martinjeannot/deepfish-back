@@ -1,7 +1,7 @@
 package com.deepfish.employer.repositories;
 
 import com.deepfish.company.domain.Company;
-import com.deepfish.employer.domain.Requirement;
+import com.deepfish.employer.domain.requirement.Requirement;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.data.domain.Page;

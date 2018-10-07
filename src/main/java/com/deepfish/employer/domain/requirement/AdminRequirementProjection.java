@@ -1,4 +1,4 @@
-package com.deepfish.employer.domain;
+package com.deepfish.employer.domain.requirement;
 
 import java.util.Map;
 import org.springframework.data.rest.core.config.Projection;

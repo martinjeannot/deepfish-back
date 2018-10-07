@@ -1,5 +1,6 @@
 package com.deepfish.talent.services;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -12,6 +13,7 @@ public interface OpportunityService {
    *
    * @param talentId the id of the talent
    * @param bulkDeclinationReason the declination reason
+   * @return the list of the company names of the declined opportunities
    */
-  void declineInBulk(UUID talentId, String bulkDeclinationReason);
+  List<String> declineInBulk(UUID talentId, String bulkDeclinationReason);
 }

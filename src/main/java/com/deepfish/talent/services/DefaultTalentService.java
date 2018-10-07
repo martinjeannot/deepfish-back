@@ -12,6 +12,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import org.simplejavamail.email.Email;
@@ -28,6 +29,8 @@ public class DefaultTalentService implements TalentService {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(DefaultTalentService.class);
 
+  private final OpportunityService opportunityService;
+
   private final TalentRepository talentRepository;
 
   private final PasswordEncoder passwordEncoder;
@@ -39,11 +42,13 @@ public class DefaultTalentService implements TalentService {
   private final MailFactory mailFactory;
 
   public DefaultTalentService(
+      OpportunityService opportunityService,
       TalentRepository talentRepository,
       PasswordEncoder passwordEncoder,
       ObjectMapper objectMapper,
       MailService mailService,
       MailFactory mailFactory) {
+    this.opportunityService = opportunityService;
     this.talentRepository = talentRepository;
     this.passwordEncoder = passwordEncoder;
     this.objectMapper = objectMapper;
@@ -70,10 +75,22 @@ public class DefaultTalentService implements TalentService {
   }
 
   @Override
-  public Talent deactivate(UUID talentId) {
+  public Talent deactivate(UUID talentId, String deactivationReason) {
     Talent talent = talentRepository.findOne(talentId);
-    talent.deactivate();
-    return talentRepository.save(talent);
+    return deactivate(talent, deactivationReason);
+  }
+
+  public Talent deactivate(Talent talent, String deactivationReason) {
+    List<String> companyNames = opportunityService
+        .declineInBulk(talent.getId(), deactivationReason);
+    if (talent.isActive()) { // covering the cases where the update was already made via our API
+      talent.deactivate();
+      talent = talentRepository.save(talent);
+    }
+    // notify admins
+    mailService
+        .send(mailFactory.getAdminTalentDeactivationMail(talent, deactivationReason, companyNames));
+    return talent;
   }
 
   @Override

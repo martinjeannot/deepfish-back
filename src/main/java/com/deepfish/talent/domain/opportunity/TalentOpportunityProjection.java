@@ -1,7 +1,7 @@
 package com.deepfish.talent.domain.opportunity;
 
 import com.deepfish.company.domain.DefaultCompanyProjection;
-import com.deepfish.employer.domain.Requirement;
+import com.deepfish.employer.domain.requirement.Requirement;
 import com.deepfish.talent.domain.conditions.JobType;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Value;
