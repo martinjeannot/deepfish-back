@@ -23,10 +23,22 @@ public class TalentEventHandler {
 
   @HandleAfterSave
   public void onAfterSave(Talent talent) {
-    if (!talent.isActive()
-        && Objects.nonNull(talent.getDeactivationReason())
-        && !talent.getDeactivationReason().isEmpty()) {
-      talentService.deactivate(talent, talent.getDeactivationReason());
+    if (Objects.nonNull(talent.getPreviousState())) {
+      // [previous state] data gathering
+      boolean previousActive = talent.isActive();
+      if (talent.getPreviousState().containsKey("active")) {
+        previousActive = Boolean.valueOf(talent.getPreviousState().get("active").toString());
+      }
+
+      // [previous state] data specific behavior
+      if (talent.isActive() != previousActive) {
+        if (talent.isActive()) {
+          talentService.activate(talent);
+        }
+        if (!talent.isActive() && Objects.nonNull(talent.getDeactivationReason())) {
+          talentService.deactivate(talent, talent.getDeactivationReason());
+        }
+      }
     }
   }
 }
