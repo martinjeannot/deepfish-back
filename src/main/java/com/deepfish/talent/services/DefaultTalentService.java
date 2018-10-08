@@ -75,11 +75,23 @@ public class DefaultTalentService implements TalentService {
   }
 
   @Override
+  public Talent activate(Talent talent) {
+    if (!talent.isActive()) { // covering the cases where the update was already made via our API
+      talent.activate();
+      talent = talentRepository.save(talent);
+    }
+    // notify admins
+    mailService.send(mailFactory.getAdminTalentActivationMail(talent));
+    return talent;
+  }
+
+  @Override
   public Talent deactivate(UUID talentId, String deactivationReason) {
     Talent talent = talentRepository.findOne(talentId);
     return deactivate(talent, deactivationReason);
   }
 
+  @Override
   public Talent deactivate(Talent talent, String deactivationReason) {
     List<String> companyNames = opportunityService
         .declineInBulk(talent.getId(), deactivationReason);

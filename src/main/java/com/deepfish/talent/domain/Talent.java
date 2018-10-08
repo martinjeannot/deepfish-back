@@ -5,6 +5,7 @@ import com.deepfish.talent.domain.qualification.Qualification;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.querydsl.core.annotations.QueryEntity;
+import java.util.Map;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -32,6 +33,10 @@ public class Talent extends AbstractTalent {
     setLinkedInId(linkedInId);
     setUsername(linkedInId);
   }
+
+  @Transient
+  @JsonProperty(access = Access.WRITE_ONLY)
+  private Map<String, Object> previousState;
 
   @Transient
   @JsonProperty(access = Access.WRITE_ONLY)

@@ -291,6 +291,30 @@ public class PebbleMailFactory implements MailFactory {
         .buildEmail();
   }
 
+  private final PebbleTemplate adminTalentActivationMailTemplate = pebbleEngine
+      .getTemplate("mails/admin/talentActivation.html");
+
+  @Override
+  public Email getAdminTalentActivationMail(Talent talent) {
+    String subject = talent.getLastName() + " s'est réactivé";
+    Map<String, Object> context = new HashMap<>();
+    context.put("title", subject);
+    context.put("talent", talent);
+    Writer writer = new StringWriter();
+    try {
+      adminTalentActivationMailTemplate.evaluate(writer, context);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
+    return EmailBuilder
+        .startingBlank()
+        .toMultiple(CEO_EMAIL, BIZDEV1_EMAIL)
+        .withSubject(subject)
+        .withHTMLText(writer.toString())
+        .buildEmail();
+  }
+
   private final PebbleTemplate adminTalentDeactivationMailTemplate = pebbleEngine
       .getTemplate("mails/admin/talentDeactivation.html");
 

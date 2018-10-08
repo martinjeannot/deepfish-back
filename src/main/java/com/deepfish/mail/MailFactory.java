@@ -36,6 +36,8 @@ public interface MailFactory {
 
   Email getAdminTalentDeclinedOpportunityMail(Opportunity opportunity);
 
+  Email getAdminTalentActivationMail(Talent talent);
+
   Email getAdminTalentDeactivationMail(Talent talent, String declinationReason,
       List<String> companyNames);
 

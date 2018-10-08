@@ -18,6 +18,14 @@ public interface TalentService {
   Talent create(Talent talent);
 
   /**
+   * Activate the given talent
+   *
+   * @param talent the talent to activate
+   * @return the talent
+   */
+  Talent activate(Talent talent);
+
+  /**
    * @see TalentService#deactivate(Talent, String)
    */
   Talent deactivate(UUID talentId, String deactivationReason);
