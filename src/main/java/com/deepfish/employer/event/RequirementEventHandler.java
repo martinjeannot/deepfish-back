@@ -1,4 +1,4 @@
-package com.deepfish.talent.event;
+package com.deepfish.employer.event;
 
 import com.deepfish.employer.domain.requirement.Requirement;
 import com.deepfish.mail.MailFactory;
