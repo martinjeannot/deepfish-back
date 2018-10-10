@@ -1,6 +1,7 @@
 package com.deepfish.company.domain;
 
 import com.deepfish.employer.domain.Employer;
+import com.querydsl.core.annotations.QueryEntity;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -17,6 +18,7 @@ import lombok.Setter;
 import org.hibernate.validator.constraints.NotBlank;
 
 @Entity
+@QueryEntity
 @Data
 public class Company {
 
