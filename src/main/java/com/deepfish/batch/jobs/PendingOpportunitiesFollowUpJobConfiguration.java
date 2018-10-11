@@ -3,7 +3,7 @@ package com.deepfish.batch.jobs;
 import com.deepfish.batch.BatchConfiguration;
 import com.deepfish.mail.MailFactory;
 import com.deepfish.mail.MailService;
-import com.deepfish.mail.util.UnboundUriBuilder;
+import com.deepfish.mail.util.FrontAppUrlBuilder;
 import com.deepfish.talent.domain.opportunity.Opportunity;
 import com.deepfish.talent.domain.opportunity.OpportunityStatus;
 import com.deepfish.talent.repositories.OpportunityRepository;
@@ -118,13 +118,14 @@ public class PendingOpportunitiesFollowUpJobConfiguration {
   @Bean
   public Step linkedInFollowUpStep(
       ItemReader<Opportunity> pendingOpportunitiesForLinkedInFollowUpItemReader,
-      UnboundUriBuilder uriBuilder, MailFactory mailFactory, MailService mailService) {
+      FrontAppUrlBuilder frontAppUrlBuilder, MailFactory mailFactory, MailService mailService) {
     return stepBuilderFactory
         .get(LINKED_IN_FOLLOW_UP_STEP_NAME)
         .<Opportunity, Opportunity>chunk(100)
         .reader(pendingOpportunitiesForLinkedInFollowUpItemReader)
-        .processor(new AdminPendingOpportunitiesFollowUpItemProcessor(uriBuilder, mailFactory,
-            mailService))
+        .processor(
+            new AdminPendingOpportunitiesFollowUpItemProcessor(frontAppUrlBuilder, mailFactory,
+                mailService))
         .listener(pendingOpportunitiesFollowUpJobExecutionContextPromotionListener())
         .build();
   }
@@ -169,13 +170,14 @@ public class PendingOpportunitiesFollowUpJobConfiguration {
   @Bean
   public Step smsingFollowUpStep(
       ItemReader<Opportunity> pendingOpportunitiesForSMSingFollowUpItemReader,
-      UnboundUriBuilder uriBuilder, MailFactory mailFactory, MailService mailService) {
+      FrontAppUrlBuilder frontAppUrlBuilder, MailFactory mailFactory, MailService mailService) {
     return stepBuilderFactory
         .get(SMSING_FOLLOW_UP_STEP_NAME)
         .<Opportunity, Opportunity>chunk(100)
         .reader(pendingOpportunitiesForSMSingFollowUpItemReader)
-        .processor(new AdminPendingOpportunitiesFollowUpItemProcessor(uriBuilder, mailFactory,
-            mailService))
+        .processor(
+            new AdminPendingOpportunitiesFollowUpItemProcessor(frontAppUrlBuilder, mailFactory,
+                mailService))
         .listener(pendingOpportunitiesFollowUpJobExecutionContextPromotionListener())
         .build();
   }
@@ -219,13 +221,14 @@ public class PendingOpportunitiesFollowUpJobConfiguration {
   @Bean
   public Step callingFollowUpStep(
       ItemReader<Opportunity> pendingOpportunitiesForCallingFollowUpItemReader,
-      UnboundUriBuilder uriBuilder, MailFactory mailFactory, MailService mailService) {
+      FrontAppUrlBuilder frontAppUrlBuilder, MailFactory mailFactory, MailService mailService) {
     return stepBuilderFactory
         .get(CALLING_FOLLOW_UP_STEP_NAME)
         .<Opportunity, Opportunity>chunk(100)
         .reader(pendingOpportunitiesForCallingFollowUpItemReader)
-        .processor(new AdminPendingOpportunitiesFollowUpItemProcessor(uriBuilder, mailFactory,
-            mailService))
+        .processor(
+            new AdminPendingOpportunitiesFollowUpItemProcessor(frontAppUrlBuilder, mailFactory,
+                mailService))
         .listener(pendingOpportunitiesFollowUpJobExecutionContextPromotionListener())
         .build();
   }

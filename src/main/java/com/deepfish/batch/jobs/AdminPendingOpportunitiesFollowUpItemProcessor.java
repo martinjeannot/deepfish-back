@@ -6,7 +6,7 @@ import static com.deepfish.batch.jobs.PendingOpportunitiesFollowUpJobConfigurati
 
 import com.deepfish.mail.MailFactory;
 import com.deepfish.mail.MailService;
-import com.deepfish.mail.util.UnboundUriBuilder;
+import com.deepfish.mail.util.FrontAppUrlBuilder;
 import com.deepfish.talent.domain.opportunity.Opportunity;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +25,7 @@ public class AdminPendingOpportunitiesFollowUpItemProcessor extends
   private static final Logger LOGGER = LoggerFactory
       .getLogger(AdminPendingOpportunitiesFollowUpItemProcessor.class);
 
-  private final UnboundUriBuilder uriBuilder;
+  private final FrontAppUrlBuilder frontAppUrlBuilder;
 
   private final MailFactory mailFactory;
 
@@ -33,9 +33,11 @@ public class AdminPendingOpportunitiesFollowUpItemProcessor extends
 
   private final List<String[]> talents = new ArrayList<>();
 
-  public AdminPendingOpportunitiesFollowUpItemProcessor(UnboundUriBuilder uriBuilder,
-      MailFactory mailFactory, MailService mailService) {
-    this.uriBuilder = uriBuilder;
+  public AdminPendingOpportunitiesFollowUpItemProcessor(
+      FrontAppUrlBuilder frontAppUrlBuilder,
+      MailFactory mailFactory,
+      MailService mailService) {
+    this.frontAppUrlBuilder = frontAppUrlBuilder;
     this.mailFactory = mailFactory;
     this.mailService = mailService;
   }
@@ -50,12 +52,12 @@ public class AdminPendingOpportunitiesFollowUpItemProcessor extends
         case SMSING_FOLLOW_UP_STEP_NAME:
           talents.add(
               new String[]{item.getTalent().getFirstName() + " " + item.getTalent().getLastName(),
-                  uriBuilder.getTalentDataManagementUri(talentId)});
+                  frontAppUrlBuilder.getTalentDataManagementUrl(talentId)});
           break;
         case CALLING_FOLLOW_UP_STEP_NAME:
           talents.add(
               new String[]{item.getTalent().getFirstName() + " " + item.getTalent().getLastName(),
-                  uriBuilder.getTalentDataManagementUri(talentId),
+                  frontAppUrlBuilder.getTalentDataManagementUrl(talentId),
                   formatPhoneNumber(item.getTalent().getPhoneNumber())});
           break;
         default:
