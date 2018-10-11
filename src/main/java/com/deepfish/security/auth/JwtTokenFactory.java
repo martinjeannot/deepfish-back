@@ -13,21 +13,21 @@ import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.stereotype.Component;
 
 @Component
-public class JwtTokenForge {
-
+public class JwtTokenFactory implements TokenFactory {
 
   private final DefaultTokenServices defaultTokenServices;
 
   private final TokenEnhancer tokenEnhancer;
 
-  public JwtTokenForge(
+  public JwtTokenFactory(
       DefaultTokenServices defaultTokenServices,
       TokenEnhancer tokenEnhancer) {
     this.defaultTokenServices = defaultTokenServices;
     this.tokenEnhancer = tokenEnhancer;
   }
 
-  public OAuth2AccessToken forgeToken(UserDetails userDetails) {
+  @Override
+  public OAuth2AccessToken createToken(UserDetails userDetails) {
     OAuth2Request request = new OAuth2Request(null, "67e43464e9c0483faaf7b773018b2b60", null, true,
         new HashSet<>(Arrays.asList(AuthorizationServerConfiguration.AUTHORIZATION_SCOPE)), null,
         null, null, null);

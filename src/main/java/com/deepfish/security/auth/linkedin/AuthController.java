@@ -1,7 +1,7 @@
 package com.deepfish.security.auth.linkedin;
 
 import com.deepfish.security.SystemAuthentication;
-import com.deepfish.security.auth.JwtTokenForge;
+import com.deepfish.security.auth.TokenFactory;
 import com.deepfish.talent.domain.Talent;
 import com.deepfish.talent.services.TalentService;
 import com.deepfish.talent.util.LinkedInUtils;
@@ -51,16 +51,16 @@ public class AuthController {
 
   private final TalentService talentService;
 
-  private final JwtTokenForge jwtTokenForge;
+  private final TokenFactory tokenFactory;
 
   private final ObjectMapper objectMapper;
 
   public AuthController(
       TalentService talentService,
-      JwtTokenForge jwtTokenForge,
+      TokenFactory tokenFactory,
       ObjectMapper objectMapper) {
     this.talentService = talentService;
-    this.jwtTokenForge = jwtTokenForge;
+    this.tokenFactory = tokenFactory;
     this.objectMapper = objectMapper;
   }
 
@@ -93,7 +93,7 @@ public class AuthController {
     Talent talent = talentService.signInFromLinkedin(response);
 
     // authenticate talent
-    OAuth2AccessToken authToken = jwtTokenForge.forgeToken(talent);
+    OAuth2AccessToken authToken = tokenFactory.createToken(talent);
 
     try {
       redirectAttributes.addAttribute("auth_token", objectMapper.writeValueAsString(authToken));

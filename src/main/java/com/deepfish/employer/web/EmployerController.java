@@ -8,7 +8,7 @@ import com.deepfish.employer.forms.PasswordResetForm;
 import com.deepfish.employer.forms.SignUpForm;
 import com.deepfish.employer.services.EmployerService;
 import com.deepfish.employer.services.RequirementService;
-import com.deepfish.security.auth.JwtTokenForge;
+import com.deepfish.security.auth.TokenFactory;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -54,18 +54,18 @@ public class EmployerController {
 
   private final RequirementService requirementService;
 
-  private final JwtTokenForge jwtTokenForge;
+  private final TokenFactory tokenFactory;
 
   private final RepositoryEntityLinks repositoryEntityLinks;
 
   public EmployerController(
       EmployerService employerService,
       RequirementService requirementService,
-      JwtTokenForge jwtTokenForge,
+      TokenFactory tokenFactory,
       RepositoryEntityLinks repositoryEntityLinks) {
     this.employerService = employerService;
     this.requirementService = requirementService;
-    this.jwtTokenForge = jwtTokenForge;
+    this.tokenFactory = tokenFactory;
     this.repositoryEntityLinks = repositoryEntityLinks;
   }
 
@@ -84,7 +84,7 @@ public class EmployerController {
     employer = employerService.signUp(employer, false);
 
     // authenticate employer
-    OAuth2AccessToken authToken = jwtTokenForge.forgeToken(employer);
+    OAuth2AccessToken authToken = tokenFactory.createToken(employer);
 
     return ResponseEntity.ok(authToken);
   }

@@ -23,13 +23,13 @@ public class SignInAsController {
 
   private final UserDetailsService userDetailsService;
 
-  private final JwtTokenForge jwtTokenForge;
+  private final TokenFactory tokenFactory;
 
   public SignInAsController(
       UserDetailsService userDetailsService,
-      JwtTokenForge jwtTokenForge) {
+      TokenFactory tokenFactory) {
     this.userDetailsService = userDetailsService;
-    this.jwtTokenForge = jwtTokenForge;
+    this.tokenFactory = tokenFactory;
   }
 
   @PostMapping
@@ -37,7 +37,7 @@ public class SignInAsController {
   public ResponseEntity signInAs(@Valid @RequestBody SignInAsForm signInAsForm) {
     UserDetails userDetails = userDetailsService.loadUserByUsername(signInAsForm.getUsername());
 
-    OAuth2AccessToken authToken = jwtTokenForge.forgeToken(userDetails);
+    OAuth2AccessToken authToken = tokenFactory.createToken(userDetails);
 
     return ResponseEntity.ok(authToken);
   }
