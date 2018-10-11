@@ -1,9 +1,9 @@
 package com.deepfish.batch.jobs;
 
 import com.deepfish.batch.BatchConfiguration;
-import com.deepfish.batch.UnboundUriBuilder;
 import com.deepfish.mail.MailFactory;
 import com.deepfish.mail.MailService;
+import com.deepfish.mail.util.UnboundUriBuilder;
 import com.deepfish.talent.domain.opportunity.Opportunity;
 import com.deepfish.talent.domain.opportunity.OpportunityStatus;
 import com.deepfish.talent.repositories.OpportunityRepository;

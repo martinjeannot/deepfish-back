@@ -4,9 +4,9 @@ import static com.deepfish.batch.jobs.PendingOpportunitiesFollowUpJobConfigurati
 import static com.deepfish.batch.jobs.PendingOpportunitiesFollowUpJobConfiguration.LINKED_IN_FOLLOW_UP_STEP_NAME;
 import static com.deepfish.batch.jobs.PendingOpportunitiesFollowUpJobConfiguration.SMSING_FOLLOW_UP_STEP_NAME;
 
-import com.deepfish.batch.UnboundUriBuilder;
 import com.deepfish.mail.MailFactory;
 import com.deepfish.mail.MailService;
+import com.deepfish.mail.util.UnboundUriBuilder;
 import com.deepfish.talent.domain.opportunity.Opportunity;
 import java.util.ArrayList;
 import java.util.List;

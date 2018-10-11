@@ -1,4 +1,4 @@
-package com.deepfish.batch;
+package com.deepfish.mail.util;
 
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Value;
