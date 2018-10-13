@@ -1,5 +1,6 @@
 package com.deepfish.mail.util;
 
+import com.deepfish.talent.domain.opportunity.Opportunity;
 import java.util.UUID;
 
 /**
@@ -8,4 +9,6 @@ import java.util.UUID;
 public interface FrontAppUrlBuilder {
 
   String getTalentDataManagementUrl(UUID talentId);
+
+  String getTalentOpportunityUrl(Opportunity opportunity);
 }
