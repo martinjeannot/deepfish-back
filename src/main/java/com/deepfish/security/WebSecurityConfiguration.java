@@ -48,6 +48,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         .antMatchers("/employers/sign-up").permitAll()
         .antMatchers("/employers/password-reset").permitAll()
         .antMatchers("/employers/typeform").permitAll()
+        .antMatchers("/requirements/typeform").permitAll()
         .anyRequest().denyAll();
   }
 

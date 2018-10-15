@@ -2,6 +2,7 @@ package com.deepfish.mail;
 
 import com.deepfish.employer.domain.Employer;
 import com.deepfish.employer.domain.requirement.Requirement;
+import com.deepfish.mail.util.FrontAppUrlBuilder;
 import com.deepfish.talent.domain.Talent;
 import com.deepfish.talent.domain.opportunity.Opportunity;
 import com.mitchellbosecke.pebble.PebbleEngine;
@@ -26,6 +27,12 @@ public class PebbleMailFactory implements MailFactory {
   private static final String BIZDEV1_EMAIL = "bruno@deepfish.co";
 
   private final PebbleEngine pebbleEngine = new PebbleEngine.Builder().build();
+
+  private final FrontAppUrlBuilder frontAppUrlBuilder;
+
+  public PebbleMailFactory(FrontAppUrlBuilder frontAppUrlBuilder) {
+    this.frontAppUrlBuilder = frontAppUrlBuilder;
+  }
 
   // TALENT ========================================================================================
 
@@ -59,11 +66,12 @@ public class PebbleMailFactory implements MailFactory {
 
   @Override
   public Email getTalentNewOpportunityMail(Opportunity opportunity) {
-    String subject =
-        opportunity.getTalent().getFirstName() + ", une entreprise vous sollicite sur Deepfish";
+    String subject = opportunity.getTalent().getFirstName()
+        + ", tu as reçu une nouvelle opportunité sur Deepfish";
     Map<String, Object> context = new HashMap<>();
     context.put("title", subject);
     context.put("talent", opportunity.getTalent());
+    context.put("opportunityUrl", frontAppUrlBuilder.getTalentOpportunityUrl(opportunity));
     Writer writer = new StringWriter();
     try {
       talentNewOpportunityMailTemplate.evaluate(writer, context);
