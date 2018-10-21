@@ -37,15 +37,15 @@ public class PendingOpportunitiesFollowUpJobConfiguration {
 
   static final String SMSING_FOLLOW_UP_STEP_NAME = "SMSING_FOLLOW_UP_STEP";
 
-  static final int SMSING_FOLLOW_UP_STEP_DAY = 4;
+  static final int SMSING_FOLLOW_UP_STEP_DAY = 3;
 
   static final String CALLING_FOLLOW_UP_STEP_NAME = "CALLING_FOLLOW_UP_STEP";
 
-  static final int CALLING_FOLLOW_UP_STEP_DAY = 6;
+  static final int CALLING_FOLLOW_UP_STEP_DAY = 4;
 
   static final String SECOND_MAILING_FOLLOW_UP_STEP_NAME = "SECOND_MAILING_FOLLOW_UP_STEP";
 
-  static final int SECOND_MAILING_FOLLOW_UP_STEP_DAY = 9;
+  static final int SECOND_MAILING_FOLLOW_UP_STEP_DAY = 5;
 
   static final String ALREADY_ADDRESSED_TALENT_IDS = "ALREADY_ADDRESSED_TALENT_IDS";
 
