@@ -6,6 +6,7 @@ import com.deepfish.user.domain.User;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.querydsl.core.annotations.QueryEntity;
+import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.UUID;
@@ -63,12 +64,24 @@ public class Opportunity {
   private Requirement requirement;
 
   @NotNull
+  @Column(columnDefinition = "text")
+  private String pitch = "";
+
+  @NotNull
   @Enumerated(EnumType.STRING)
   private OpportunityStatus talentStatus = OpportunityStatus.PENDING;
 
   @NotNull
   @Column(columnDefinition = "text")
   private String talentDeclinationReason = "";
+
+  private LocalDateTime talentRespondedAt;
+
+  private boolean forwarded;
+
+  private LocalDateTime forwardedAt;
+
+  private boolean forwardedOnce;
 
   @Enumerated(EnumType.STRING)
   private OpportunityStatus employerStatus;
@@ -77,11 +90,22 @@ public class Opportunity {
   @Column(columnDefinition = "text")
   private String employerDeclinationReason = "";
 
-  @NotNull
-  @Column(columnDefinition = "text")
-  private String pitch = "";
+  private LocalDateTime employerRespondedAt;
 
-  private boolean forwarded;
+  /**
+   * Tag this opportunity as forwarded to the related employer (through requirement)
+   */
+  public void forwardToEmployer() {
+    setForwarded(true);
+    setForwardedAt(LocalDateTime.now(Clock.systemUTC()));
+    setForwardedOnce(true);
+  }
 
-  private LocalDateTime forwardedAt;
+  /**
+   * Untag this opportunity as forwarded to the related employer (through requirement)
+   */
+  public void retrieveFromEmployer() {
+    setForwarded(false);
+    setForwardedAt(null);
+  }
 }

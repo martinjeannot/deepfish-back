@@ -8,11 +8,16 @@ import com.deepfish.mail.MailFactory;
 import com.deepfish.mail.MailService;
 import com.deepfish.talent.domain.opportunity.Opportunity;
 import com.deepfish.talent.domain.opportunity.OpportunityStatus;
+import com.google.common.collect.Sets;
+import java.time.Clock;
+import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.rest.core.annotation.HandleAfterCreate;
 import org.springframework.data.rest.core.annotation.HandleAfterSave;
+import org.springframework.data.rest.core.annotation.HandleBeforeSave;
 import org.springframework.data.rest.core.annotation.RepositoryEventHandler;
 import org.springframework.stereotype.Component;
 
@@ -21,6 +26,9 @@ import org.springframework.stereotype.Component;
 public class OpportunityEventHandler {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(OpportunityEventHandler.class);
+
+  private static final Set<OpportunityStatus> USER_ACTIONED_OPPORTUNITY_STATUSES = Sets
+      .newHashSet(ACCEPTED, DECLINED);
 
   private final MailService mailService;
 
@@ -38,23 +46,56 @@ public class OpportunityEventHandler {
     mailService.send(mailFactory.getTalentNewOpportunityMail(opportunity));
   }
 
+  @HandleBeforeSave
+  public void onBeforeSave(Opportunity opportunity) {
+    if (Objects.nonNull(opportunity.getPreviousState())) {
+      // [previous state] data gathering
+
+      OpportunityStatus previousTalentStatus = getPreviousOpportunityStatus("talentStatus",
+          opportunity);
+      OpportunityStatus previousEmployerStatus = getPreviousOpportunityStatus("employerStatus",
+          opportunity);
+
+      // [previous state] data specific behavior
+
+      // talent response
+      if (PENDING.equals(previousTalentStatus)
+          && USER_ACTIONED_OPPORTUNITY_STATUSES.contains(opportunity.getTalentStatus())) {
+        opportunity.setTalentRespondedAt(LocalDateTime.now(Clock.systemUTC()));
+      }
+
+      // talent forwarding
+      if (Objects.isNull(previousEmployerStatus)
+          && PENDING.equals(opportunity.getEmployerStatus())) {
+        opportunity.forwardToEmployer();
+      }
+
+      // handling employer response
+      if (PENDING.equals(previousEmployerStatus)
+          && USER_ACTIONED_OPPORTUNITY_STATUSES.contains(opportunity.getEmployerStatus())) {
+        opportunity.setEmployerRespondedAt(LocalDateTime.now(Clock.systemUTC()));
+      }
+
+      // talent retrieval
+      if (Objects.nonNull(previousEmployerStatus)
+          && Objects.isNull(opportunity.getEmployerStatus())) {
+        opportunity.retrieveFromEmployer();
+      }
+    }
+  }
+
   @HandleAfterSave
   public void onAfterSave(Opportunity opportunity) {
     if (Objects.nonNull(opportunity.getPreviousState())) {
       // [previous state] data gathering
-      OpportunityStatus previousTalentStatus = null;
-      if (opportunity.getPreviousState().containsKey("talentStatus")) {
-        previousTalentStatus = OpportunityStatus
-            .valueOf((String) opportunity.getPreviousState().get("talentStatus"));
-      }
-      OpportunityStatus previousEmployerStatus = null;
-      if (opportunity.getPreviousState().containsKey("employerStatus")
-          && Objects.nonNull(opportunity.getPreviousState().get("employerStatus"))) {
-        previousEmployerStatus = OpportunityStatus
-            .valueOf((String) opportunity.getPreviousState().get("employerStatus"));
-      }
+
+      OpportunityStatus previousTalentStatus = getPreviousOpportunityStatus("talentStatus",
+          opportunity);
+      OpportunityStatus previousEmployerStatus = getPreviousOpportunityStatus("employerStatus",
+          opportunity);
 
       // [previous state] data specific behavior
+
       if (PENDING.equals(previousTalentStatus)) {
         if (ACCEPTED.equals(opportunity.getTalentStatus())) {
           mailService.send(mailFactory.getAdminTalentAcceptedOpportunityMail(opportunity));
@@ -75,5 +116,14 @@ public class OpportunityEventHandler {
         }
       }
     }
+  }
+
+  private OpportunityStatus getPreviousOpportunityStatus(String fieldName,
+      Opportunity opportunity) {
+    if (opportunity.getPreviousState().containsKey(fieldName)
+        && Objects.nonNull(opportunity.getPreviousState().get(fieldName))) {
+      return OpportunityStatus.valueOf((String) opportunity.getPreviousState().get(fieldName));
+    }
+    return null;
   }
 }
