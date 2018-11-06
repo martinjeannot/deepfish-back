@@ -46,7 +46,7 @@ public class Opportunity {
 
   @NotNull
   @Setter(AccessLevel.NONE)
-  private LocalDateTime createdAt = LocalDateTime.now();
+  private LocalDateTime createdAt = LocalDateTime.now(Clock.systemUTC());
 
   @NotNull
   @ManyToOne(fetch = FetchType.LAZY)
