@@ -25,12 +25,14 @@ public class TalentEventHandler {
   public void onAfterSave(Talent talent) {
     if (Objects.nonNull(talent.getPreviousState())) {
       // [previous state] data gathering
+
       boolean previousActive = talent.isActive();
       if (talent.getPreviousState().containsKey("active")) {
         previousActive = Boolean.valueOf(talent.getPreviousState().get("active").toString());
       }
 
       // [previous state] data specific behavior
+
       if (talent.isActive() != previousActive) {
         if (talent.isActive()) {
           talentService.activate(talent);

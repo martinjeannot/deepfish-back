@@ -61,7 +61,8 @@ public class OpportunityEventHandler {
       // talent response
       if (PENDING.equals(previousTalentStatus)
           && USER_ACTIONED_OPPORTUNITY_STATUSES.contains(opportunity.getTalentStatus())) {
-        opportunity.setTalentRespondedAt(LocalDateTime.now(Clock.systemUTC()));
+        opportunity.handleTalentResponse(opportunity.getTalentStatus(),
+            opportunity.getTalentDeclinationReason(), false);
       }
 
       // talent forwarding

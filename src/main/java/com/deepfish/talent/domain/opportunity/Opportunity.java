@@ -108,4 +108,14 @@ public class Opportunity {
     setForwarded(false);
     setForwardedAt(null);
   }
+
+  public void handleTalentResponse(OpportunityStatus talentStatus, String talentDeclinationReason,
+      boolean bulkDeclined) {
+    setTalentStatus(talentStatus);
+    setTalentRespondedAt(LocalDateTime.now(Clock.systemUTC()));
+    if (OpportunityStatus.DECLINED.equals(talentStatus)) {
+      setTalentDeclinationReason(talentDeclinationReason);
+      // todo set bulkDeclined
+    }
+  }
 }
