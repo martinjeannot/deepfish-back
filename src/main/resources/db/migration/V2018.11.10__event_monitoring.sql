@@ -3,7 +3,8 @@
 ALTER TABLE opportunity
   ADD talent_responded_at TIMESTAMP,
   ADD employer_responded_at TIMESTAMP,
-  ADD forwarded_once BOOLEAN;
+  ADD forwarded_once BOOLEAN NOT NULL DEFAULT FALSE,
+  ADD declined_in_bulk BOOLEAN NOT NULL DEFAULT FALSE;
 
 -- Default values for talent and employer response
 
@@ -18,17 +19,11 @@ WHERE employer_status IS NOT NULL AND employer_status != 'PENDING';
 -- Default values for forwardedOnce
 
 UPDATE opportunity
-SET forwarded_once = FALSE;
-
-UPDATE opportunity
 SET forwarded_once = TRUE
-WHERE employer_status IS NULL AND forwarded_at IS NOT NULL;
-
-ALTER TABLE opportunity
-  ALTER COLUMN forwarded_once SET NOT NULL;
+WHERE forwarded_at IS NOT NULL;
 
 -- ForwardedAt cleanup
 
 UPDATE opportunity
 SET forwarded_at = NULL
-WHERE employer_status IS NULL AND forwarded_at IS NOT NULL;
+WHERE employer_status IS NULL;

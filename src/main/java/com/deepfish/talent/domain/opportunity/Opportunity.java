@@ -71,11 +71,13 @@ public class Opportunity {
   @Enumerated(EnumType.STRING)
   private OpportunityStatus talentStatus = OpportunityStatus.PENDING;
 
+  private LocalDateTime talentRespondedAt;
+
   @NotNull
   @Column(columnDefinition = "text")
   private String talentDeclinationReason = "";
 
-  private LocalDateTime talentRespondedAt;
+  private boolean declinedInBulk;
 
   private boolean forwarded;
 
@@ -86,11 +88,11 @@ public class Opportunity {
   @Enumerated(EnumType.STRING)
   private OpportunityStatus employerStatus;
 
+  private LocalDateTime employerRespondedAt;
+
   @NotNull
   @Column(columnDefinition = "text")
   private String employerDeclinationReason = "";
-
-  private LocalDateTime employerRespondedAt;
 
   /**
    * Tag this opportunity as forwarded to the related employer (through requirement)
@@ -110,12 +112,12 @@ public class Opportunity {
   }
 
   public void handleTalentResponse(OpportunityStatus talentStatus, String talentDeclinationReason,
-      boolean bulkDeclined) {
+      boolean declinedInBulk) {
     setTalentStatus(talentStatus);
     setTalentRespondedAt(LocalDateTime.now(Clock.systemUTC()));
     if (OpportunityStatus.DECLINED.equals(talentStatus)) {
       setTalentDeclinationReason(talentDeclinationReason);
-      // todo set bulkDeclined
+      setDeclinedInBulk(declinedInBulk);
     }
   }
 }
