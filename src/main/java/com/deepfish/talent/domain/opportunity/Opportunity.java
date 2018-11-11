@@ -6,6 +6,7 @@ import com.deepfish.user.domain.User;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.querydsl.core.annotations.QueryEntity;
+import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.UUID;
@@ -45,7 +46,7 @@ public class Opportunity {
 
   @NotNull
   @Setter(AccessLevel.NONE)
-  private LocalDateTime createdAt = LocalDateTime.now();
+  private LocalDateTime createdAt = LocalDateTime.now(Clock.systemUTC());
 
   @NotNull
   @ManyToOne(fetch = FetchType.LAZY)
@@ -63,25 +64,60 @@ public class Opportunity {
   private Requirement requirement;
 
   @NotNull
+  @Column(columnDefinition = "text")
+  private String pitch = "";
+
+  @NotNull
   @Enumerated(EnumType.STRING)
   private OpportunityStatus talentStatus = OpportunityStatus.PENDING;
+
+  private LocalDateTime talentRespondedAt;
 
   @NotNull
   @Column(columnDefinition = "text")
   private String talentDeclinationReason = "";
 
+  private boolean declinedInBulk;
+
+  private boolean forwarded;
+
+  private LocalDateTime forwardedAt;
+
+  private boolean forwardedOnce;
+
   @Enumerated(EnumType.STRING)
   private OpportunityStatus employerStatus;
+
+  private LocalDateTime employerRespondedAt;
 
   @NotNull
   @Column(columnDefinition = "text")
   private String employerDeclinationReason = "";
 
-  @NotNull
-  @Column(columnDefinition = "text")
-  private String pitch = "";
+  /**
+   * Tag this opportunity as forwarded to the related employer (through requirement)
+   */
+  public void forwardToEmployer() {
+    setForwarded(true);
+    setForwardedAt(LocalDateTime.now(Clock.systemUTC()));
+    setForwardedOnce(true);
+  }
 
-  private boolean forwarded;
+  /**
+   * Untag this opportunity as forwarded to the related employer (through requirement)
+   */
+  public void retrieveFromEmployer() {
+    setForwarded(false);
+    setForwardedAt(null);
+  }
 
-  private LocalDateTime forwardedAt;
+  public void handleTalentResponse(OpportunityStatus talentStatus, String talentDeclinationReason,
+      boolean declinedInBulk) {
+    setTalentStatus(talentStatus);
+    setTalentRespondedAt(LocalDateTime.now(Clock.systemUTC()));
+    if (OpportunityStatus.DECLINED.equals(talentStatus)) {
+      setTalentDeclinationReason(talentDeclinationReason);
+      setDeclinedInBulk(declinedInBulk);
+    }
+  }
 }

@@ -5,6 +5,7 @@ import com.deepfish.talent.domain.conditions.JobType;
 import com.querydsl.core.annotations.QueryEntity;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import java.math.BigDecimal;
+import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.UUID;
@@ -39,7 +40,7 @@ public class Requirement {
 
   @NotNull
   @Setter(AccessLevel.NONE)
-  private LocalDateTime createdAt = LocalDateTime.now();
+  private LocalDateTime createdAt = LocalDateTime.now(Clock.systemUTC());
 
   @NotNull
   private UUID createdBy;

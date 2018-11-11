@@ -10,6 +10,7 @@ import com.deepfish.talent.domain.qualification.Qualification;
 import com.deepfish.talent.repositories.TalentRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -133,7 +134,7 @@ public class DefaultTalentService implements TalentService {
         LOGGER.error(e.getMessage(), e);
         talent.setBasicProfileText("{}");
       }
-      talent.setLastSignedInAt(LocalDateTime.now());
+      talent.setLastSignedInAt(LocalDateTime.now(Clock.systemUTC()));
       return talentRepository.save(talent);
     }
   }

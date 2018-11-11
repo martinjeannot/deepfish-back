@@ -7,6 +7,7 @@ import com.deepfish.mail.util.FrontAppUrlBuilder;
 import com.deepfish.talent.domain.opportunity.Opportunity;
 import com.deepfish.talent.domain.opportunity.OpportunityStatus;
 import com.deepfish.talent.repositories.OpportunityRepository;
+import java.time.Clock;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -109,7 +110,7 @@ public class PendingOpportunitiesFollowUpJobConfiguration {
       OpportunityRepository opportunityRepository) {
     return getPendingOpportunitiesItemReader(opportunityRepository,
         LocalDate.now().minusDays(LINKED_IN_FOLLOW_UP_STEP_DAY - 1).atStartOfDay(),
-        LocalDateTime.now());
+        LocalDateTime.now(Clock.systemUTC()));
   }
 
   // LINKED IN FOLLOW UP STEP ======================================================================

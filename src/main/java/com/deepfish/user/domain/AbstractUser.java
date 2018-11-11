@@ -5,6 +5,7 @@ import com.deepfish.user.serialization.PasswordDeserializer;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.UUID;
@@ -64,10 +65,10 @@ public abstract class AbstractUser implements UserDetails, Identifiable<UUID> {
 
   @NotNull
   @Setter(AccessLevel.NONE)
-  private LocalDateTime createdAt = LocalDateTime.now();
+  private LocalDateTime createdAt = LocalDateTime.now(Clock.systemUTC());
 
   @NotNull
-  private LocalDateTime lastSignedInAt = LocalDateTime.now();
+  private LocalDateTime lastSignedInAt = LocalDateTime.now(Clock.systemUTC());
 
   /**
    * Enable user authentication by setting all of Spring's authentication-blocking properties to

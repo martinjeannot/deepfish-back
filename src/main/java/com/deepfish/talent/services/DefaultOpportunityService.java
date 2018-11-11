@@ -26,8 +26,8 @@ public class DefaultOpportunityService implements OpportunityService {
     BooleanExpression fromTalent = opportunity.talent.id.eq(talentId);
     BooleanExpression isPending = opportunity.talentStatus.eq(OpportunityStatus.PENDING);
     opportunityRepository.findAll(fromTalent.and(isPending)).forEach(pendingOpportunity -> {
-      pendingOpportunity.setTalentStatus(OpportunityStatus.DECLINED);
-      pendingOpportunity.setTalentDeclinationReason(bulkDeclinationReason);
+      pendingOpportunity
+          .handleTalentResponse(OpportunityStatus.DECLINED, bulkDeclinationReason, true);
       opportunityRepository.save(pendingOpportunity);
       companyNames.add(pendingOpportunity.getRequirement().getCompany().getName());
     });

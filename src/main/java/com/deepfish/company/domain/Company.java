@@ -2,6 +2,7 @@ package com.deepfish.company.domain;
 
 import com.deepfish.employer.domain.Employer;
 import com.querydsl.core.annotations.QueryEntity;
+import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -29,7 +30,7 @@ public class Company {
 
   @NotNull
   @Setter(AccessLevel.NONE)
-  private LocalDateTime createdAt = LocalDateTime.now();
+  private LocalDateTime createdAt = LocalDateTime.now(Clock.systemUTC());
 
   @NotBlank
   private String name;

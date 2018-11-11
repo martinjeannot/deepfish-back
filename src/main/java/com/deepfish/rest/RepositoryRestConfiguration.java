@@ -11,6 +11,7 @@ import com.deepfish.talent.domain.conditions.CommodityType;
 import com.deepfish.talent.domain.conditions.FixedLocation;
 import com.deepfish.talent.domain.conditions.JobType;
 import com.deepfish.talent.domain.conditions.TaskType;
+import com.deepfish.talent.domain.opportunity.Opportunity;
 import org.springframework.data.rest.core.event.ValidatingRepositoryEventListener;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurerAdapter;
 import org.springframework.stereotype.Component;
@@ -28,9 +29,9 @@ public class RepositoryRestConfiguration extends RepositoryRestConfigurerAdapter
   @Override
   public void configureRepositoryRestConfiguration(
       org.springframework.data.rest.core.config.RepositoryRestConfiguration config) {
-    config.exposeIdsFor(Talent.class, QueryableTalent.class, Employer.class, Company.class,
-        CompanyMaturityLevel.class, JobType.class, CommodityType.class, TaskType.class,
-        FixedLocation.class, Seniority.class, Requirement.class);
+    config.exposeIdsFor(Talent.class, QueryableTalent.class, Opportunity.class, Employer.class,
+        Company.class, CompanyMaturityLevel.class, JobType.class, CommodityType.class,
+        TaskType.class, FixedLocation.class, Seniority.class, Requirement.class);
   }
 
   @Override
