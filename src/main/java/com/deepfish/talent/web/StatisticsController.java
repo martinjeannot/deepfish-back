@@ -64,7 +64,13 @@ public class StatisticsController {
     String datePattern = datePatternAndInterval[0];
     String interval = datePatternAndInterval[1];
 
-    String opportunitySqlString = "SELECT to_char(created_at, :date_pattern) AS dtime, count(1) AS opportunities FROM Opportunity ";
+    String dateField = "created_at";
+    dateField = Objects.nonNull(talentStatus) && !OpportunityStatus.PENDING.equals(talentStatus)
+        ? "talent_responded_at" : dateField;
+    dateField = Objects.nonNull(employerStatus) && !OpportunityStatus.PENDING.equals(employerStatus)
+        ? "employer_responded_at" : dateField;
+    String opportunitySqlString = "SELECT to_char(" + dateField
+        + ", :date_pattern) AS dtime, count(1) AS opportunities FROM Opportunity ";
     if (Objects.nonNull(talentStatus)) {
       opportunitySqlString += opportunitySqlString.contains(" WHERE ") ? "" : "WHERE ";
       opportunitySqlString += "talent_status = :talent_status ";
