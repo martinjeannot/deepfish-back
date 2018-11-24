@@ -21,5 +21,7 @@ public interface DefaultConditionsProjection {
 
   Set<TaskType> getTaskTypes();
 
+  Set<IndustryType> getIndustryTypes();
+
   Set<DefaultFixedLocationsProjection> getFixedLocations();
 }
