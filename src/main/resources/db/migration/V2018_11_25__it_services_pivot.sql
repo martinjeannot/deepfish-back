@@ -125,4 +125,40 @@ BEGIN
       ADD number_of_managed_projects INT4 NOT NULL DEFAULT 0;
   END IF;
 
+  -- update reference types
+
+  IF NOT EXISTS(SELECT 1
+                FROM information_schema.columns
+                WHERE table_name = 'company_maturity_level' AND column_name = 'enabled')
+  THEN
+    ALTER TABLE company_maturity_level
+      ADD enabled BOOLEAN NOT NULL DEFAULT FALSE;
+    ALTER TABLE commodity_type
+      ADD enabled BOOLEAN NOT NULL DEFAULT FALSE;
+    ALTER TABLE fixed_location
+      ADD enabled BOOLEAN NOT NULL DEFAULT FALSE;
+    ALTER TABLE industry_type
+      ADD enabled BOOLEAN NOT NULL DEFAULT FALSE;
+    ALTER TABLE job_type
+      ADD enabled BOOLEAN NOT NULL DEFAULT FALSE;
+    ALTER TABLE task_type
+      ADD enabled BOOLEAN NOT NULL DEFAULT FALSE;
+
+    -- enable currently used types
+    UPDATE company_maturity_level
+    SET enabled = TRUE
+    WHERE id IN
+          ('b8e2b02f-0169-4d79-9fd5-1c298c9d5792', 'f5173e2d-b558-4dbb-a2d4-5f3ca399aec3', 'c2109cda-d100-4467-861c-d10b850df51e', 'a6da580e-4e3c-42c0-a3e9-47e1750c2665');
+    UPDATE commodity_type
+    SET enabled = TRUE;
+    UPDATE fixed_location
+    SET enabled = TRUE
+    WHERE id = '1a00b389-46e6-4cfc-8c16-051e8f9bb296' OR
+          parent_location_id = '1a00b389-46e6-4cfc-8c16-051e8f9bb296';
+    UPDATE industry_type
+    SET enabled = TRUE;
+    UPDATE task_type
+    SET enabled = TRUE;
+  END IF;
+
 END$$;

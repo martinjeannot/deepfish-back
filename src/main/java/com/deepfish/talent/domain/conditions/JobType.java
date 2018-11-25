@@ -21,5 +21,7 @@ public class JobType {
   @NotBlank
   private String l10nKey;
 
+  private boolean enabled;
+
   private int orderIndex;
 }
