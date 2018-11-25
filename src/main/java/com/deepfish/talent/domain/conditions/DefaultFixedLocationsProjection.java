@@ -10,5 +10,7 @@ public interface DefaultFixedLocationsProjection {
 
   String getL10nKey();
 
+  boolean isEnabled();
+
   FixedLocation getParentLocation();
 }

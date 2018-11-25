@@ -11,7 +11,7 @@ import org.hibernate.validator.constraints.NotBlank;
 
 @Entity
 @Data
-public class TaskType {
+public class IndustryType {
 
   @Id
   @GeneratedValue

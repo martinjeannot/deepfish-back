@@ -9,6 +9,7 @@ import com.deepfish.talent.domain.QueryableTalent;
 import com.deepfish.talent.domain.Talent;
 import com.deepfish.talent.domain.conditions.CommodityType;
 import com.deepfish.talent.domain.conditions.FixedLocation;
+import com.deepfish.talent.domain.conditions.IndustryType;
 import com.deepfish.talent.domain.conditions.JobType;
 import com.deepfish.talent.domain.conditions.TaskType;
 import com.deepfish.talent.domain.opportunity.Opportunity;
@@ -31,7 +32,8 @@ public class RepositoryRestConfiguration extends RepositoryRestConfigurerAdapter
       org.springframework.data.rest.core.config.RepositoryRestConfiguration config) {
     config.exposeIdsFor(Talent.class, QueryableTalent.class, Opportunity.class, Employer.class,
         Company.class, CompanyMaturityLevel.class, JobType.class, CommodityType.class,
-        TaskType.class, FixedLocation.class, Seniority.class, Requirement.class);
+        TaskType.class, IndustryType.class, FixedLocation.class, Seniority.class,
+        Requirement.class);
   }
 
   @Override

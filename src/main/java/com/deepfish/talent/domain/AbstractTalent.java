@@ -63,6 +63,10 @@ public class AbstractTalent extends AbstractUser {
 
   private int yearsOfExperience;
 
+  private int numberOfManagedConsultants;
+
+  private int numberOfManagedProjects;
+
   @NotNull
   @OneToOne(mappedBy = "talent", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
   private Conditions conditions;
