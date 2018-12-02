@@ -18,6 +18,8 @@ public interface DefaultEmployerProjection {
 
   String getLastName();
 
+  String getPhoneNumber();
+
   Collection<? extends GrantedAuthority> getAuthorities();
 
   LocalDateTime getCreatedAt();
