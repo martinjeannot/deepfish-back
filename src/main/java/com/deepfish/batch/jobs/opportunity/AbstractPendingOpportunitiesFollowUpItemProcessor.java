@@ -1,6 +1,6 @@
-package com.deepfish.batch.jobs;
+package com.deepfish.batch.jobs.opportunity;
 
-import static com.deepfish.batch.jobs.PendingOpportunitiesFollowUpJobConfiguration.ALREADY_ADDRESSED_TALENT_IDS;
+import static com.deepfish.batch.jobs.opportunity.PendingOpportunitiesFollowUpJobConfiguration.ALREADY_ADDRESSED_TALENT_IDS;
 
 import com.deepfish.talent.domain.opportunity.Opportunity;
 import java.util.HashSet;

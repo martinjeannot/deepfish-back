@@ -1,4 +1,4 @@
-package com.deepfish.batch.jobs;
+package com.deepfish.batch.jobs.opportunity;
 
 import com.deepfish.batch.BatchConfiguration;
 import com.deepfish.mail.MailFactory;

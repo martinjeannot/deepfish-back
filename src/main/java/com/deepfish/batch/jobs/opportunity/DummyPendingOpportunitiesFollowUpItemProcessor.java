@@ -1,4 +1,4 @@
-package com.deepfish.batch.jobs;
+package com.deepfish.batch.jobs.opportunity;
 
 import com.deepfish.talent.domain.opportunity.Opportunity;
 import org.springframework.batch.core.ExitStatus;

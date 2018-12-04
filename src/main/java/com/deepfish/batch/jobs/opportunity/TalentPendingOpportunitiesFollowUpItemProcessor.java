@@ -1,6 +1,6 @@
-package com.deepfish.batch.jobs;
+package com.deepfish.batch.jobs.opportunity;
 
-import static com.deepfish.batch.jobs.PendingOpportunitiesFollowUpJobConfiguration.SECOND_MAILING_FOLLOW_UP_STEP_NAME;
+import static com.deepfish.batch.jobs.opportunity.PendingOpportunitiesFollowUpJobConfiguration.SECOND_MAILING_FOLLOW_UP_STEP_NAME;
 
 import com.deepfish.mail.MailFactory;
 import com.deepfish.mail.MailService;
