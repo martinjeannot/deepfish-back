@@ -1,4 +1,4 @@
-package com.deepfish.batch.steps.auth;
+package com.deepfish.batch.step.auth;
 
 import com.deepfish.security.SystemAuthentication;
 import org.springframework.batch.core.StepContribution;

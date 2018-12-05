@@ -5,6 +5,8 @@ import com.deepfish.talent.domain.opportunity.Opportunity;
 import com.deepfish.talent.domain.qualification.Qualification;
 import com.deepfish.user.domain.AbstractUser;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
+import java.time.Clock;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -60,6 +62,13 @@ public class AbstractTalent extends AbstractUser {
   private String fullProfileText;
 
   private float profileCompleteness;
+
+  @NotNull
+  private LocalDateTime profileCompletenessLastCalculatedAt =
+      LocalDateTime.now(Clock.systemUTC()).minusYears(1);
+
+  @NotNull
+  private LocalDateTime profileCompletenessLastUpdatedAt = LocalDateTime.now(Clock.systemUTC());
 
   private int yearsOfExperience;
 

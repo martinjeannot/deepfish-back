@@ -1,7 +1,7 @@
 package com.deepfish.batch;
 
-import com.deepfish.batch.steps.auth.AuthenticationTasklet;
-import com.deepfish.batch.steps.auth.ClearAuthenticationTasklet;
+import com.deepfish.batch.step.auth.AuthenticationTasklet;
+import com.deepfish.batch.step.auth.ClearAuthenticationTasklet;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.batch.core.Step;
@@ -74,7 +74,9 @@ public class BatchConfiguration {
    * @return {@link CronTriggerFactoryBean}
    */
   public static CronTriggerFactoryBean getCronTriggerFactoryBean(
-      JobDetailFactoryBean jobDetailFactoryBean, String cronExpression) {
+      JobDetailFactoryBean jobDetailFactoryBean,
+      String cronExpression
+  ) {
     CronTriggerFactoryBean triggerFactoryBean = new CronTriggerFactoryBean();
     triggerFactoryBean.setJobDetail(jobDetailFactoryBean.getObject());
     triggerFactoryBean.setCronExpression(cronExpression);

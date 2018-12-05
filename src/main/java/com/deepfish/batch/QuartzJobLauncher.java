@@ -30,8 +30,10 @@ public class QuartzJobLauncher extends QuartzJobBean {
   protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
     String jobName = context.getMergedJobDataMap().getString("jobName");
     try {
-      jobLauncher.run(jobLocator.getJob(jobName),
-          new JobParametersBuilder().addLong("timestamp", System.currentTimeMillis())
+      jobLauncher.run(
+          jobLocator.getJob(jobName),
+          new JobParametersBuilder()
+              .addLong("timestamp", System.currentTimeMillis())
               .toJobParameters());
     } catch (org.springframework.batch.core.JobExecutionException e) {
       throw new JobExecutionException(e);
