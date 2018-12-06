@@ -26,7 +26,9 @@ public class IntradayJobConfiguration {
 
   private static final String JOB_NAME = "intradayJob";
 
-  private static final String INCOMPLETE_PROFILE_NOTIFICATION_STEP_NAME = "intradayIncompleteProfileNotificationStep";
+  private static final String FIRST_INCOMPLETE_PROFILE_NOTIFICATION_STEP_NAME = "intraday1stIncompleteProfileNotificationStep";
+
+  private static final int FIRST_INCOMPLETE_PROFILE_NOTIFICATION_HOUR = 3;
 
   private final JobBuilderFactory jobBuilderFactory;
 
@@ -45,33 +47,35 @@ public class IntradayJobConfiguration {
   @Bean
   public Job intradayJob(
       Step authenticationStep,
-      Step intradayIncompleteProfileNotificationStep,
+      Step intraday1stIncompleteProfileNotificationStep,
       Step clearAuthenticationStep
   ) {
     return jobBuilderFactory
         .get(JOB_NAME)
         .start(authenticationStep)
-        .next(intradayIncompleteProfileNotificationStep)
+        .next(intraday1stIncompleteProfileNotificationStep)
         .next(clearAuthenticationStep)
         .build();
   }
 
-  // PROFILE COMPLETENESS CALCULATION STEP =========================================================
+  // INCOMPLETE PROFILE NOTIFICATION STEP ==========================================================
 
   @JobScope
   @Bean
-  public Step intradayIncompleteProfileNotificationStep(
+  public Step intraday1stIncompleteProfileNotificationStep(
       TalentRepository talentRepository,
       MailFactory mailFactory,
       MailService mailService
   ) {
     return stepBuilderFactory
-        .get(INCOMPLETE_PROFILE_NOTIFICATION_STEP_NAME)
+        .get(FIRST_INCOMPLETE_PROFILE_NOTIFICATION_STEP_NAME)
         .<Talent, Talent>chunk(100)
         .reader(TalentItemReader
             .newInstance(
                 talentRepository,
-                LocalDateTime.now(Clock.systemUTC()).minusHours(4).truncatedTo(ChronoUnit.HOURS),
+                LocalDateTime.now(Clock.systemUTC())
+                    .minusHours(FIRST_INCOMPLETE_PROFILE_NOTIFICATION_HOUR)
+                    .truncatedTo(ChronoUnit.HOURS),
                 LocalDateTime.now(Clock.systemUTC()).minusHours(1).truncatedTo(ChronoUnit.HOURS)))
         .processor(new IncompleteProfileNotifier(mailFactory, mailService))
         .writer(TalentItemWriter.newInstance(talentRepository))
