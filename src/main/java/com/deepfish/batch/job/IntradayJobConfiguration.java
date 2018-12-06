@@ -1,9 +1,11 @@
 package com.deepfish.batch.job;
 
 import com.deepfish.batch.BatchConfiguration;
-import com.deepfish.batch.item.processor.TalentItemProcessor;
+import com.deepfish.batch.item.processor.IncompleteProfileNotifier;
 import com.deepfish.batch.item.reader.TalentItemReader;
 import com.deepfish.batch.item.writer.TalentItemWriter;
+import com.deepfish.mail.MailFactory;
+import com.deepfish.mail.MailService;
 import com.deepfish.talent.domain.Talent;
 import com.deepfish.talent.repositories.TalentRepository;
 import java.time.Clock;
@@ -24,6 +26,8 @@ public class IntradayJobConfiguration {
 
   private static final String JOB_NAME = "intradayJob";
 
+  private static final String INCOMPLETE_PROFILE_NOTIFICATION_STEP_NAME = "intradayIncompleteProfileNotificationStep";
+
   private final JobBuilderFactory jobBuilderFactory;
 
   private final StepBuilderFactory stepBuilderFactory;
@@ -41,13 +45,13 @@ public class IntradayJobConfiguration {
   @Bean
   public Job intradayJob(
       Step authenticationStep,
-      Step profileCompletenessCalculationStep,
+      Step intradayIncompleteProfileNotificationStep,
       Step clearAuthenticationStep
   ) {
     return jobBuilderFactory
         .get(JOB_NAME)
         .start(authenticationStep)
-        .next(profileCompletenessCalculationStep)
+        .next(intradayIncompleteProfileNotificationStep)
         .next(clearAuthenticationStep)
         .build();
   }
@@ -56,18 +60,20 @@ public class IntradayJobConfiguration {
 
   @JobScope
   @Bean
-  public Step profileCompletenessCalculationStep(
-      TalentRepository talentRepository
+  public Step intradayIncompleteProfileNotificationStep(
+      TalentRepository talentRepository,
+      MailFactory mailFactory,
+      MailService mailService
   ) {
     return stepBuilderFactory
-        .get("profileCompletenessCalculationStep")
+        .get(INCOMPLETE_PROFILE_NOTIFICATION_STEP_NAME)
         .<Talent, Talent>chunk(100)
         .reader(TalentItemReader
             .newInstance(
                 talentRepository,
                 LocalDateTime.now(Clock.systemUTC()).minusHours(4).truncatedTo(ChronoUnit.HOURS),
                 LocalDateTime.now(Clock.systemUTC()).minusHours(1).truncatedTo(ChronoUnit.HOURS)))
-        .processor(new TalentItemProcessor())
+        .processor(new IncompleteProfileNotifier(mailFactory, mailService))
         .writer(TalentItemWriter.newInstance(talentRepository))
         .build();
   }

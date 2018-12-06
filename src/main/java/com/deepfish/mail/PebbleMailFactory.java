@@ -143,6 +143,31 @@ public class PebbleMailFactory implements MailFactory {
         .buildEmail();
   }
 
+  private final PebbleTemplate talentIncompleteProfile1stMailTemplate = pebbleEngine
+      .getTemplate("mails/talent/incompleteProfile1st.html");
+
+  @Override
+  public Email getTalentIncompleteProfile1stMail(Talent talent) {
+    String subject = talent.getFirstName() + ", tu y es presque - Deepfish";
+    Map<String, Object> context = new HashMap<>();
+    context.put("title", subject);
+    context.put("talent", talent);
+    Writer writer = new StringWriter();
+    try {
+      talentIncompleteProfile1stMailTemplate.evaluate(writer, context);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
+    return EmailBuilder
+        .startingBlank()
+        .from(DAVID_EMAIL)
+        .to(talent.getEmail())
+        .withSubject(subject)
+        .withHTMLText(writer.toString())
+        .buildEmail();
+  }
+
   // EMPLOYER ======================================================================================
 
   private final PebbleTemplate employerWelcomeMailTemplate = pebbleEngine

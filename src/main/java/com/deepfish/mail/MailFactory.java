@@ -20,6 +20,8 @@ public interface MailFactory {
 
   Email getTalentAcceptedByEmployerMail(Opportunity opportunity);
 
+  Email getTalentIncompleteProfile1stMail(Talent talent);
+
   // EMPLOYER ======================================================================================
 
   Email getEmployerWelcomeMail(Employer employer, String password);
