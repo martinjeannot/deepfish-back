@@ -26,7 +26,7 @@ public class IntradayJobConfiguration {
 
   private static final String JOB_NAME = "intradayJob";
 
-  private static final String FIRST_INCOMPLETE_PROFILE_NOTIFICATION_STEP_NAME = "intraday1stIncompleteProfileNotificationStep";
+  public static final String FIRST_INCOMPLETE_PROFILE_NOTIFICATION_STEP_NAME = "intraday1stIncompleteProfileNotificationStep";
 
   private static final int FIRST_INCOMPLETE_PROFILE_NOTIFICATION_HOUR = 3;
 
@@ -58,7 +58,7 @@ public class IntradayJobConfiguration {
         .build();
   }
 
-  // INCOMPLETE PROFILE NOTIFICATION STEP ==========================================================
+  // 1ST INCOMPLETE PROFILE NOTIFICATION STEP ======================================================
 
   @JobScope
   @Bean

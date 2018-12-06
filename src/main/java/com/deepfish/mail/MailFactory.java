@@ -20,7 +20,11 @@ public interface MailFactory {
 
   Email getTalentAcceptedByEmployerMail(Opportunity opportunity);
 
-  Email getTalentIncompleteProfile1stMail(Talent talent);
+  Email getTalent1stIncompleteProfileMail(Talent talent);
+
+  Email getTalent2ndIncompleteProfileMail(Talent talent);
+
+  Email getTalent3rdIncompleteProfileMail(Talent talent);
 
   // EMPLOYER ======================================================================================
 

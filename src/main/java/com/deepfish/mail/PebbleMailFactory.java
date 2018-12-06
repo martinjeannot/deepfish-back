@@ -143,18 +143,68 @@ public class PebbleMailFactory implements MailFactory {
         .buildEmail();
   }
 
-  private final PebbleTemplate talentIncompleteProfile1stMailTemplate = pebbleEngine
-      .getTemplate("mails/talent/incompleteProfile1st.html");
+  private final PebbleTemplate talent1stIncompleteProfileMailTemplate = pebbleEngine
+      .getTemplate("mails/talent/incompleteProfile1.html");
 
   @Override
-  public Email getTalentIncompleteProfile1stMail(Talent talent) {
+  public Email getTalent1stIncompleteProfileMail(Talent talent) {
     String subject = talent.getFirstName() + ", tu y es presque - Deepfish";
     Map<String, Object> context = new HashMap<>();
     context.put("title", subject);
     context.put("talent", talent);
     Writer writer = new StringWriter();
     try {
-      talentIncompleteProfile1stMailTemplate.evaluate(writer, context);
+      talent1stIncompleteProfileMailTemplate.evaluate(writer, context);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
+    return EmailBuilder
+        .startingBlank()
+        .from(DAVID_EMAIL)
+        .to(talent.getEmail())
+        .withSubject(subject)
+        .withHTMLText(writer.toString())
+        .buildEmail();
+  }
+
+  private final PebbleTemplate talent2ndIncompleteProfileMailTemplate = pebbleEngine
+      .getTemplate("mails/talent/incompleteProfile2.html");
+
+  @Override
+  public Email getTalent2ndIncompleteProfileMail(Talent talent) {
+    String subject = talent.getFirstName() + ", ton profil Deepfish est toujours incomplet";
+    Map<String, Object> context = new HashMap<>();
+    context.put("title", subject);
+    context.put("talent", talent);
+    Writer writer = new StringWriter();
+    try {
+      talent2ndIncompleteProfileMailTemplate.evaluate(writer, context);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
+    return EmailBuilder
+        .startingBlank()
+        .from(DAVID_EMAIL)
+        .to(talent.getEmail())
+        .withSubject(subject)
+        .withHTMLText(writer.toString())
+        .buildEmail();
+  }
+
+  private final PebbleTemplate talent3rdIncompleteProfileMailTemplate = pebbleEngine
+      .getTemplate("mails/talent/incompleteProfile3.html");
+
+  @Override
+  public Email getTalent3rdIncompleteProfileMail(Talent talent) {
+    String subject = talent.getFirstName() + ", last call - Deepfish";
+    Map<String, Object> context = new HashMap<>();
+    context.put("title", subject);
+    context.put("talent", talent);
+    Writer writer = new StringWriter();
+    try {
+      talent3rdIncompleteProfileMailTemplate.evaluate(writer, context);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }

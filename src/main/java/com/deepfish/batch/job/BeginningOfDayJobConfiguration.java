@@ -25,11 +25,11 @@ public class BeginningOfDayJobConfiguration {
 
   private static final String JOB_NAME = "beginningOfDayJob";
 
-  private static final String SECOND_INCOMPLETE_PROFILE_NOTIFICATION_STEP_NAME = "bod2ndIncompleteProfileNotificationStep";
+  public static final String SECOND_INCOMPLETE_PROFILE_NOTIFICATION_STEP_NAME = "bod2ndIncompleteProfileNotificationStep";
 
   private static final int SECOND_INCOMPLETE_PROFILE_NOTIFICATION_DAY = 3;
 
-  private static final String THIRD_INCOMPLETE_PROFILE_NOTIFICATION_STEP_NAME = "bod3rdIncompleteProfileNotificationStep";
+  public static final String THIRD_INCOMPLETE_PROFILE_NOTIFICATION_STEP_NAME = "bod3rdIncompleteProfileNotificationStep";
 
   private static final int THIRD_INCOMPLETE_PROFILE_NOTIFICATION_DAY = 14;
 
