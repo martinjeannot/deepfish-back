@@ -74,9 +74,11 @@ public class IntradayJobConfiguration {
             .newInstance(
                 talentRepository,
                 LocalDateTime.now(Clock.systemUTC())
-                    .minusHours(FIRST_INCOMPLETE_PROFILE_NOTIFICATION_HOUR)
+                    // +1 because the talent may just sign up so we give him 1h to fill in his profile
+                    .minusHours(FIRST_INCOMPLETE_PROFILE_NOTIFICATION_HOUR + 1)
                     .truncatedTo(ChronoUnit.HOURS),
-                LocalDateTime.now(Clock.systemUTC()).minusHours(1).truncatedTo(ChronoUnit.HOURS)))
+                LocalDateTime.now(Clock.systemUTC()).minusHours(1).truncatedTo(ChronoUnit.HOURS),
+                true))
         .processor(new IncompleteProfileNotifier(mailFactory, mailService))
         .writer(TalentItemWriter.newInstance(talentRepository))
         .build();
@@ -94,8 +96,8 @@ public class IntradayJobConfiguration {
     return BatchConfiguration
         .getCronTriggerFactoryBean(
             intradayJobDetailFactoryBean(),
-            //"0 0/1 * 1/1 * ? *"
-            "0 0 7 1/1 * ? *"
+            //"0 0/1 * ? * * *" // every minute
+            "0 0 0/3 ? * * *" // every 3 hours
         );
   }
 }

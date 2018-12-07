@@ -81,7 +81,8 @@ public class BeginningOfDayJobConfiguration {
                 LocalDate.now(Clock.systemUTC())
                     .minusDays(SECOND_INCOMPLETE_PROFILE_NOTIFICATION_DAY).atStartOfDay(),
                 LocalDate.now(Clock.systemUTC())
-                    .minusDays(SECOND_INCOMPLETE_PROFILE_NOTIFICATION_DAY - 1).atStartOfDay()))
+                    .minusDays(SECOND_INCOMPLETE_PROFILE_NOTIFICATION_DAY - 1).atStartOfDay(),
+                true))
         .processor(new IncompleteProfileNotifier(mailFactory, mailService))
         .writer(TalentItemWriter.newInstance(talentRepository))
         .build();
@@ -105,7 +106,8 @@ public class BeginningOfDayJobConfiguration {
                 LocalDate.now(Clock.systemUTC())
                     .minusDays(THIRD_INCOMPLETE_PROFILE_NOTIFICATION_DAY).atStartOfDay(),
                 LocalDate.now(Clock.systemUTC())
-                    .minusDays(THIRD_INCOMPLETE_PROFILE_NOTIFICATION_DAY - 1).atStartOfDay()))
+                    .minusDays(THIRD_INCOMPLETE_PROFILE_NOTIFICATION_DAY - 1).atStartOfDay(),
+                true))
         .processor(new IncompleteProfileNotifier(mailFactory, mailService))
         .writer(TalentItemWriter.newInstance(talentRepository))
         .build();
@@ -123,8 +125,8 @@ public class BeginningOfDayJobConfiguration {
     return BatchConfiguration
         .getCronTriggerFactoryBean(
             beginningOfDayJobDetailFactoryBean(),
-            //"0 0/1 * 1/1 * ? *"
-            "0 0 7 1/1 * ? *"
+            //"0 0/1 * ? * * *" // every minute
+            "0 0 8 ? * * *" // at 8:00AM every day
         );
   }
 }

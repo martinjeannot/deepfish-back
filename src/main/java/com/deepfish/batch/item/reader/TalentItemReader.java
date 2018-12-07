@@ -24,13 +24,15 @@ public class TalentItemReader {
   public static ItemReader<Talent> newInstance(
       TalentRepository talentRepository,
       LocalDateTime createdAtAfter,
-      LocalDateTime createdAtBefore
+      LocalDateTime createdAtBefore,
+      boolean active
   ) {
     RepositoryItemReader<Talent> itemReader = new RepositoryItemReader<>();
     itemReader.setRepository(talentRepository);
     itemReader.setMethodName("findAll");
-    itemReader.setArguments(Collections
-        .singletonList(QTalent.talent.createdAt.between(createdAtAfter, createdAtBefore)));
+    itemReader.setArguments(Collections.singletonList(
+        QTalent.talent.createdAt.between(createdAtAfter, createdAtBefore)
+            .and(QTalent.talent.active.eq(active))));
     itemReader.setPageSize(100);
     Map<String, Direction> sorts = new HashMap<>();
     sorts.put("createdAt", Direction.DESC);
