@@ -26,6 +26,8 @@ public interface MailFactory {
 
   Email getTalent3rdIncompleteProfileMail(Talent talent);
 
+  Email getTalent4thIncompleteProfileMail(Talent talent);
+
   // EMPLOYER ======================================================================================
 
   Email getEmployerWelcomeMail(Employer employer, String password);

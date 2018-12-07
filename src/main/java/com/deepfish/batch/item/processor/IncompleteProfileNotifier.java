@@ -41,6 +41,10 @@ public class IncompleteProfileNotifier implements ItemProcessor<Talent, Talent> 
         case BeginningOfDayJobConfiguration.THIRD_INCOMPLETE_PROFILE_NOTIFICATION_STEP_NAME:
           incompleteProfileMail = mailFactory.getTalent3rdIncompleteProfileMail(talent);
           break;
+        case BeginningOfDayJobConfiguration.FOURTH_INCOMPLETE_PROFILE_NOTIFICATION_STEP_NAME:
+          talent.deactivate();
+          incompleteProfileMail = mailFactory.getTalent4thIncompleteProfileMail(talent);
+          break;
         default:
           throw new IllegalStateException("Unknown step: " + stepExecution.getStepName());
       }

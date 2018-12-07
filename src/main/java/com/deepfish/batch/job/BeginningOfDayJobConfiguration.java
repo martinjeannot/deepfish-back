@@ -33,6 +33,10 @@ public class BeginningOfDayJobConfiguration {
 
   private static final int THIRD_INCOMPLETE_PROFILE_NOTIFICATION_DAY = 14;
 
+  public static final String FOURTH_INCOMPLETE_PROFILE_NOTIFICATION_STEP_NAME = "bod4thIncompleteProfileNotificationStep";
+
+  private static final int FOURTH_INCOMPLETE_PROFILE_NOTIFICATION_DAY = 17;
+
   private final JobBuilderFactory jobBuilderFactory;
 
   private final StepBuilderFactory stepBuilderFactory;
@@ -52,6 +56,7 @@ public class BeginningOfDayJobConfiguration {
       Step authenticationStep,
       Step bod2ndIncompleteProfileNotificationStep,
       Step bod3rdIncompleteProfileNotificationStep,
+      Step bod4thIncompleteProfileNotificationStep,
       Step clearAuthenticationStep
   ) {
     return jobBuilderFactory
@@ -59,6 +64,7 @@ public class BeginningOfDayJobConfiguration {
         .start(authenticationStep)
         .next(bod2ndIncompleteProfileNotificationStep)
         .next(bod3rdIncompleteProfileNotificationStep)
+        .next(bod4thIncompleteProfileNotificationStep)
         .next(clearAuthenticationStep)
         .build();
   }
@@ -107,6 +113,31 @@ public class BeginningOfDayJobConfiguration {
                     .minusDays(THIRD_INCOMPLETE_PROFILE_NOTIFICATION_DAY).atStartOfDay(),
                 LocalDate.now(Clock.systemUTC())
                     .minusDays(THIRD_INCOMPLETE_PROFILE_NOTIFICATION_DAY - 1).atStartOfDay(),
+                true))
+        .processor(new IncompleteProfileNotifier(mailFactory, mailService))
+        .writer(TalentItemWriter.newInstance(talentRepository))
+        .build();
+  }
+
+  // 4TH INCOMPLETE PROFILE NOTIFICATION STEP ======================================================
+
+  @JobScope
+  @Bean
+  public Step bod4thIncompleteProfileNotificationStep(
+      TalentRepository talentRepository,
+      MailFactory mailFactory,
+      MailService mailService
+  ) {
+    return stepBuilderFactory
+        .get(FOURTH_INCOMPLETE_PROFILE_NOTIFICATION_STEP_NAME)
+        .<Talent, Talent>chunk(100)
+        .reader(TalentItemReader
+            .newInstance(
+                talentRepository,
+                LocalDate.now(Clock.systemUTC())
+                    .minusDays(FOURTH_INCOMPLETE_PROFILE_NOTIFICATION_DAY).atStartOfDay(),
+                LocalDate.now(Clock.systemUTC())
+                    .minusDays(FOURTH_INCOMPLETE_PROFILE_NOTIFICATION_DAY - 1).atStartOfDay(),
                 true))
         .processor(new IncompleteProfileNotifier(mailFactory, mailService))
         .writer(TalentItemWriter.newInstance(talentRepository))
