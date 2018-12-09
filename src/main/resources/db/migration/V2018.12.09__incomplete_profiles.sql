@@ -15,6 +15,14 @@ BEGIN
       ADD profile_completeness_last_updated_at TIMESTAMP NOT NULL DEFAULT '2018-01-01 00:00:00.000';
   END IF;
 
+  -- Expired opportunities =========================================================================
+
+  -- Helping the first opportunity expiration step run
+
+  UPDATE opportunity
+  SET talent_status = 'EXPIRED'
+  WHERE talent_status = 'PENDING' AND created_at < '2018-11-23 00:00:00';
+
   -- Update remaining fr mail addresses ============================================================
 
   UPDATE users
