@@ -1,8 +1,8 @@
-package com.deepfish.batch.jobs;
+package com.deepfish.batch.jobs.opportunity;
 
-import static com.deepfish.batch.jobs.PendingOpportunitiesFollowUpJobConfiguration.CALLING_FOLLOW_UP_STEP_NAME;
-import static com.deepfish.batch.jobs.PendingOpportunitiesFollowUpJobConfiguration.LINKED_IN_FOLLOW_UP_STEP_NAME;
-import static com.deepfish.batch.jobs.PendingOpportunitiesFollowUpJobConfiguration.SMSING_FOLLOW_UP_STEP_NAME;
+import static com.deepfish.batch.jobs.opportunity.PendingOpportunitiesFollowUpJobConfiguration.CALLING_FOLLOW_UP_STEP_NAME;
+import static com.deepfish.batch.jobs.opportunity.PendingOpportunitiesFollowUpJobConfiguration.LINKED_IN_FOLLOW_UP_STEP_NAME;
+import static com.deepfish.batch.jobs.opportunity.PendingOpportunitiesFollowUpJobConfiguration.SMSING_FOLLOW_UP_STEP_NAME;
 
 import com.deepfish.mail.MailFactory;
 import com.deepfish.mail.MailService;

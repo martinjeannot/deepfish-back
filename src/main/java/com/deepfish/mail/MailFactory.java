@@ -18,6 +18,16 @@ public interface MailFactory {
 
   Email getTalentPendingOpportunityFollowUp2ndMail(Opportunity opportunity);
 
+  Email getTalentAcceptedByEmployerMail(Opportunity opportunity);
+
+  Email getTalent1stIncompleteProfileMail(Talent talent);
+
+  Email getTalent2ndIncompleteProfileMail(Talent talent);
+
+  Email getTalent3rdIncompleteProfileMail(Talent talent);
+
+  Email getTalent4thIncompleteProfileMail(Talent talent);
+
   // EMPLOYER ======================================================================================
 
   Email getEmployerWelcomeMail(Employer employer, String password);

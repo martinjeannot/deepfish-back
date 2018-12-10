@@ -1,4 +1,4 @@
-package com.deepfish.batch.steps.auth;
+package com.deepfish.batch.step.auth;
 
 import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.scope.context.ChunkContext;

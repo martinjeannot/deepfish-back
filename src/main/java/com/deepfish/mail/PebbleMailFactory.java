@@ -22,10 +22,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class PebbleMailFactory implements MailFactory {
 
-  private static final String CEO_EMAIL = "david@deepfish.fr";
+  private static final String DAVID_EMAIL = "david@deepfish.co";
 
-  private static final String[] SALES_TEAM_EMAILS = new String[]{"david@deepfish.fr",
-      "bruno@deepfish.co", "axel@deepfish.co"};
+  private static final String[] SALES_TEAM_EMAILS = new String[]{
+      DAVID_EMAIL,
+      "bruno@deepfish.co",
+  };
 
   private final PebbleEngine pebbleEngine = new PebbleEngine.Builder().build();
 
@@ -55,7 +57,7 @@ public class PebbleMailFactory implements MailFactory {
 
     return EmailBuilder
         .startingBlank()
-        .from("david@deepfish.fr")
+        .from(DAVID_EMAIL)
         .to(talent.getEmail())
         .withSubject(subject)
         .withHTMLText(writer.toString())
@@ -107,8 +109,135 @@ public class PebbleMailFactory implements MailFactory {
 
     return EmailBuilder
         .startingBlank()
-        .from(CEO_EMAIL)
+        .from(DAVID_EMAIL)
         .to(opportunity.getTalent().getEmail())
+        .withSubject(subject)
+        .withHTMLText(writer.toString())
+        .buildEmail();
+  }
+
+  private final PebbleTemplate talentAcceptedByEmployerMailTemplate = pebbleEngine
+      .getTemplate("mails/talent/acceptedByEmployer.html");
+
+  @Override
+  public Email getTalentAcceptedByEmployerMail(Opportunity opportunity) {
+    String subject =
+        opportunity.getRequirement().getCompany().getName() + " veut échanger avec toi !";
+    Map<String, Object> context = new HashMap<>();
+    context.put("title", subject);
+    context.put("talent", opportunity.getTalent());
+    context.put("company", opportunity.getRequirement().getCompany());
+    Writer writer = new StringWriter();
+    try {
+      talentAcceptedByEmployerMailTemplate.evaluate(writer, context);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
+    return EmailBuilder
+        .startingBlank()
+        .from(DAVID_EMAIL)
+        .to(opportunity.getTalent().getEmail())
+        .withSubject(subject)
+        .withHTMLText(writer.toString())
+        .buildEmail();
+  }
+
+  private final PebbleTemplate talent1stIncompleteProfileMailTemplate = pebbleEngine
+      .getTemplate("mails/talent/incompleteProfile1.html");
+
+  @Override
+  public Email getTalent1stIncompleteProfileMail(Talent talent) {
+    String subject = talent.getFirstName() + ", tu y es presque - Deepfish";
+    Map<String, Object> context = new HashMap<>();
+    context.put("title", subject);
+    context.put("talent", talent);
+    Writer writer = new StringWriter();
+    try {
+      talent1stIncompleteProfileMailTemplate.evaluate(writer, context);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
+    return EmailBuilder
+        .startingBlank()
+        .from(DAVID_EMAIL)
+        .to(talent.getEmail())
+        .withSubject(subject)
+        .withHTMLText(writer.toString())
+        .buildEmail();
+  }
+
+  private final PebbleTemplate talent2ndIncompleteProfileMailTemplate = pebbleEngine
+      .getTemplate("mails/talent/incompleteProfile2.html");
+
+  @Override
+  public Email getTalent2ndIncompleteProfileMail(Talent talent) {
+    String subject = talent.getFirstName() + ", ton profil Deepfish est toujours incomplet";
+    Map<String, Object> context = new HashMap<>();
+    context.put("title", subject);
+    context.put("talent", talent);
+    Writer writer = new StringWriter();
+    try {
+      talent2ndIncompleteProfileMailTemplate.evaluate(writer, context);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
+    return EmailBuilder
+        .startingBlank()
+        .from(DAVID_EMAIL)
+        .to(talent.getEmail())
+        .withSubject(subject)
+        .withHTMLText(writer.toString())
+        .buildEmail();
+  }
+
+  private final PebbleTemplate talent3rdIncompleteProfileMailTemplate = pebbleEngine
+      .getTemplate("mails/talent/incompleteProfile3.html");
+
+  @Override
+  public Email getTalent3rdIncompleteProfileMail(Talent talent) {
+    String subject = talent.getFirstName() + ", last call - Deepfish";
+    Map<String, Object> context = new HashMap<>();
+    context.put("title", subject);
+    context.put("talent", talent);
+    Writer writer = new StringWriter();
+    try {
+      talent3rdIncompleteProfileMailTemplate.evaluate(writer, context);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
+    return EmailBuilder
+        .startingBlank()
+        .from(DAVID_EMAIL)
+        .to(talent.getEmail())
+        .withSubject(subject)
+        .withHTMLText(writer.toString())
+        .buildEmail();
+  }
+
+  private final PebbleTemplate talent4thIncompleteProfileMailTemplate = pebbleEngine
+      .getTemplate("mails/talent/incompleteProfile4.html");
+
+  @Override
+  public Email getTalent4thIncompleteProfileMail(Talent talent) {
+    String subject = talent.getFirstName() + ", ton profil Deepfish est désactivé";
+    Map<String, Object> context = new HashMap<>();
+    context.put("title", subject);
+    context.put("talent", talent);
+    Writer writer = new StringWriter();
+    try {
+      talent4thIncompleteProfileMailTemplate.evaluate(writer, context);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
+    return EmailBuilder
+        .startingBlank()
+        .from(DAVID_EMAIL)
+        .to(talent.getEmail())
         .withSubject(subject)
         .withHTMLText(writer.toString())
         .buildEmail();
@@ -135,7 +264,7 @@ public class PebbleMailFactory implements MailFactory {
 
     return EmailBuilder
         .startingBlank()
-        .from("david@deepfish.fr")
+        .from(DAVID_EMAIL)
         .to(employer.getUsername())
         .withSubject(subject)
         .withHTMLText(writer.toString())
@@ -161,7 +290,7 @@ public class PebbleMailFactory implements MailFactory {
 
     return EmailBuilder
         .startingBlank()
-        .from("david@deepfish.fr")
+        .from(DAVID_EMAIL)
         .to(employer.getUsername())
         .withSubject(subject)
         .withHTMLText(writer.toString())
@@ -480,7 +609,7 @@ public class PebbleMailFactory implements MailFactory {
 
     return EmailBuilder
         .startingBlank()
-        .to(CEO_EMAIL)
+        .to(DAVID_EMAIL)
         .withSubject(subject)
         .withHTMLText(writer.toString())
         .buildEmail();
@@ -504,7 +633,7 @@ public class PebbleMailFactory implements MailFactory {
 
     return EmailBuilder
         .startingBlank()
-        .to(CEO_EMAIL)
+        .to(DAVID_EMAIL)
         .withSubject(subject)
         .withHTMLText(writer.toString())
         .buildEmail();
@@ -529,7 +658,7 @@ public class PebbleMailFactory implements MailFactory {
     return EmailBuilder
         .startingBlank()
         .to("bruno@deepfish.co")
-        .cc(CEO_EMAIL)
+        .cc(DAVID_EMAIL)
         .withSubject(subject)
         .withHTMLText(writer.toString())
         .buildEmail();
