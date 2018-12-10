@@ -157,7 +157,7 @@ public class BeginningOfDayJobConfiguration {
         .getCronTriggerFactoryBean(
             beginningOfDayJobDetailFactoryBean(),
             //"0 0/1 * ? * * *" // every minute
-            "0 0 8 ? * * *" // at 8:00AM every day
+            "0 17 8 ? * * *" // at 8:17AM every day
         );
   }
 }
