@@ -23,6 +23,17 @@ BEGIN
   SET talent_status = 'EXPIRED'
   WHERE talent_status = 'PENDING' AND created_at < '2018-11-23 00:00:00';
 
+  -- New fixed location ============================================================================
+
+  IF NOT EXISTS(SELECT 1
+                FROM fixed_location
+                WHERE id = 'eeda3d46-3e93-42a7-8eed-82c511f98594')
+  THEN
+    INSERT INTO fixed_location (id, l10n_key, order_index, parent_location_id, enabled)
+    VALUES ('eeda3d46-3e93-42a7-8eed-82c511f98594', 'Strasbourg', 0,
+            '1a00b389-46e6-4cfc-8c16-051e8f9bb296', TRUE);
+  END IF;
+
   -- Update remaining fr mail addresses ============================================================
 
   UPDATE users
