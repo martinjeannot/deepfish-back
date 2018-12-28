@@ -43,7 +43,7 @@ public class Requirement {
   private LocalDateTime createdAt = LocalDateTime.now(Clock.systemUTC());
 
   @NotNull
-  private UUID createdBy;
+  private UUID createdBy; // TODO rename creatorId (for consistency)
 
   @NotNull
   @ManyToOne

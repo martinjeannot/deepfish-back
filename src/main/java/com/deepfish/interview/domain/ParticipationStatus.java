@@ -5,8 +5,9 @@ package com.deepfish.interview.domain;
  *
  * See https://tools.ietf.org/html/rfc5545#section-3.2.12
  */
-public enum AttendeeResponseStatus {
-  NEEDS_ACTION, // default value
+public enum ParticipationStatus {
+  NEEDS_ACTION, // default
   ACCEPTED,
   DECLINED,
+  TENTATIVE,
 }

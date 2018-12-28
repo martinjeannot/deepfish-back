@@ -9,21 +9,24 @@ BEGIN
   THEN
     CREATE TABLE interview (
       id                       UUID         NOT NULL,
+      shared_id                UUID         NOT NULL,
       status                   VARCHAR(255) NOT NULL,
       created_at               TIMESTAMP    NOT NULL,
+      creator_id               UUID         NOT NULL,
       updated_at               TIMESTAMP    NOT NULL,
+      opportunity_id           UUID         NOT NULL,
       summary                  VARCHAR(255) NOT NULL,
       description              TEXT         NOT NULL,
-      location                 VARCHAR(255) NOT NULL,
+      location                 TEXT         NOT NULL,
       start_at                 TIMESTAMP    NOT NULL,
       end_at                   TIMESTAMP    NOT NULL,
-      interview_type           VARCHAR(255) NOT NULL,
-      opportunity_id           UUID         NOT NULL,
+      format                   VARCHAR(255) NOT NULL,
       talent_id                UUID         NOT NULL,
       talent_response_status   VARCHAR(255) NOT NULL,
       talent_responded_at      TIMESTAMP,
       employer_id              UUID         NOT NULL,
       employer_response_status VARCHAR(255) NOT NULL,
+      employer_responded_at    TIMESTAMP,
       PRIMARY KEY (id)
     );
     -- Constraints

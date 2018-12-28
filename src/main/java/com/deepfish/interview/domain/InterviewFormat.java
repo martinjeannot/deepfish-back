@@ -1,6 +1,6 @@
 package com.deepfish.interview.domain;
 
-public enum InterviewType {
+public enum InterviewFormat {
   PHONE,
   VIDEO,
   IN_PERSON,

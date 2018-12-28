@@ -40,6 +40,12 @@ public class Interview {
   @Setter(AccessLevel.NONE)
   private UUID id;
 
+  /**
+   * Id shared between all slots of the same interview scheduling attempt
+   */
+  @NotNull
+  private UUID sharedId;
+
   @NotNull
   @Enumerated(EnumType.STRING)
   private InterviewStatus status = InterviewStatus.TENTATIVE;
@@ -49,7 +55,15 @@ public class Interview {
   private LocalDateTime createdAt = LocalDateTime.now(Clock.systemUTC());
 
   @NotNull
+  private UUID creatorId;
+
+  @NotNull
   private LocalDateTime updatedAt = LocalDateTime.now(Clock.systemUTC());
+
+  @NotNull
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(foreignKey = @ForeignKey(name = "FK_interview__opportunity__opportunity_id"))
+  private Opportunity opportunity;
 
   @NotNull
   private String summary = "";
@@ -59,6 +73,7 @@ public class Interview {
   private String description = "";
 
   @NotNull
+  @Column(columnDefinition = "text")
   private String location = "";
 
   @NotNull
@@ -69,12 +84,7 @@ public class Interview {
 
   @NotNull
   @Enumerated(EnumType.STRING)
-  private InterviewType interviewType;
-
-  @NotNull
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(foreignKey = @ForeignKey(name = "FK_interview__opportunity__opportunity_id"))
-  private Opportunity opportunity;
+  private InterviewFormat format;
 
   // Attendees
 
@@ -85,7 +95,7 @@ public class Interview {
 
   @NotNull
   @Enumerated(EnumType.STRING)
-  private AttendeeResponseStatus talentResponseStatus = AttendeeResponseStatus.NEEDS_ACTION;
+  private ParticipationStatus talentResponseStatus = ParticipationStatus.NEEDS_ACTION;
 
   private LocalDateTime talentRespondedAt;
 
@@ -96,5 +106,7 @@ public class Interview {
 
   @NotNull
   @Enumerated(EnumType.STRING)
-  private AttendeeResponseStatus employerResponseStatus = AttendeeResponseStatus.NEEDS_ACTION;
+  private ParticipationStatus employerResponseStatus = ParticipationStatus.NEEDS_ACTION;
+
+  private LocalDateTime employerRespondedAt;
 }
