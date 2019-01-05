@@ -2,6 +2,7 @@ package com.deepfish.mail;
 
 import com.deepfish.employer.domain.Employer;
 import com.deepfish.employer.domain.requirement.Requirement;
+import com.deepfish.interview.domain.Interview;
 import com.deepfish.talent.domain.Talent;
 import com.deepfish.talent.domain.opportunity.Opportunity;
 import java.util.Collection;
@@ -27,6 +28,8 @@ public interface MailFactory {
   Email getTalent3rdIncompleteProfileMail(Talent talent);
 
   Email getTalent4thIncompleteProfileMail(Talent talent);
+
+  Email getTalentInterviewRequestMail(Iterable<Interview> interviews);
 
   // EMPLOYER ======================================================================================
 
@@ -64,4 +67,6 @@ public interface MailFactory {
   Email getAdminTalentPendingOpportunitiesFollowUpSMSMail(Collection<String[]> talents);
 
   Email getAdminTalentPendingOpportunitiesFollowUpCallMail(Collection<String[]> talents);
+
+  Email getAdminNewInterviewRequestMail(Interview interview);
 }

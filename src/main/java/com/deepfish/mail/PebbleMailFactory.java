@@ -2,6 +2,7 @@ package com.deepfish.mail;
 
 import com.deepfish.employer.domain.Employer;
 import com.deepfish.employer.domain.requirement.Requirement;
+import com.deepfish.interview.domain.Interview;
 import com.deepfish.mail.util.FrontAppUrlBuilder;
 import com.deepfish.talent.domain.Talent;
 import com.deepfish.talent.domain.opportunity.Opportunity;
@@ -241,6 +242,11 @@ public class PebbleMailFactory implements MailFactory {
         .withSubject(subject)
         .withHTMLText(writer.toString())
         .buildEmail();
+  }
+
+  @Override
+  public Email getTalentInterviewRequestMail(Iterable<Interview> interviews) {
+    return null;
   }
 
   // EMPLOYER ======================================================================================
@@ -662,5 +668,10 @@ public class PebbleMailFactory implements MailFactory {
         .withSubject(subject)
         .withHTMLText(writer.toString())
         .buildEmail();
+  }
+
+  @Override
+  public Email getAdminNewInterviewRequestMail(Interview interview) {
+    return null;
   }
 }

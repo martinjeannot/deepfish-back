@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * Service related to {@link Talent} entity
+ * Service related to the {@link com.deepfish.talent.domain.Talent} domain object
  */
 public interface TalentService {
 

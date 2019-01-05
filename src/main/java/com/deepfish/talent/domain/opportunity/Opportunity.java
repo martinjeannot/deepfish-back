@@ -116,8 +116,11 @@ public class Opportunity {
     setForwardedAt(null);
   }
 
-  public void handleTalentResponse(OpportunityStatus talentStatus, String talentDeclinationReason,
-      boolean declinedInBulk) {
+  public void handleTalentResponse(
+      OpportunityStatus talentStatus,
+      String talentDeclinationReason,
+      boolean declinedInBulk
+  ) {
     setTalentStatus(talentStatus);
     setTalentRespondedAt(LocalDateTime.now(Clock.systemUTC()));
     if (OpportunityStatus.DECLINED.equals(talentStatus)) {
@@ -125,4 +128,15 @@ public class Opportunity {
       setDeclinedInBulk(declinedInBulk);
     }
   }
+
+  /*public void handleEmployerResponse(
+      OpportunityStatus employerStatus,
+      String employerDeclinationReason
+  ) {
+    setEmployerStatus(employerStatus);
+    setEmployerRespondedAt(LocalDateTime.now(Clock.systemUTC()));
+    if (OpportunityStatus.DECLINED.equals(employerStatus)) {
+      setEmployerDeclinationReason(employerDeclinationReason);
+    }
+  }*/
 }

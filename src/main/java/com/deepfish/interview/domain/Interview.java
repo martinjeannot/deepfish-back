@@ -24,6 +24,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.hateoas.Identifiable;
 
 /**
  * See https://tools.ietf.org/html/rfc5545
@@ -33,7 +34,7 @@ import lombok.ToString;
 @Data
 @ToString(exclude = {"opportunity", "talent", "employer"})
 @EqualsAndHashCode(exclude = {"opportunity", "talent", "employer"})
-public class Interview {
+public class Interview implements Identifiable<UUID> {
 
   @Id
   @GeneratedValue
@@ -109,4 +110,9 @@ public class Interview {
   private ParticipationStatus employerResponseStatus = ParticipationStatus.NEEDS_ACTION;
 
   private LocalDateTime employerRespondedAt;
+
+  public void handleEmployerResponse(ParticipationStatus employerResponseStatus) {
+    setEmployerResponseStatus(employerResponseStatus);
+    setEmployerRespondedAt(LocalDateTime.now(Clock.systemUTC()));
+  }
 }
