@@ -4,6 +4,7 @@ import com.deepfish.batch.BatchConfiguration;
 import com.deepfish.batch.item.processor.OpportunityExpirator;
 import com.deepfish.batch.item.reader.OpportunityItemReader;
 import com.deepfish.batch.item.writer.OpportunityItemWriter;
+import com.deepfish.batch.tasklet.OpportunityDatumSamplingTasklet;
 import com.deepfish.talent.domain.opportunity.Opportunity;
 import com.deepfish.talent.domain.opportunity.OpportunityStatus;
 import com.deepfish.talent.repositories.OpportunityRepository;
@@ -26,6 +27,8 @@ public class EndOfDayJobConfiguration {
 
   private static final String PENDING_OPPORTUNITY_EXPIRATION_STEP_NAME = "eodPendingOpportunityExpirationStep";
 
+  private static final String OPPORTUNITY_DATUM_SAMPLING_STEP_NAME = "eodOpportunityDatumSamplingStep";
+
   private final JobBuilderFactory jobBuilderFactory;
 
   private final StepBuilderFactory stepBuilderFactory;
@@ -44,12 +47,14 @@ public class EndOfDayJobConfiguration {
   public Job endOfDayJob(
       Step authenticationStep,
       Step eodPendingOpportunityExpirationStep,
+      Step eodOpportunityDatumSamplingStep,
       Step clearAuthenticationStep
   ) {
     return jobBuilderFactory
         .get(JOB_NAME)
         .start(authenticationStep)
         .next(eodPendingOpportunityExpirationStep)
+        .next(eodOpportunityDatumSamplingStep)
         .next(clearAuthenticationStep)
         .build();
   }
@@ -71,6 +76,19 @@ public class EndOfDayJobConfiguration {
                 OpportunityStatus.PENDING))
         .processor(new OpportunityExpirator())
         .writer(OpportunityItemWriter.newInstance(opportunityRepository))
+        .build();
+  }
+
+  // OPPORTUNITY DATUM SAMPLING STEP ===============================================================
+
+  @JobScope
+  @Bean
+  public Step eodOpportunityDatumSamplingStep(
+      OpportunityDatumSamplingTasklet opportunityDatumSamplingTasklet
+  ) {
+    return stepBuilderFactory
+        .get(OPPORTUNITY_DATUM_SAMPLING_STEP_NAME)
+        .tasklet(opportunityDatumSamplingTasklet)
         .build();
   }
 
