@@ -1,7 +1,7 @@
 package com.deepfish.batch;
 
-import com.deepfish.batch.step.auth.AuthenticationTasklet;
-import com.deepfish.batch.step.auth.ClearAuthenticationTasklet;
+import com.deepfish.batch.tasklet.auth.AuthenticationTasklet;
+import com.deepfish.batch.tasklet.auth.ClearAuthenticationTasklet;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.batch.core.Step;
