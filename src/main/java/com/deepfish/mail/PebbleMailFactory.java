@@ -244,9 +244,31 @@ public class PebbleMailFactory implements MailFactory {
         .buildEmail();
   }
 
+  private final PebbleTemplate talentInterviewRequestMailTemplate = pebbleEngine
+      .getTemplate("mails/talent/interviewRequest.html");
+
   @Override
   public Email getTalentInterviewRequestMail(Iterable<Interview> interviews) {
-    return null;
+    Talent talent = interviews.iterator().next().getTalent();
+    String subject = talent.getFirstName() + ", un recruteur veut te rencontrer !";
+    Map<String, Object> context = new HashMap<>();
+    context.put("title", subject);
+    context.put("talent", talent);
+    context.put("interviews", interviews);
+    Writer writer = new StringWriter();
+    try {
+      talentInterviewRequestMailTemplate.evaluate(writer, context);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
+    return EmailBuilder
+        .startingBlank()
+        .from(DAVID_EMAIL)
+        .to(talent.getEmail())
+        .withSubject(subject)
+        .withHTMLText(writer.toString())
+        .buildEmail();
   }
 
   // EMPLOYER ======================================================================================
@@ -368,6 +390,32 @@ public class PebbleMailFactory implements MailFactory {
     Writer writer = new StringWriter();
     try {
       adminNewRequirementMailTemplate.evaluate(writer, context);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
+    return EmailBuilder
+        .startingBlank()
+        .toMultiple(SALES_TEAM_EMAILS)
+        .withSubject(subject)
+        .withHTMLText(writer.toString())
+        .buildEmail();
+  }
+
+  private final PebbleTemplate adminNewInterviewRequestMailTemplate = pebbleEngine
+      .getTemplate("mails/admin/newInterviewRequest.html");
+
+  @Override
+  public Email getAdminNewInterviewRequestMail(Interview interview) {
+    String subject =
+        interview.getEmployer().getCompany().getName() + " - Nouvelle demande d'entretien";
+    Map<String, Object> context = new HashMap<>();
+    context.put("title", subject);
+    context.put("company", interview.getEmployer().getCompany());
+    context.put("talent", interview.getTalent());
+    Writer writer = new StringWriter();
+    try {
+      adminNewInterviewRequestMailTemplate.evaluate(writer, context);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -668,10 +716,5 @@ public class PebbleMailFactory implements MailFactory {
         .withSubject(subject)
         .withHTMLText(writer.toString())
         .buildEmail();
-  }
-
-  @Override
-  public Email getAdminNewInterviewRequestMail(Interview interview) {
-    return null;
   }
 }
