@@ -271,6 +271,36 @@ public class PebbleMailFactory implements MailFactory {
         .buildEmail();
   }
 
+  private final PebbleTemplate talentInterviewConfirmedMailTemplate = pebbleEngine
+      .getTemplate("mails/talent/interviewConfirmed.html");
+
+  @Override
+  public Email getTalentInterviewConfirmedMail(Interview interview) {
+    String subject = interview.getTalent().getFirstName()
+        + ", ton entretien avec "
+        + interview.getEmployer().getCompany().getName()
+        + " est confirmé !";
+    Map<String, Object> context = new HashMap<>();
+    context.put("title", subject);
+    context.put("interview", interview);
+    context.put("talent", interview.getTalent());
+    context.put("company", interview.getEmployer().getCompany());
+    Writer writer = new StringWriter();
+    try {
+      talentInterviewConfirmedMailTemplate.evaluate(writer, context);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
+    return EmailBuilder
+        .startingBlank()
+        .from(DAVID_EMAIL)
+        .to(interview.getTalent().getEmail())
+        .withSubject(subject)
+        .withHTMLText(writer.toString())
+        .buildEmail();
+  }
+
   // EMPLOYER ======================================================================================
 
   private final PebbleTemplate employerWelcomeMailTemplate = pebbleEngine
@@ -350,6 +380,36 @@ public class PebbleMailFactory implements MailFactory {
         .buildEmail();
   }
 
+  private final PebbleTemplate employerInterviewConfirmedMailTemplate = pebbleEngine
+      .getTemplate("mails/employer/interviewConfirmed.html");
+
+  @Override
+  public Email getEmployerInterviewConfirmedMail(Interview interview) {
+    String subject = "Votre entretien avec "
+        + interview.getTalent().getFirstName() + " "
+        + interview.getTalent().getLastName()
+        + " est confirmé via Deepfish";
+    Map<String, Object> context = new HashMap<>();
+    context.put("title", subject);
+    context.put("interview", interview);
+    context.put("employer", interview.getEmployer());
+    context.put("talent", interview.getTalent());
+    Writer writer = new StringWriter();
+    try {
+      employerInterviewConfirmedMailTemplate.evaluate(writer, context);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
+    return EmailBuilder
+        .startingBlank()
+        .from(DAVID_EMAIL)
+        .to(interview.getEmployer().getUsername())
+        .withSubject(subject)
+        .withHTMLText(writer.toString())
+        .buildEmail();
+  }
+
   // ADMIN =========================================================================================
 
   private final PebbleTemplate adminNewEmployerMailTemplate = pebbleEngine
@@ -416,6 +476,35 @@ public class PebbleMailFactory implements MailFactory {
     Writer writer = new StringWriter();
     try {
       adminNewInterviewRequestMailTemplate.evaluate(writer, context);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
+    return EmailBuilder
+        .startingBlank()
+        .toMultiple(SALES_TEAM_EMAILS)
+        .withSubject(subject)
+        .withHTMLText(writer.toString())
+        .buildEmail();
+  }
+
+  private final PebbleTemplate adminInterviewConfirmedMailTemplate = pebbleEngine
+      .getTemplate("mails/admin/interviewConfirmed.html");
+
+  @Override
+  public Email getAdminInterviewConfirmedMail(Interview interview) {
+    String subject = "[Interview confirmed] "
+        + interview.getTalent().getFirstName() + " "
+        + interview.getTalent().getLastName() + " - "
+        + interview.getEmployer().getCompany().getName();
+    Map<String, Object> context = new HashMap<>();
+    context.put("title", subject);
+    context.put("interview", interview);
+    context.put("employer", interview.getEmployer());
+    context.put("talent", interview.getTalent());
+    Writer writer = new StringWriter();
+    try {
+      adminInterviewConfirmedMailTemplate.evaluate(writer, context);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }

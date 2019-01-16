@@ -1,10 +1,12 @@
 package com.deepfish.interview.event;
 
 import com.deepfish.interview.domain.Interview;
+import com.deepfish.interview.services.InterviewService;
+import java.util.Objects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.rest.core.annotation.HandleAfterCreate;
-import org.springframework.data.rest.core.annotation.HandleBeforeCreate;
+import org.springframework.data.rest.core.annotation.HandleAfterSave;
+import org.springframework.data.rest.core.annotation.HandleBeforeSave;
 import org.springframework.data.rest.core.annotation.RepositoryEventHandler;
 import org.springframework.stereotype.Component;
 
@@ -14,13 +16,23 @@ public class InterviewEventHandler {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(InterviewEventHandler.class);
 
-  @HandleBeforeCreate
-  public void onBeforeCreate(Interview interview) {
-    LOGGER.info("ON BEFORE CREATE");
+  private final InterviewService interviewService;
+
+  public InterviewEventHandler(
+      InterviewService interviewService
+  ) {
+    this.interviewService = interviewService;
   }
 
-  @HandleAfterCreate
-  public void onAfterCreate(Interview interview) {
-    LOGGER.info("ON AFTER CREATE");
+  @HandleBeforeSave
+  public void onBeforeSave(Interview interview) {
+    if (Objects.nonNull(interview.getPreviousState())) {
+      interview.handleTalentResponseFromPreviousState();
+    }
+  }
+
+  @HandleAfterSave
+  public void onAfterSave(Interview interview) {
+    interviewService.updateInterviewStatus(interview);
   }
 }

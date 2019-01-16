@@ -31,6 +31,8 @@ public interface MailFactory {
 
   Email getTalentInterviewRequestMail(Iterable<Interview> interviews);
 
+  Email getTalentInterviewConfirmedMail(Interview interview);
+
   // EMPLOYER ======================================================================================
 
   Email getEmployerWelcomeMail(Employer employer, String password);
@@ -38,6 +40,8 @@ public interface MailFactory {
   Email getEmployerWelcomeFromTypeformMail(Employer employer, String password);
 
   Email getEmployerPasswordResetMail(Employer employer, String password);
+
+  Email getEmployerInterviewConfirmedMail(Interview interview);
 
   // ADMIN =========================================================================================
 
@@ -69,4 +73,6 @@ public interface MailFactory {
   Email getAdminTalentPendingOpportunitiesFollowUpCallMail(Collection<String[]> talents);
 
   Email getAdminNewInterviewRequestMail(Interview interview);
+
+  Email getAdminInterviewConfirmedMail(Interview interview);
 }

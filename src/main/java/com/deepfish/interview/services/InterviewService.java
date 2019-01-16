@@ -8,4 +8,6 @@ import com.deepfish.interview.domain.Interview;
 public interface InterviewService {
 
   Iterable<Interview> scheduleInterviews(Iterable<Interview> interviews);
+
+  void updateInterviewStatus(Interview interview);
 }

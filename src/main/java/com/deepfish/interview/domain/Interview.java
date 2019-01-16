@@ -3,10 +3,14 @@ package com.deepfish.interview.domain;
 import com.deepfish.employer.domain.Employer;
 import com.deepfish.talent.domain.Talent;
 import com.deepfish.talent.domain.opportunity.Opportunity;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.querydsl.core.annotations.QueryEntity;
 import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
+import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,6 +22,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -46,6 +51,10 @@ public class Interview implements Identifiable<UUID> {
    */
   @NotNull
   private UUID sharedId;
+
+  @Transient
+  @JsonProperty(access = Access.WRITE_ONLY)
+  private Map<String, Object> previousState;
 
   @NotNull
   @Enumerated(EnumType.STRING)
@@ -111,8 +120,66 @@ public class Interview implements Identifiable<UUID> {
 
   private LocalDateTime employerRespondedAt;
 
+  // ===============================================================================================
+
+  public void handleTalentResponse(ParticipationStatus talentResponseStatus) {
+    setTalentResponseStatus(talentResponseStatus);
+    setTalentRespondedAt(LocalDateTime.now(Clock.systemUTC()));
+    setUpdatedAt(LocalDateTime.now(Clock.systemUTC()));
+  }
+
+  /**
+   * In this case, the participation status has already been set by SDR
+   */
+  public void handleTalentResponseFromPreviousState() {
+    ParticipationStatus previousTalentResponseStatus = getValueFromPreviousState(
+        "talentResponseStatus",
+        ParticipationStatus.class);
+    if (!getTalentResponseStatus().equals(previousTalentResponseStatus)) {
+      setTalentRespondedAt(LocalDateTime.now(Clock.systemUTC()));
+      setUpdatedAt(LocalDateTime.now(Clock.systemUTC()));
+    }
+  }
+
   public void handleEmployerResponse(ParticipationStatus employerResponseStatus) {
     setEmployerResponseStatus(employerResponseStatus);
     setEmployerRespondedAt(LocalDateTime.now(Clock.systemUTC()));
+    setUpdatedAt(LocalDateTime.now(Clock.systemUTC()));
+  }
+
+  /**
+   * Update the interview status
+   *
+   * @return {@code true} if status has been updated, {@code false} otherwise
+   */
+  public boolean updateStatus() {
+    InterviewStatus previousStatus = getStatus();
+    if (ParticipationStatus.ACCEPTED.equals(talentResponseStatus)
+        && ParticipationStatus.ACCEPTED.equals(employerResponseStatus)) {
+      setStatus(InterviewStatus.CONFIRMED);
+    } else if (ParticipationStatus.DECLINED.equals(talentResponseStatus)
+        || ParticipationStatus.DECLINED.equals(employerResponseStatus)) {
+      setStatus(InterviewStatus.CANCELLED);
+    } else {
+      setStatus(InterviewStatus.TENTATIVE);
+    }
+    // status may or may not have been updated
+    if (getStatus().equals(previousStatus)) {
+      return false;
+    } else {
+      setUpdatedAt(LocalDateTime.now(Clock.systemUTC()));
+      return true;
+    }
+  }
+
+  private <V> V getValueFromPreviousState(String key, Class<V> type) {
+    if (previousState.containsKey(key) && Objects.nonNull(previousState.get(key))) {
+      if (ParticipationStatus.class.equals(type)) {
+        return (V) ParticipationStatus.valueOf((String) previousState.get(key));
+      } else {
+        return (V) previousState.get(key);
+      }
+    }
+    return null;
   }
 }
