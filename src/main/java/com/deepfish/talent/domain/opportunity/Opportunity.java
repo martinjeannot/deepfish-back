@@ -122,6 +122,9 @@ public class Opportunity {
   public void retrieveFromEmployer() {
     setForwarded(false);
     setForwardedAt(null);
+    // clean previous employer response
+    setEmployerStatus(null);
+    setEmployerRespondedAt(null);
   }
 
   public void handleTalentResponse(
@@ -137,7 +140,7 @@ public class Opportunity {
     }
   }
 
-  /*public void handleEmployerResponse(
+  public void handleEmployerResponse(
       OpportunityStatus employerStatus,
       String employerDeclinationReason
   ) {
@@ -146,5 +149,5 @@ public class Opportunity {
     if (OpportunityStatus.DECLINED.equals(employerStatus)) {
       setEmployerDeclinationReason(employerDeclinationReason);
     }
-  }*/
+  }
 }

@@ -9,8 +9,6 @@ import com.deepfish.mail.MailService;
 import com.deepfish.talent.domain.opportunity.Opportunity;
 import com.deepfish.talent.domain.opportunity.OpportunityStatus;
 import com.google.common.collect.Sets;
-import java.time.Clock;
-import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Set;
 import org.slf4j.Logger;
@@ -74,7 +72,8 @@ public class OpportunityEventHandler {
       // handling employer response
       if (PENDING.equals(previousEmployerStatus)
           && USER_ACTIONED_OPPORTUNITY_STATUSES.contains(opportunity.getEmployerStatus())) {
-        opportunity.setEmployerRespondedAt(LocalDateTime.now(Clock.systemUTC()));
+        opportunity.handleEmployerResponse(opportunity.getEmployerStatus(),
+            opportunity.getEmployerDeclinationReason());
       }
 
       // talent retrieval
@@ -108,7 +107,6 @@ public class OpportunityEventHandler {
       if (PENDING.equals(previousEmployerStatus)) {
         if (ACCEPTED.equals(opportunity.getEmployerStatus())) {
           mailService.send(mailFactory.getAdminEmployerAcceptedTalentMail(opportunity));
-          mailService.send(mailFactory.getTalentAcceptedByEmployerMail(opportunity));
         } else if (DECLINED.equals(opportunity.getEmployerStatus())) {
           mailService.send(mailFactory.getAdminEmployerDeclinedTalentMail(opportunity));
         }

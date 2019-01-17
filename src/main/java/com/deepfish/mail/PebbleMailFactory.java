@@ -117,33 +117,6 @@ public class PebbleMailFactory implements MailFactory {
         .buildEmail();
   }
 
-  private final PebbleTemplate talentAcceptedByEmployerMailTemplate = pebbleEngine
-      .getTemplate("mails/talent/acceptedByEmployer.html");
-
-  @Override
-  public Email getTalentAcceptedByEmployerMail(Opportunity opportunity) {
-    String subject =
-        opportunity.getRequirement().getCompany().getName() + " veut échanger avec toi !";
-    Map<String, Object> context = new HashMap<>();
-    context.put("title", subject);
-    context.put("talent", opportunity.getTalent());
-    context.put("company", opportunity.getRequirement().getCompany());
-    Writer writer = new StringWriter();
-    try {
-      talentAcceptedByEmployerMailTemplate.evaluate(writer, context);
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
-
-    return EmailBuilder
-        .startingBlank()
-        .from(DAVID_EMAIL)
-        .to(opportunity.getTalent().getEmail())
-        .withSubject(subject)
-        .withHTMLText(writer.toString())
-        .buildEmail();
-  }
-
   private final PebbleTemplate talent1stIncompleteProfileMailTemplate = pebbleEngine
       .getTemplate("mails/talent/incompleteProfile1.html");
 
