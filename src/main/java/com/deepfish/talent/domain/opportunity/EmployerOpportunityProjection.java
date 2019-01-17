@@ -1,8 +1,10 @@
 package com.deepfish.talent.domain.opportunity;
 
 import com.deepfish.employer.domain.requirement.Requirement;
+import com.deepfish.interview.domain.Interview;
 import com.deepfish.talent.domain.EmployerTalentProjection;
 import java.time.LocalDateTime;
+import java.util.Set;
 import java.util.UUID;
 import org.springframework.data.rest.core.config.Projection;
 
@@ -11,11 +13,13 @@ public interface EmployerOpportunityProjection {
 
   UUID getId();
 
-  OpportunityStatus getEmployerStatus();
-
-  LocalDateTime getForwardedAt();
+  EmployerTalentProjection getTalent();
 
   Requirement getRequirement();
 
-  EmployerTalentProjection getTalent();
+  Set<Interview> getInterviews();
+
+  OpportunityStatus getEmployerStatus();
+
+  LocalDateTime getForwardedAt();
 }
