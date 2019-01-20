@@ -12,12 +12,24 @@
 </p>
 
 <p>
-  Tu as reçu une nouvelle demande d'entretien sur Deepfish
+  Félicitations ! {{ company.name }} te propose 3 créneaux d'entretien :
+<ul>
+  {% for interview in interviews %}
+  <li>{{ interview.startAt.format(formatter) }}</li>
+  {% endfor %}
+</ul>
+</p>
+
+<p>
+  Choisis un de ces 3 créneaux pour avancer avec l'entreprise.
+</p>
+
+<p>
+  À bientôt
 </p>
 
 <p style="font-style: italic">
-  (*) : si tu utilises une application mail comme Outlook ou Windows Courrier, découvres ta nouvelle
-  opportunité depuis <a href="https://app.deepfish.co/#/sign-in">ton espace connecté</a>.
+  PS : si aucun créneau ne te convient, merci de nous prévenir via le chat sur le site Deepfish
 </p>
 </body>
 </html>

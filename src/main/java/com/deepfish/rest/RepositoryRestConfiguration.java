@@ -15,6 +15,8 @@ import com.deepfish.talent.domain.conditions.JobType;
 import com.deepfish.talent.domain.conditions.TaskType;
 import com.deepfish.talent.domain.opportunity.Opportunity;
 import com.deepfish.talent.domain.opportunity.OpportunityDatum;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.data.rest.core.event.ValidatingRepositoryEventListener;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurerAdapter;
 import org.springframework.stereotype.Component;
@@ -43,5 +45,12 @@ public class RepositoryRestConfiguration extends RepositoryRestConfigurerAdapter
       ValidatingRepositoryEventListener validatingListener) {
     validatingListener.addValidator("beforeCreate", validator);
     validatingListener.addValidator("beforeSave", validator);
+  }
+
+  @Override
+  public void configureJacksonObjectMapper(ObjectMapper objectMapper) {
+    super.configureJacksonObjectMapper(objectMapper);
+    // tells Jackson to preserve time zones upon deserialization
+    objectMapper.disable(DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE);
   }
 }

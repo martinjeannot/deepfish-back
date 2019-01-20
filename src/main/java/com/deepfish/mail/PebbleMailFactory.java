@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -222,12 +223,15 @@ public class PebbleMailFactory implements MailFactory {
 
   @Override
   public Email getTalentInterviewRequestMail(Iterable<Interview> interviews) {
-    Talent talent = interviews.iterator().next().getTalent();
+    Interview referenceInterview = interviews.iterator().next();
+    Talent talent = referenceInterview.getTalent();
     String subject = talent.getFirstName() + ", un recruteur veut te rencontrer !";
     Map<String, Object> context = new HashMap<>();
     context.put("title", subject);
     context.put("talent", talent);
+    context.put("company", referenceInterview.getEmployer().getCompany());
     context.put("interviews", interviews);
+    context.put("formatter", DateTimeFormatter.RFC_1123_DATE_TIME);
     Writer writer = new StringWriter();
     try {
       talentInterviewRequestMailTemplate.evaluate(writer, context);
@@ -255,6 +259,7 @@ public class PebbleMailFactory implements MailFactory {
         + " est confirmé !";
     Map<String, Object> context = new HashMap<>();
     context.put("title", subject);
+
     context.put("interview", interview);
     context.put("talent", interview.getTalent());
     context.put("company", interview.getEmployer().getCompany());
