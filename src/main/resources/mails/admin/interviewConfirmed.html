@@ -8,7 +8,15 @@
 </head>
 <body>
 <p>
-  Interview confirmed !
+  Interview confirmed
+</p>
+
+<p>
+  Talent : {{ talent.firstName }} {{ talent.lastName }}<br/>
+  Company : {{ company.name }}<br/>
+  Format : {{ interview.format }}<br/>
+  Date/time : {{ interview.startAt.format(dateFormatter) }}
+  à {{ interview.startAt.format(timeFormatter) }}<br/>
 </p>
 </body>
 </html>

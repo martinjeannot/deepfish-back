@@ -4,6 +4,7 @@ import com.deepfish.employer.domain.Employer;
 import com.deepfish.employer.domain.requirement.Requirement;
 import com.deepfish.interview.domain.Interview;
 import com.deepfish.mail.util.FrontAppUrlBuilder;
+import com.deepfish.mail.util.MailHelper;
 import com.deepfish.talent.domain.Talent;
 import com.deepfish.talent.domain.opportunity.Opportunity;
 import com.mitchellbosecke.pebble.PebbleEngine;
@@ -13,9 +14,11 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import org.simplejavamail.email.Email;
 import org.simplejavamail.email.EmailBuilder;
@@ -30,6 +33,12 @@ public class PebbleMailFactory implements MailFactory {
       DAVID_EMAIL,
       "bruno@deepfish.co",
   };
+
+  private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter
+      .ofLocalizedDate(FormatStyle.FULL).withLocale(Locale.FRANCE);
+
+  private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter
+      .ofLocalizedTime(FormatStyle.SHORT).withLocale(Locale.FRANCE);
 
   private final PebbleEngine pebbleEngine = new PebbleEngine.Builder().build();
 
@@ -231,7 +240,8 @@ public class PebbleMailFactory implements MailFactory {
     context.put("talent", talent);
     context.put("company", referenceInterview.getEmployer().getCompany());
     context.put("interviews", interviews);
-    context.put("formatter", DateTimeFormatter.RFC_1123_DATE_TIME);
+    context.put("dateFormatter", DATE_FORMATTER);
+    context.put("timeFormatter", TIME_FORMATTER);
     Writer writer = new StringWriter();
     try {
       talentInterviewRequestMailTemplate.evaluate(writer, context);
@@ -259,10 +269,12 @@ public class PebbleMailFactory implements MailFactory {
         + " est confirmé !";
     Map<String, Object> context = new HashMap<>();
     context.put("title", subject);
-
-    context.put("interview", interview);
     context.put("talent", interview.getTalent());
+    context.put("format", MailHelper.getLabelForInterviewFormat(interview.getFormat()));
     context.put("company", interview.getEmployer().getCompany());
+    context.put("interview", interview);
+    context.put("dateFormatter", DATE_FORMATTER);
+    context.put("timeFormatter", TIME_FORMATTER);
     Writer writer = new StringWriter();
     try {
       talentInterviewConfirmedMailTemplate.evaluate(writer, context);
@@ -369,9 +381,12 @@ public class PebbleMailFactory implements MailFactory {
         + " est confirmé via Deepfish";
     Map<String, Object> context = new HashMap<>();
     context.put("title", subject);
-    context.put("interview", interview);
     context.put("employer", interview.getEmployer());
+    context.put("format", MailHelper.getLabelForInterviewFormat(interview.getFormat()));
     context.put("talent", interview.getTalent());
+    context.put("interview", interview);
+    context.put("dateFormatter", DATE_FORMATTER);
+    context.put("timeFormatter", TIME_FORMATTER);
     Writer writer = new StringWriter();
     try {
       employerInterviewConfirmedMailTemplate.evaluate(writer, context);
@@ -445,8 +460,9 @@ public class PebbleMailFactory implements MailFactory {
 
   @Override
   public Email getAdminNewInterviewRequestMail(Interview interview) {
-    String subject =
-        interview.getEmployer().getCompany().getName() + " - Nouvelle demande d'entretien";
+    String subject = "[Interview request] " + interview.getEmployer().getCompany().getName() + " - "
+        + interview.getTalent().getFirstName() + " "
+        + interview.getTalent().getLastName();
     Map<String, Object> context = new HashMap<>();
     context.put("title", subject);
     context.put("company", interview.getEmployer().getCompany());
@@ -477,9 +493,11 @@ public class PebbleMailFactory implements MailFactory {
         + interview.getEmployer().getCompany().getName();
     Map<String, Object> context = new HashMap<>();
     context.put("title", subject);
-    context.put("interview", interview);
-    context.put("employer", interview.getEmployer());
     context.put("talent", interview.getTalent());
+    context.put("company", interview.getEmployer().getCompany());
+    context.put("interview", interview);
+    context.put("dateFormatter", DATE_FORMATTER);
+    context.put("timeFormatter", TIME_FORMATTER);
     Writer writer = new StringWriter();
     try {
       adminInterviewConfirmedMailTemplate.evaluate(writer, context);

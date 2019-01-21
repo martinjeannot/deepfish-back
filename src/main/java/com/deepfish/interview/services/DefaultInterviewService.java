@@ -51,6 +51,7 @@ public class DefaultInterviewService implements InterviewService {
 
     interviews = interviewRepository.save(interviews);
 
+    // send notifications
     mailService.send(mailFactory.getTalentInterviewRequestMail(interviews));
     mailService.send(mailFactory.getAdminNewInterviewRequestMail(interviews.iterator().next()));
 

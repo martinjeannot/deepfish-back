@@ -12,12 +12,14 @@
 </p>
 
 <p>
-  Votre entretien TYPE avec PRENOM NOM est confirmé le NUM JOUR HEURE.<br/>
-  Vous pouvez dès maintenant l'ajouter à votre agenda.
+  Ton entretien {{ format }} avec {{ company.name }} est confirmé
+  le {{ interview.startAt.format(dateFormatter) }}
+  à {{ interview.startAt.format(timeFormatter) }} !<br/>
+  Tu peux dès maintenant l'ajouter à ton agenda.
 </p>
 
 <p>
-  L'équipe Deepfish reste à votre disposition au besoin,<br/>
+  Je reste à ta disposition au besoin,<br/>
   À bientôt
 </p>
 </body>

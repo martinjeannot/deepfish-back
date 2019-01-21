@@ -15,7 +15,12 @@
   Félicitations ! {{ company.name }} te propose 3 créneaux d'entretien :
 <ul>
   {% for interview in interviews %}
-  <li>{{ interview.startAt.format(formatter) }}</li>
+  <li>
+    <a href="https://app.deepfish.co/#/sign-in">
+      Le {{ interview.startAt.format(dateFormatter) }}
+      à {{ interview.startAt.format(timeFormatter) }}
+    </a>
+  </li>
   {% endfor %}
 </ul>
 </p>
