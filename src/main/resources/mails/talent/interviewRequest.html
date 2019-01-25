@@ -12,7 +12,11 @@
 </p>
 
 <p>
-  Félicitations ! {{ company.name }} te propose 3 créneaux d'entretien :
+  Félicitations, {{ company.name }} te propose un entretien {{ format }} !
+</p>
+
+<p>
+  Choisis un de ces 3 créneaux pour avancer avec l'entreprise :
 <ul>
   {% for interview in interviews %}
   <li>
@@ -23,10 +27,6 @@
   </li>
   {% endfor %}
 </ul>
-</p>
-
-<p>
-  Choisis un de ces 3 créneaux pour avancer avec l'entreprise.
 </p>
 
 <p>

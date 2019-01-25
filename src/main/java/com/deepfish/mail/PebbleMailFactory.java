@@ -239,6 +239,7 @@ public class PebbleMailFactory implements MailFactory {
     context.put("title", subject);
     context.put("talent", talent);
     context.put("company", referenceInterview.getEmployer().getCompany());
+    context.put("format", MailHelper.getLabelForInterviewFormat(referenceInterview.getFormat()));
     context.put("interviews", interviews);
     context.put("dateFormatter", DATE_FORMATTER);
     context.put("timeFormatter", TIME_FORMATTER);
