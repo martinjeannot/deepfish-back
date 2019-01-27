@@ -15,6 +15,7 @@ import java.io.Writer;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.time.temporal.ChronoUnit;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -496,6 +497,8 @@ public class PebbleMailFactory implements MailFactory {
     context.put("title", subject);
     context.put("talent", interview.getTalent());
     context.put("company", interview.getEmployer().getCompany());
+    context
+        .put("duration", ChronoUnit.MINUTES.between(interview.getStartAt(), interview.getEndAt()));
     context.put("interview", interview);
     context.put("dateFormatter", DATE_FORMATTER);
     context.put("timeFormatter", TIME_FORMATTER);

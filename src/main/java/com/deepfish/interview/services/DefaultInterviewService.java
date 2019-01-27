@@ -82,7 +82,7 @@ public class DefaultInterviewService implements InterviewService {
 
           // send notifications
           // TODO replace with google calendar invite
-          // mailService.send(mailFactory.getEmployerInterviewConfirmedMail(interview));
+          mailService.send(mailFactory.getEmployerInterviewConfirmedMail(interview));
           // mailService.send(mailFactory.getTalentInterviewConfirmedMail(interview));
           mailService.send(mailFactory.getAdminInterviewConfirmedMail(interview));
           break;
