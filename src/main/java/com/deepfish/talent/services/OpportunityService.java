@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * Service related to {@link com.deepfish.talent.domain.opportunity.Opportunity} entity
+ * Service related to the {@link com.deepfish.talent.domain.opportunity.Opportunity} domain object
  */
 public interface OpportunityService {
 

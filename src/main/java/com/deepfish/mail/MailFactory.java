@@ -2,6 +2,7 @@ package com.deepfish.mail;
 
 import com.deepfish.employer.domain.Employer;
 import com.deepfish.employer.domain.requirement.Requirement;
+import com.deepfish.interview.domain.Interview;
 import com.deepfish.talent.domain.Talent;
 import com.deepfish.talent.domain.opportunity.Opportunity;
 import java.util.Collection;
@@ -18,8 +19,6 @@ public interface MailFactory {
 
   Email getTalentPendingOpportunityFollowUp2ndMail(Opportunity opportunity);
 
-  Email getTalentAcceptedByEmployerMail(Opportunity opportunity);
-
   Email getTalent1stIncompleteProfileMail(Talent talent);
 
   Email getTalent2ndIncompleteProfileMail(Talent talent);
@@ -28,6 +27,10 @@ public interface MailFactory {
 
   Email getTalent4thIncompleteProfileMail(Talent talent);
 
+  Email getTalentInterviewRequestMail(Iterable<Interview> interviews);
+
+  Email getTalentInterviewConfirmedMail(Interview interview);
+
   // EMPLOYER ======================================================================================
 
   Email getEmployerWelcomeMail(Employer employer, String password);
@@ -35,6 +38,8 @@ public interface MailFactory {
   Email getEmployerWelcomeFromTypeformMail(Employer employer, String password);
 
   Email getEmployerPasswordResetMail(Employer employer, String password);
+
+  Email getEmployerInterviewConfirmedMail(Interview interview);
 
   // ADMIN =========================================================================================
 
@@ -64,4 +69,8 @@ public interface MailFactory {
   Email getAdminTalentPendingOpportunitiesFollowUpSMSMail(Collection<String[]> talents);
 
   Email getAdminTalentPendingOpportunitiesFollowUpCallMail(Collection<String[]> talents);
+
+  Email getAdminNewInterviewRequestMail(Interview interview);
+
+  Email getAdminInterviewConfirmedMail(Interview interview);
 }

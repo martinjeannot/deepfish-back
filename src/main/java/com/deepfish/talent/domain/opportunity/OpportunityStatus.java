@@ -1,8 +1,8 @@
 package com.deepfish.talent.domain.opportunity;
 
 public enum OpportunityStatus {
+  PENDING, // default
   ACCEPTED,
-  PENDING,
   DECLINED,
   EXPIRED,
 }

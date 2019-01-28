@@ -2,7 +2,9 @@ package com.deepfish.mail;
 
 import com.deepfish.employer.domain.Employer;
 import com.deepfish.employer.domain.requirement.Requirement;
+import com.deepfish.interview.domain.Interview;
 import com.deepfish.mail.util.FrontAppUrlBuilder;
+import com.deepfish.mail.util.MailHelper;
 import com.deepfish.talent.domain.Talent;
 import com.deepfish.talent.domain.opportunity.Opportunity;
 import com.mitchellbosecke.pebble.PebbleEngine;
@@ -11,9 +13,13 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+import java.time.temporal.ChronoUnit;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import org.simplejavamail.email.Email;
 import org.simplejavamail.email.EmailBuilder;
@@ -28,6 +34,12 @@ public class PebbleMailFactory implements MailFactory {
       DAVID_EMAIL,
       "bruno@deepfish.co",
   };
+
+  private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter
+      .ofLocalizedDate(FormatStyle.FULL).withLocale(Locale.FRANCE);
+
+  private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter
+      .ofLocalizedTime(FormatStyle.SHORT).withLocale(Locale.FRANCE);
 
   private final PebbleEngine pebbleEngine = new PebbleEngine.Builder().build();
 
@@ -103,33 +115,6 @@ public class PebbleMailFactory implements MailFactory {
     Writer writer = new StringWriter();
     try {
       talentPendingOpportunityFollowUp2ndMailTemplate.evaluate(writer, context);
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
-
-    return EmailBuilder
-        .startingBlank()
-        .from(DAVID_EMAIL)
-        .to(opportunity.getTalent().getEmail())
-        .withSubject(subject)
-        .withHTMLText(writer.toString())
-        .buildEmail();
-  }
-
-  private final PebbleTemplate talentAcceptedByEmployerMailTemplate = pebbleEngine
-      .getTemplate("mails/talent/acceptedByEmployer.html");
-
-  @Override
-  public Email getTalentAcceptedByEmployerMail(Opportunity opportunity) {
-    String subject =
-        opportunity.getRequirement().getCompany().getName() + " veut échanger avec toi !";
-    Map<String, Object> context = new HashMap<>();
-    context.put("title", subject);
-    context.put("talent", opportunity.getTalent());
-    context.put("company", opportunity.getRequirement().getCompany());
-    Writer writer = new StringWriter();
-    try {
-      talentAcceptedByEmployerMailTemplate.evaluate(writer, context);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -243,6 +228,71 @@ public class PebbleMailFactory implements MailFactory {
         .buildEmail();
   }
 
+  private final PebbleTemplate talentInterviewRequestMailTemplate = pebbleEngine
+      .getTemplate("mails/talent/interviewRequest.html");
+
+  @Override
+  public Email getTalentInterviewRequestMail(Iterable<Interview> interviews) {
+    Interview referenceInterview = interviews.iterator().next();
+    Talent talent = referenceInterview.getTalent();
+    String subject = talent.getFirstName() + ", un recruteur veut te rencontrer !";
+    Map<String, Object> context = new HashMap<>();
+    context.put("title", subject);
+    context.put("talent", talent);
+    context.put("company", referenceInterview.getEmployer().getCompany());
+    context.put("format", MailHelper.getLabelForInterviewFormat(referenceInterview.getFormat()));
+    context.put("interviews", interviews);
+    context.put("dateFormatter", DATE_FORMATTER);
+    context.put("timeFormatter", TIME_FORMATTER);
+    Writer writer = new StringWriter();
+    try {
+      talentInterviewRequestMailTemplate.evaluate(writer, context);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
+    return EmailBuilder
+        .startingBlank()
+        .from(DAVID_EMAIL)
+        .to(talent.getEmail())
+        .withSubject(subject)
+        .withHTMLText(writer.toString())
+        .buildEmail();
+  }
+
+  private final PebbleTemplate talentInterviewConfirmedMailTemplate = pebbleEngine
+      .getTemplate("mails/talent/interviewConfirmed.html");
+
+  @Override
+  public Email getTalentInterviewConfirmedMail(Interview interview) {
+    String subject = interview.getTalent().getFirstName()
+        + ", ton entretien avec "
+        + interview.getEmployer().getCompany().getName()
+        + " est confirmé !";
+    Map<String, Object> context = new HashMap<>();
+    context.put("title", subject);
+    context.put("talent", interview.getTalent());
+    context.put("format", MailHelper.getLabelForInterviewFormat(interview.getFormat()));
+    context.put("company", interview.getEmployer().getCompany());
+    context.put("interview", interview);
+    context.put("dateFormatter", DATE_FORMATTER);
+    context.put("timeFormatter", TIME_FORMATTER);
+    Writer writer = new StringWriter();
+    try {
+      talentInterviewConfirmedMailTemplate.evaluate(writer, context);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
+    return EmailBuilder
+        .startingBlank()
+        .from(DAVID_EMAIL)
+        .to(interview.getTalent().getEmail())
+        .withSubject(subject)
+        .withHTMLText(writer.toString())
+        .buildEmail();
+  }
+
   // EMPLOYER ======================================================================================
 
   private final PebbleTemplate employerWelcomeMailTemplate = pebbleEngine
@@ -322,6 +372,39 @@ public class PebbleMailFactory implements MailFactory {
         .buildEmail();
   }
 
+  private final PebbleTemplate employerInterviewConfirmedMailTemplate = pebbleEngine
+      .getTemplate("mails/employer/interviewConfirmed.html");
+
+  @Override
+  public Email getEmployerInterviewConfirmedMail(Interview interview) {
+    String subject = "Votre entretien avec "
+        + interview.getTalent().getFirstName() + " "
+        + interview.getTalent().getLastName()
+        + " est confirmé via Deepfish";
+    Map<String, Object> context = new HashMap<>();
+    context.put("title", subject);
+    context.put("employer", interview.getEmployer());
+    context.put("format", MailHelper.getLabelForInterviewFormat(interview.getFormat()));
+    context.put("talent", interview.getTalent());
+    context.put("interview", interview);
+    context.put("dateFormatter", DATE_FORMATTER);
+    context.put("timeFormatter", TIME_FORMATTER);
+    Writer writer = new StringWriter();
+    try {
+      employerInterviewConfirmedMailTemplate.evaluate(writer, context);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
+    return EmailBuilder
+        .startingBlank()
+        .from(DAVID_EMAIL)
+        .to(interview.getEmployer().getUsername())
+        .withSubject(subject)
+        .withHTMLText(writer.toString())
+        .buildEmail();
+  }
+
   // ADMIN =========================================================================================
 
   private final PebbleTemplate adminNewEmployerMailTemplate = pebbleEngine
@@ -362,6 +445,66 @@ public class PebbleMailFactory implements MailFactory {
     Writer writer = new StringWriter();
     try {
       adminNewRequirementMailTemplate.evaluate(writer, context);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
+    return EmailBuilder
+        .startingBlank()
+        .toMultiple(SALES_TEAM_EMAILS)
+        .withSubject(subject)
+        .withHTMLText(writer.toString())
+        .buildEmail();
+  }
+
+  private final PebbleTemplate adminNewInterviewRequestMailTemplate = pebbleEngine
+      .getTemplate("mails/admin/newInterviewRequest.html");
+
+  @Override
+  public Email getAdminNewInterviewRequestMail(Interview interview) {
+    String subject = "[Interview request] " + interview.getEmployer().getCompany().getName() + " - "
+        + interview.getTalent().getFirstName() + " "
+        + interview.getTalent().getLastName();
+    Map<String, Object> context = new HashMap<>();
+    context.put("title", subject);
+    context.put("company", interview.getEmployer().getCompany());
+    context.put("talent", interview.getTalent());
+    Writer writer = new StringWriter();
+    try {
+      adminNewInterviewRequestMailTemplate.evaluate(writer, context);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
+    return EmailBuilder
+        .startingBlank()
+        .toMultiple(SALES_TEAM_EMAILS)
+        .withSubject(subject)
+        .withHTMLText(writer.toString())
+        .buildEmail();
+  }
+
+  private final PebbleTemplate adminInterviewConfirmedMailTemplate = pebbleEngine
+      .getTemplate("mails/admin/interviewConfirmed.html");
+
+  @Override
+  public Email getAdminInterviewConfirmedMail(Interview interview) {
+    String subject = "[Interview confirmed] "
+        + interview.getTalent().getFirstName() + " "
+        + interview.getTalent().getLastName() + " - "
+        + interview.getEmployer().getCompany().getName();
+    Map<String, Object> context = new HashMap<>();
+    context.put("title", subject);
+    context.put("talent", interview.getTalent());
+    context.put("company", interview.getEmployer().getCompany());
+    context
+        .put("duration", ChronoUnit.MINUTES.between(interview.getStartAt(), interview.getEndAt()));
+    context.put("interview", interview);
+    context.put("dateFormatter", DATE_FORMATTER);
+    context.put("timeFormatter", TIME_FORMATTER);
+    Writer writer = new StringWriter();
+    try {
+      adminInterviewConfirmedMailTemplate.evaluate(writer, context);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }

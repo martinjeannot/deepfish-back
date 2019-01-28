@@ -5,6 +5,7 @@ import com.deepfish.company.domain.CompanyMaturityLevel;
 import com.deepfish.employer.domain.Employer;
 import com.deepfish.employer.domain.requirement.Requirement;
 import com.deepfish.employer.domain.requirement.Seniority;
+import com.deepfish.interview.domain.Interview;
 import com.deepfish.talent.domain.QueryableTalent;
 import com.deepfish.talent.domain.Talent;
 import com.deepfish.talent.domain.conditions.CommodityType;
@@ -14,6 +15,8 @@ import com.deepfish.talent.domain.conditions.JobType;
 import com.deepfish.talent.domain.conditions.TaskType;
 import com.deepfish.talent.domain.opportunity.Opportunity;
 import com.deepfish.talent.domain.opportunity.OpportunityDatum;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.data.rest.core.event.ValidatingRepositoryEventListener;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurerAdapter;
 import org.springframework.stereotype.Component;
@@ -33,8 +36,8 @@ public class RepositoryRestConfiguration extends RepositoryRestConfigurerAdapter
       org.springframework.data.rest.core.config.RepositoryRestConfiguration config) {
     config.exposeIdsFor(Talent.class, QueryableTalent.class, Opportunity.class, Employer.class,
         Company.class, CompanyMaturityLevel.class, JobType.class, CommodityType.class,
-        TaskType.class, IndustryType.class, FixedLocation.class, Seniority.class,
-        Requirement.class, OpportunityDatum.class);
+        TaskType.class, IndustryType.class, FixedLocation.class, Seniority.class, Requirement.class,
+        OpportunityDatum.class, Interview.class);
   }
 
   @Override
@@ -42,5 +45,12 @@ public class RepositoryRestConfiguration extends RepositoryRestConfigurerAdapter
       ValidatingRepositoryEventListener validatingListener) {
     validatingListener.addValidator("beforeCreate", validator);
     validatingListener.addValidator("beforeSave", validator);
+  }
+
+  @Override
+  public void configureJacksonObjectMapper(ObjectMapper objectMapper) {
+    super.configureJacksonObjectMapper(objectMapper);
+    // tells Jackson to preserve time zones upon deserialization
+    objectMapper.disable(DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE);
   }
 }
