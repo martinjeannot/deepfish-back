@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.querydsl.core.annotations.QueryEntity;
 import java.time.Clock;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Map;
 import java.util.Objects;
@@ -86,11 +87,23 @@ public class Interview implements Identifiable<UUID> {
   @Column(columnDefinition = "text")
   private String location = "";
 
-  @NotNull
+  @Transient
   private ZonedDateTime startAt;
 
   @NotNull
+  private ZonedDateTime startDateTime;
+
+  @NotNull
+  private String startTimeZone;
+
+  @Transient
   private ZonedDateTime endAt;
+
+  @NotNull
+  private ZonedDateTime endDateTime;
+
+  @NotNull
+  private String endTimeZone;
 
   @NotNull
   @Enumerated(EnumType.STRING)
@@ -181,5 +194,33 @@ public class Interview implements Identifiable<UUID> {
       }
     }
     return null;
+  }
+
+  // GETTERS/SETTERS ===============================================================================
+
+  public ZonedDateTime getStartAt() {
+    if (Objects.isNull(startAt)) {
+      startAt = getStartDateTime().withZoneSameInstant(ZoneId.of(getStartTimeZone()));
+    }
+    return startAt;
+  }
+
+  public void setStartAt(ZonedDateTime startAt) {
+    this.startAt = startAt;
+    setStartDateTime(startAt);
+    setStartTimeZone(startAt.getZone().toString());
+  }
+
+  public ZonedDateTime getEndAt() {
+    if (Objects.isNull(endAt)) {
+      endAt = getEndDateTime().withZoneSameInstant(ZoneId.of(getEndTimeZone()));
+    }
+    return endAt;
+  }
+
+  public void setEndAt(ZonedDateTime endAt) {
+    this.endAt = endAt;
+    setEndDateTime(endAt);
+    setEndTimeZone(endAt.getZone().toString());
   }
 }
