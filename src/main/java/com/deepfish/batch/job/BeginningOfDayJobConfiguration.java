@@ -2,6 +2,7 @@ package com.deepfish.batch.job;
 
 import com.deepfish.batch.BatchConfiguration;
 import com.deepfish.batch.item.processor.IncompleteProfileNotifier;
+import com.deepfish.batch.item.processor.TalentReactivator;
 import com.deepfish.batch.item.reader.TalentItemReader;
 import com.deepfish.batch.item.writer.TalentItemWriter;
 import com.deepfish.mail.MailFactory;
@@ -37,6 +38,8 @@ public class BeginningOfDayJobConfiguration {
 
   private static final int FOURTH_INCOMPLETE_PROFILE_NOTIFICATION_DAY = 17;
 
+  private static final String TALENT_REACTIVATION_STEP_NAME = "bodTalentReactivationStep";
+
   private final JobBuilderFactory jobBuilderFactory;
 
   private final StepBuilderFactory stepBuilderFactory;
@@ -57,6 +60,7 @@ public class BeginningOfDayJobConfiguration {
       Step bod2ndIncompleteProfileNotificationStep,
       Step bod3rdIncompleteProfileNotificationStep,
       Step bod4thIncompleteProfileNotificationStep,
+      Step bodTalentReactivationStep,
       Step clearAuthenticationStep
   ) {
     return jobBuilderFactory
@@ -65,6 +69,7 @@ public class BeginningOfDayJobConfiguration {
         .next(bod2ndIncompleteProfileNotificationStep)
         .next(bod3rdIncompleteProfileNotificationStep)
         .next(bod4thIncompleteProfileNotificationStep)
+        .next(bodTalentReactivationStep)
         .next(clearAuthenticationStep)
         .build();
   }
@@ -140,6 +145,29 @@ public class BeginningOfDayJobConfiguration {
                     .minusDays(FOURTH_INCOMPLETE_PROFILE_NOTIFICATION_DAY - 1).atStartOfDay(),
                 true))
         .processor(new IncompleteProfileNotifier(mailFactory, mailService))
+        .writer(TalentItemWriter.newInstance(talentRepository))
+        .build();
+  }
+
+  // TALENT REACTIVATION STEP ======================================================================
+
+  @JobScope
+  @Bean
+  public Step bodTalentReactivationStep(
+      TalentRepository talentRepository,
+      MailFactory mailFactory,
+      MailService mailService
+  ) {
+    return stepBuilderFactory
+        .get(TALENT_REACTIVATION_STEP_NAME)
+        .<Talent, Talent>chunk(100)
+        .reader(
+            TalentItemReader
+                .newInstance(
+                    talentRepository,
+                    LocalDate.now(Clock.systemUTC()),
+                    false))
+        .processor(new TalentReactivator(mailFactory, mailService))
         .writer(TalentItemWriter.newInstance(talentRepository))
         .build();
   }
