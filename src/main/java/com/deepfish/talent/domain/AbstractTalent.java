@@ -6,6 +6,7 @@ import com.deepfish.talent.domain.qualification.Qualification;
 import com.deepfish.user.domain.AbstractUser;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import java.time.Clock;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Map;
@@ -89,6 +90,8 @@ public class AbstractTalent extends AbstractUser {
   private Set<Opportunity> opportunities = new HashSet<>();
 
   private boolean active;
+
+  private LocalDate reactivatedOn;
 
   @Enumerated(EnumType.STRING)
   private TalentMaturityLevel maturityLevel;

@@ -53,6 +53,8 @@ public interface MailFactory {
 
   Email getAdminTalentActivationMail(Talent talent);
 
+  Email getAdminTalentReactivationMail(Talent talent);
+
   Email getAdminTalentDeactivationMail(Talent talent, String declinationReason,
       List<String> companyNames);
 
