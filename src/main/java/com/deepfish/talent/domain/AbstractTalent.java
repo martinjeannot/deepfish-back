@@ -5,6 +5,7 @@ import com.deepfish.talent.domain.opportunity.Opportunity;
 import com.deepfish.talent.domain.qualification.Qualification;
 import com.deepfish.user.domain.AbstractUser;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
+import com.vladmihalcea.hibernate.type.json.JsonStringType;
 import java.time.Clock;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -26,6 +27,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
+import org.hibernate.annotations.TypeDefs;
 import org.hibernate.validator.constraints.NotBlank;
 
 @MappedSuperclass
@@ -35,7 +37,10 @@ import org.hibernate.validator.constraints.NotBlank;
     "opportunities"})
 @EqualsAndHashCode(callSuper = true, exclude = {"basicProfile", "conditions", "qualification",
     "opportunities"})
-@TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
+@TypeDefs({
+    @TypeDef(name = "json", typeClass = JsonStringType.class),
+    @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
+})
 public class AbstractTalent extends AbstractUser {
 
   /**
@@ -61,7 +66,8 @@ public class AbstractTalent extends AbstractUser {
    * LinkedIn basic profile (as json)
    */
   @NotNull
-  @Column(columnDefinition = "text")
+  @Type(type = "json")
+  @Column(columnDefinition = "json")
   private String basicProfileText;
 
   @NotNull
