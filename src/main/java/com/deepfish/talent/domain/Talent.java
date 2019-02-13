@@ -34,7 +34,7 @@ import lombok.experimental.Accessors;
 public class Talent extends AbstractTalent {
 
   public Talent(String linkedInId) {
-    setLinkedInId(linkedInId);
+    setLinkedinId(linkedInId);
     setUsername(linkedInId);
   }
 

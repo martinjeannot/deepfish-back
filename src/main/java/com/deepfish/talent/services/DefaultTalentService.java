@@ -124,7 +124,7 @@ public class DefaultTalentService implements TalentService {
     } else {
       // update talent profile
       talent.setUsername((String) basicProfile.get("id"));
-      talent.setLinkedInId((String) basicProfile.get("id"));
+      talent.setLinkedinId((String) basicProfile.get("id"));
       talent.setLastName((String) basicProfile.get("lastName"));
       talent.setFirstName((String) basicProfile.get("firstName"));
       talent.setBasicProfile(basicProfile);

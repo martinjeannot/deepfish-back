@@ -39,21 +39,27 @@ import org.hibernate.validator.constraints.NotBlank;
 public class AbstractTalent extends AbstractUser {
 
   /**
-   * We have both a linkedInId and an email property in case we need to switch the username property
-   * from one to another
+   * We have both a linkedIn id and an email property in case we need to switch the username
+   * property from one to another
    */
   @NotBlank
   //@Setter(AccessLevel.NONE) FIXME after migration
-  private String linkedInId;
+  private String linkedinId;
 
   @NotBlank
   private String email;
 
+  /**
+   * LinkedIn basic profile (as jsonb)
+   */
   @NotNull
   @Type(type = "jsonb")
   @Column(columnDefinition = "jsonb")
   private Map<String, Object> basicProfile;
 
+  /**
+   * LinkedIn basic profile (as json)
+   */
   @NotNull
   @Column(columnDefinition = "text")
   private String basicProfileText;
