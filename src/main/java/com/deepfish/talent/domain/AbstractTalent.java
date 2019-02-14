@@ -5,7 +5,6 @@ import com.deepfish.talent.domain.opportunity.Opportunity;
 import com.deepfish.talent.domain.qualification.Qualification;
 import com.deepfish.user.domain.AbstractUser;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
-import com.vladmihalcea.hibernate.type.json.JsonStringType;
 import java.time.Clock;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -27,9 +26,12 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
-import org.hibernate.annotations.TypeDefs;
 import org.hibernate.validator.constraints.NotBlank;
 
+/**
+ * @see <a href="https://github.com/vladmihalcea/hibernate-types/issues/30#issuecomment-386609972">
+ * json vs jsonb</a>
+ */
 @MappedSuperclass
 @Data
 @Accessors(chain = true)
@@ -37,11 +39,11 @@ import org.hibernate.validator.constraints.NotBlank;
     "opportunities"})
 @EqualsAndHashCode(callSuper = true, exclude = {"basicProfile", "conditions", "qualification",
     "opportunities"})
-@TypeDefs({
-    @TypeDef(name = "json", typeClass = JsonStringType.class),
-    @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
-})
+@TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 public class AbstractTalent extends AbstractUser {
+
+  @NotBlank
+  private String email;
 
   /**
    * We have both a linkedIn id and an email property in case we need to switch the username
@@ -51,28 +53,45 @@ public class AbstractTalent extends AbstractUser {
   //@Setter(AccessLevel.NONE) FIXME after migration
   private String linkedinId;
 
+  private String linkedinPublicProfileUrl;
+
   @NotBlank
-  private String email;
+  private String profilePictureUrl;
 
   /**
-   * LinkedIn basic profile (as jsonb)
+   * LinkedIn lite profile (as json) retrieved from LinkedIn API V2
    */
-  @NotNull
+  @Type(type = "jsonb")
+  @Column(columnDefinition = "jsonb")
+  private String liteProfileText;
+
+  /**
+   * LinkedIn basic profile (as jsonb) retrieved from LinkedIn API V1
+   */
   @Type(type = "jsonb")
   @Column(columnDefinition = "jsonb")
   private Map<String, Object> basicProfile;
 
   /**
-   * LinkedIn basic profile (as json)
+   * LinkedIn basic profile (as json) retrieved from LinkedIn API V1
    */
-  @NotNull
-  @Type(type = "json")
-  @Column(columnDefinition = "json")
+  @Type(type = "jsonb")
+  @Column(columnDefinition = "jsonb")
   private String basicProfileText;
 
+  /**
+   * LinkedIn full profile (as jsonb) retrieved by scraping
+   */
+  @Type(type = "jsonb")
+  @Column(columnDefinition = "jsonb")
+  private Map<String, Object> fullProfile;
+
+  /**
+   * LinkedIn full profile (as text) retrieved by hand
+   */
   @NotNull
   @Column(columnDefinition = "text")
-  private String fullProfileText;
+  private String fullProfileText = "";
 
   private float profileCompleteness;
 

@@ -90,7 +90,7 @@ public class AuthController {
       return "redirect://" + deepfishFrontAddress + "/#/";
     }
 
-    Talent talent = talentService.signInFromLinkedin(response);
+    Talent talent = talentService.signInFromLinkedIn(response);
 
     // authenticate talent
     OAuth2AccessToken authToken = tokenFactory.createToken(talent);

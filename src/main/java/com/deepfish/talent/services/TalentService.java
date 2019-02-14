@@ -45,7 +45,7 @@ public interface TalentService {
    * @param basicProfile a Map of data from LinkedIn
    * @return the signed in talent
    */
-  Talent signInFromLinkedin(Map<String, Object> basicProfile);
+  Talent signInFromLinkedIn(Map<String, Object> basicProfile);
 
   /**
    * Sign a new talent up from his LinkedIn basic profile

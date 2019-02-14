@@ -31,11 +31,11 @@ public interface TalentRepository extends PagingAndSortingRepository<Talent, UUI
       Pageable pageable);
 
   @PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYER') or hasRole('TALENT')")
-  @PostAuthorize("hasRole('ADMIN') or hasRole('EMPLOYER') or returnObject.linkedInId == principal")
+  @PostAuthorize("hasRole('ADMIN') or hasRole('EMPLOYER') or returnObject.linkedinId == principal")
   @Override
   Talent findOne(UUID uuid);
 
-  @PreAuthorize("hasRole('ADMIN') or #entity.linkedInId == principal")
+  @PreAuthorize("hasRole('ADMIN') or #entity.linkedinId == principal")
   @Override
   <S extends Talent> S save(S entity);
 }
