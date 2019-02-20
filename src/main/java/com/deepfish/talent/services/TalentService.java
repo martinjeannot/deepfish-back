@@ -1,7 +1,7 @@
 package com.deepfish.talent.services;
 
+import com.deepfish.linkedin.domain.LiteProfile;
 import com.deepfish.talent.domain.Talent;
-import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -40,20 +40,22 @@ public interface TalentService {
   Talent deactivate(Talent talent, String deactivationReason);
 
   /**
-   * Sign a talent in from his LinkedIn basic profile
+   * Sign a talent in from his LinkedIn lite profile
    *
-   * @param basicProfile a Map of data from LinkedIn
+   * @param liteProfile talent lite profile
+   * @param emailAddress talent email address
    * @return the signed in talent
    */
-  Talent signInFromLinkedIn(Map<String, Object> basicProfile);
+  Talent signInFromLinkedIn(LiteProfile liteProfile, String emailAddress);
 
   /**
-   * Sign a new talent up from his LinkedIn basic profile
+   * Sign a new talent up from his LinkedIn lite profile
    *
-   * @param basicProfile a Map of data from LinkedIn
+   * @param liteProfile talent lite profile
+   * @param emailAddress talent email address
    * @return the newly registered talent
    */
-  Talent signUpFromLinkedIn(Map<String, Object> basicProfile);
+  Talent signUpFromLinkedIn(LiteProfile liteProfile, String emailAddress);
 
   /**
    * Update the profile completeness percentage of the given talent

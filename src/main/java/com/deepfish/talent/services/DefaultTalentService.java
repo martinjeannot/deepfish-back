@@ -1,5 +1,6 @@
 package com.deepfish.talent.services;
 
+import com.deepfish.linkedin.domain.LiteProfile;
 import com.deepfish.mail.MailFactory;
 import com.deepfish.mail.MailService;
 import com.deepfish.security.Role;
@@ -14,7 +15,6 @@ import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import org.simplejavamail.email.Email;
 import org.slf4j.Logger;
@@ -48,7 +48,8 @@ public class DefaultTalentService implements TalentService {
       PasswordEncoder passwordEncoder,
       ObjectMapper objectMapper,
       MailService mailService,
-      MailFactory mailFactory) {
+      MailFactory mailFactory
+  ) {
     this.opportunityService = opportunityService;
     this.talentRepository = talentRepository;
     this.passwordEncoder = passwordEncoder;
@@ -107,32 +108,32 @@ public class DefaultTalentService implements TalentService {
   }
 
   @Override
-  public Talent signInFromLinkedIn(Map<String, Object> basicProfile) {
+  public Talent signInFromLinkedIn(LiteProfile liteProfile, String emailAddress) {
     // check if talent exists
-    Talent talent = talentRepository.findByUsername((String) basicProfile.get("id"));
+    Talent talent = talentRepository.findByUsername(liteProfile.getId());
     if (talent == null) {
-      talent = talentRepository.findByEmail((String) basicProfile.get("emailAddress"));
+      talent = talentRepository.findByEmail(emailAddress);
     }
     if (talent == null) {
       talent = talentRepository.findByFirstNameAndLastName(
-          (String) basicProfile.get("firstName"),
-          (String) basicProfile.get("lastName"));
+          liteProfile.getFirstName(),
+          liteProfile.getLastName());
     }
     if (talent == null) {
       // sign up
-      return signUpFromLinkedIn(basicProfile);
+      return signUpFromLinkedIn(liteProfile, emailAddress);
     } else {
       // update talent profile
-      talent.setUsername((String) basicProfile.get("id"));
-      talent.setLinkedinId((String) basicProfile.get("id"));
-      talent.setLastName((String) basicProfile.get("lastName"));
-      talent.setFirstName((String) basicProfile.get("firstName"));
-      talent.setBasicProfile(basicProfile);
+      talent.setUsername(liteProfile.getId());
+      talent.setLinkedinId(liteProfile.getId());
+      talent.setLastName(liteProfile.getLastName());
+      talent.setFirstName(liteProfile.getFirstName());
+      // TODO remove after profile picture scraping (to prevent value reset)
+      talent.setProfilePictureUrl(liteProfile.getProfilePictureUrl());
       try {
-        talent.setBasicProfileText(objectMapper.writeValueAsString(basicProfile));
+        talent.setLiteProfileText(objectMapper.writeValueAsString(liteProfile.getLiteProfile()));
       } catch (JsonProcessingException e) {
         LOGGER.error(e.getMessage(), e);
-        talent.setBasicProfileText("{}");
       }
       talent.setLastSignedInAt(LocalDateTime.now(Clock.systemUTC()));
       return talentRepository.save(talent);
@@ -140,20 +141,21 @@ public class DefaultTalentService implements TalentService {
   }
 
   @Override
-  public Talent signUpFromLinkedIn(Map<String, Object> basicProfile) {
-    Talent talent = TalentMapper.INSTANCE.mapToTalent(basicProfile);
+  public Talent signUpFromLinkedIn(LiteProfile liteProfile, String emailAddress) {
+    Talent talent = TalentMapper.INSTANCE.liteProfileToTalent(liteProfile);
 
-    String basicProfileText = "{}";
+    String liteProfileText = null;
     try {
-      basicProfileText = objectMapper.writeValueAsString(basicProfile);
+      liteProfileText = objectMapper.writeValueAsString(liteProfile.getLiteProfile());
     } catch (JsonProcessingException e) {
       LOGGER.error(e.getMessage(), e);
     }
 
     // set default values on sign up
     talent
-        .setBasicProfileText(basicProfileText)
-        .setFullProfileText(basicProfileText)
+        .setEmail(emailAddress)
+        .setLiteProfileText(liteProfileText)
+        .setFullProfileText(liteProfileText)
         .setPhoneNumber("null");
 
     // new talents are activated by default
