@@ -23,6 +23,19 @@ public class TalentItemReader {
   }
 
   public static ItemReader<Talent> newInstance(
+      TalentRepository talentRepository
+  ) {
+    RepositoryItemReader<Talent> itemReader = new RepositoryItemReader<>();
+    itemReader.setRepository(talentRepository);
+    itemReader.setMethodName("findAll");
+    itemReader.setPageSize(100);
+    Map<String, Direction> sorts = new HashMap<>();
+    sorts.put("createdAt", Direction.DESC);
+    itemReader.setSort(sorts);
+    return itemReader;
+  }
+
+  public static ItemReader<Talent> newInstance(
       TalentRepository talentRepository,
       LocalDateTime createdAtAfter,
       LocalDateTime createdAtBefore,
