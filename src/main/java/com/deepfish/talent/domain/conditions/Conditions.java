@@ -4,6 +4,7 @@ import com.deepfish.company.domain.CompanyMaturityLevel;
 import com.deepfish.talent.domain.Talent;
 import com.querydsl.core.annotations.QueryEntity;
 import java.math.BigDecimal;
+import java.time.Clock;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
@@ -45,7 +46,7 @@ public class Conditions {
   private BigDecimal fixedSalary = BigDecimal.ZERO;
 
   @NotNull
-  private LocalDate canStartOn = LocalDate.now();
+  private LocalDate canStartOn = LocalDate.now(Clock.systemUTC());
 
   @ManyToMany
   @JoinTable(
