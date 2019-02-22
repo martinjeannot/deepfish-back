@@ -31,6 +31,8 @@ import org.hibernate.validator.constraints.NotBlank;
 /**
  * @see <a href="https://github.com/vladmihalcea/hibernate-types/issues/30#issuecomment-386609972">
  * json vs jsonb</a>
+ * @see <a href="https://stackoverflow.com/questions/15974474/mapping-postgresql-json-column-to-hibernate-value-type/37946530#37946530">
+ * mapping postgresql json column</a>
  */
 @MappedSuperclass
 @Data
@@ -62,7 +64,7 @@ public class AbstractTalent extends AbstractUser {
    * LinkedIn lite profile (as json) retrieved from LinkedIn API V2
    */
   @Type(type = "jsonb")
-  @Column(columnDefinition = "jsonb")
+  @Column(columnDefinition = "json")
   private String liteProfileText;
 
   /**
@@ -76,7 +78,7 @@ public class AbstractTalent extends AbstractUser {
    * LinkedIn basic profile (as json) retrieved from LinkedIn API V1
    */
   @Type(type = "jsonb")
-  @Column(columnDefinition = "jsonb")
+  @Column(columnDefinition = "json")
   private String basicProfileText;
 
   /**
