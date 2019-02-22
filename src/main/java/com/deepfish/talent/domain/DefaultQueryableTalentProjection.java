@@ -18,6 +18,10 @@ public interface DefaultQueryableTalentProjection {
 
   LocalDateTime getCreatedAt();
 
+  String getLinkedinPublicProfileUrl();
+
+  String getProfilePictureUrl();
+
   Map<String, Object> getBasicProfile();
 
   int getYearsOfExperience();

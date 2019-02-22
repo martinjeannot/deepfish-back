@@ -28,6 +28,12 @@ import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.validator.constraints.NotBlank;
 
+/**
+ * @see <a href="https://github.com/vladmihalcea/hibernate-types/issues/30#issuecomment-386609972">
+ * json vs jsonb</a>
+ * @see <a href="https://stackoverflow.com/questions/15974474/mapping-postgresql-json-column-to-hibernate-value-type/37946530#37946530">
+ * mapping postgresql json column</a>
+ */
 @MappedSuperclass
 @Data
 @Accessors(chain = true)
@@ -38,29 +44,56 @@ import org.hibernate.validator.constraints.NotBlank;
 @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 public class AbstractTalent extends AbstractUser {
 
-  /**
-   * We have both a linkedInId and an email property in case we need to switch the username property
-   * from one to another
-   */
-  @NotBlank
-  //@Setter(AccessLevel.NONE) FIXME after migration
-  private String linkedInId;
-
   @NotBlank
   private String email;
 
-  @NotNull
+  /**
+   * We have both a linkedIn id and an email property in case we need to switch the username
+   * property from one to another
+   */
+  @NotBlank
+  //@Setter(AccessLevel.NONE) FIXME after migration
+  private String linkedinId;
+
+  private String linkedinPublicProfileUrl;
+
+  @NotBlank
+  private String profilePictureUrl;
+
+  /**
+   * LinkedIn lite profile (as json) retrieved from LinkedIn API V2
+   */
+  @Type(type = "jsonb")
+  @Column(columnDefinition = "json")
+  private String liteProfileText;
+
+  /**
+   * LinkedIn basic profile (as jsonb) retrieved from LinkedIn API V1
+   */
   @Type(type = "jsonb")
   @Column(columnDefinition = "jsonb")
   private Map<String, Object> basicProfile;
 
-  @NotNull
-  @Column(columnDefinition = "text")
+  /**
+   * LinkedIn basic profile (as json) retrieved from LinkedIn API V1
+   */
+  @Type(type = "jsonb")
+  @Column(columnDefinition = "json")
   private String basicProfileText;
 
+  /**
+   * LinkedIn full profile (as jsonb) retrieved by scraping
+   */
+  @Type(type = "jsonb")
+  @Column(columnDefinition = "jsonb")
+  private Map<String, Object> fullProfile;
+
+  /**
+   * LinkedIn full profile (as text) retrieved by hand
+   */
   @NotNull
   @Column(columnDefinition = "text")
-  private String fullProfileText;
+  private String fullProfileText = "";
 
   private float profileCompleteness;
 

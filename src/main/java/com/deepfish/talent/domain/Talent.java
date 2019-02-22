@@ -23,7 +23,7 @@ import lombok.experimental.Accessors;
 @Entity
 @Table(uniqueConstraints = {
     @UniqueConstraint(name = "UK_talent__username", columnNames = {"username"}),
-    @UniqueConstraint(name = "UK_talent__linked_in_id", columnNames = {"linkedInId"}),
+    @UniqueConstraint(name = "UK_talent__linkedin_id", columnNames = {"linkedinId"}),
 })
 @QueryEntity
 @Data
@@ -33,9 +33,9 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 public class Talent extends AbstractTalent {
 
-  public Talent(String linkedInId) {
-    setLinkedInId(linkedInId);
-    setUsername(linkedInId);
+  public Talent(String linkedinId) {
+    setLinkedinId(linkedinId);
+    setUsername(linkedinId);
   }
 
   @Transient

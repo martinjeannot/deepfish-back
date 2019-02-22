@@ -15,6 +15,10 @@ public interface EmployerTalentProjection {
 
   String getLastName();
 
+  String getLinkedinPublicProfileUrl();
+
+  String getProfilePictureUrl();
+
   String getPhoneNumber();
 
   String getEmail();

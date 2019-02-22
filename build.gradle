@@ -81,7 +81,7 @@ ext {
     sendgridVersion = '4.1.2'
     simplejavamailVersion = '5.0.1'
     springCloudVersion = 'Edgware.RELEASE'
-    vladmihalceaHibernateTypesVersion = '2.0.0'
+    vladmihalceaHibernateTypesVersion = '2.4.1'
 }
 
 dependencies {
