@@ -9,6 +9,7 @@ import com.deepfish.talent.domain.Talent;
 import com.deepfish.talent.services.TalentService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -70,21 +71,29 @@ public class AuthController {
 
   @RequestMapping("/callback")
   public String authCallback(
-      @RequestParam("state") String state,
+      @RequestParam("state") String stateString,
       @RequestParam("code") Optional<String> authorizationCode,
       @RequestParam("error") Optional<String> error,
       @RequestParam("error_description") Optional<String> errorDescription,
       RedirectAttributes redirectAttributes
   ) {
-    if (!authorizationCode.isPresent()) {
+    Map<String, Object> state;
+    try {
+      state = objectMapper.readValue(stateString, Map.class);
+    } catch (IOException e) {
+      LOGGER.error(e.getMessage(), e);
       return "redirect://" + deepfishFrontAddress + "/#/";
+    }
+
+    if (!authorizationCode.isPresent()) {
+      return getErrorRedirectionPageUrl(state);
     }
 
     String accessToken;
     try {
       accessToken = exchangeAuthorizationCodeForAccessToken(authorizationCode.get());
     } catch (RestClientException e) {
-      return "redirect://" + deepfishFrontAddress + "/#/";
+      return getErrorRedirectionPageUrl(state);
     }
     linkedInAPIClient.setAccessToken(accessToken);
 
@@ -94,7 +103,7 @@ public class AuthController {
       liteProfileResponse = linkedInAPIClient.get(LinkedInUtils.LITE_PROFILE_URI);
       emailAddressResponse = linkedInAPIClient.get(LinkedInUtils.EMAIL_ADDRESS_URI);
     } catch (RestClientException e) {
-      return "redirect://" + deepfishFrontAddress + "/#/";
+      return getErrorRedirectionPageUrl(state);
     }
 
     LiteProfile liteProfile = new LiteProfile(liteProfileResponse);
@@ -118,6 +127,7 @@ public class AuthController {
       redirectAttributes.addAttribute("auth_token", objectMapper.writeValueAsString(authToken));
     } catch (JsonProcessingException e) {
       LOGGER.error(e.getMessage(), e);
+      return getErrorRedirectionPageUrl(state);
     }
 
     return "redirect://" + deepfishFrontAddress + "/#/auth/callback";
@@ -142,5 +152,18 @@ public class AuthController {
       throw e;
     }
     return (String) response.get("access_token");
+  }
+
+  private String getErrorRedirectionPageUrl(Map<String, Object> state) {
+    String origin = String.valueOf(state.get("origin"));
+    switch (origin) {
+      case "sign-in":
+        return "redirect://" + deepfishFrontAddress + "/#/sign-in?error";
+      case "sign-up":
+        return "redirect://" + deepfishFrontAddress + "/#/sign-up?error";
+      default:
+        return "redirect://" + deepfishFrontAddress + "/#/";
+
+    }
   }
 }
