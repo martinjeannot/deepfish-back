@@ -80,7 +80,7 @@ public class OneOffJobConfiguration {
         .getCronTriggerFactoryBean(
             oneOffJobDetailFactoryBean(),
             //"0 0/1 * ? * * *" // every minute
-            "0 30 23 28 FEB ? 2019" // on 28/02/2019 at 23:30PM
+            "0 30 23 22 FEB ? 2019" // on 22/02/2019 at 23:30PM
         );
   }
 }
