@@ -142,7 +142,6 @@ public interface QueryableTalentRepository extends
    */
   default BooleanBuilder getSearchPredicateFor(String value, QQueryableTalent talent) {
     return new BooleanBuilder()
-        .or(talent.basicProfileText.containsIgnoreCase(value))
         .or(talent.fullProfileText.containsIgnoreCase(value))
         .or(talent.selfPitch.containsIgnoreCase(value))
         .or(talent.notes.containsIgnoreCase(value))
