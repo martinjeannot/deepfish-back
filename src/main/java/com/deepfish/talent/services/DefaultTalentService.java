@@ -9,12 +9,14 @@ import com.deepfish.talent.domain.TalentMapper;
 import com.deepfish.talent.domain.conditions.Conditions;
 import com.deepfish.talent.domain.qualification.Qualification;
 import com.deepfish.talent.repositories.TalentRepository;
+import com.deepfish.talent.repositories.UtmRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import org.simplejavamail.email.Email;
 import org.slf4j.Logger;
@@ -34,6 +36,8 @@ public class DefaultTalentService implements TalentService {
 
   private final TalentRepository talentRepository;
 
+  private final UtmRepository utmRepository;
+
   private final PasswordEncoder passwordEncoder;
 
   private final ObjectMapper objectMapper;
@@ -45,6 +49,7 @@ public class DefaultTalentService implements TalentService {
   public DefaultTalentService(
       OpportunityService opportunityService,
       TalentRepository talentRepository,
+      UtmRepository utmRepository,
       PasswordEncoder passwordEncoder,
       ObjectMapper objectMapper,
       MailService mailService,
@@ -52,6 +57,7 @@ public class DefaultTalentService implements TalentService {
   ) {
     this.opportunityService = opportunityService;
     this.talentRepository = talentRepository;
+    this.utmRepository = utmRepository;
     this.passwordEncoder = passwordEncoder;
     this.objectMapper = objectMapper;
     this.mailService = mailService;
@@ -108,7 +114,7 @@ public class DefaultTalentService implements TalentService {
   }
 
   @Override
-  public Talent signInFromLinkedIn(LiteProfile liteProfile, String emailAddress) {
+  public Talent signInFromLinkedIn(LiteProfile liteProfile, String emailAddress, UUID utmId) {
     // check if talent exists
     Talent talent = talentRepository.findByUsername(liteProfile.getId());
     if (talent == null) {
@@ -121,7 +127,7 @@ public class DefaultTalentService implements TalentService {
     }
     if (talent == null) {
       // sign up
-      return signUpFromLinkedIn(liteProfile, emailAddress);
+      return signUpFromLinkedIn(liteProfile, emailAddress, utmId);
     } else {
       // update talent profile
       talent.setUsername(liteProfile.getId());
@@ -141,7 +147,7 @@ public class DefaultTalentService implements TalentService {
   }
 
   @Override
-  public Talent signUpFromLinkedIn(LiteProfile liteProfile, String emailAddress) {
+  public Talent signUpFromLinkedIn(LiteProfile liteProfile, String emailAddress, UUID utmId) {
     Talent talent = TalentMapper.INSTANCE.liteProfileToTalent(liteProfile);
 
     String liteProfileText = null;
@@ -163,6 +169,11 @@ public class DefaultTalentService implements TalentService {
 
     // allow new talent to authenticate
     talent.enableAuthentication();
+
+    // assign UTM record if any
+    if (Objects.nonNull(utmId)) {
+      talent.setUtm(utmRepository.findOne(utmId));
+    }
 
     talent = create(talent);
 
