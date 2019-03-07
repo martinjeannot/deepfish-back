@@ -117,9 +117,14 @@ public class AuthController {
             .get("handle~"))
             .get("emailAddress"));
 
-    UUID utmId = Objects.nonNull(state.get("utm_id"))
-        ? UUID.fromString(state.get("utm_id").toString())
-        : null;
+    UUID utmId;
+    try {
+      utmId = Objects.nonNull(state.get("utm_id"))
+          ? UUID.fromString(state.get("utm_id").toString())
+          : null;
+    } catch (IllegalArgumentException e) {
+      utmId = null;
+    }
 
     // manually set system authentication to access protected repo
     SecurityContextHolder.getContext().setAuthentication(SystemAuthentication.getAuthentication());
