@@ -12,7 +12,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -115,10 +117,19 @@ public class AuthController {
             .get("handle~"))
             .get("emailAddress"));
 
+    UUID utmId;
+    try {
+      utmId = Objects.nonNull(state.get("utm_id"))
+          ? UUID.fromString(state.get("utm_id").toString())
+          : null;
+    } catch (IllegalArgumentException e) {
+      utmId = null;
+    }
+
     // manually set system authentication to access protected repo
     SecurityContextHolder.getContext().setAuthentication(SystemAuthentication.getAuthentication());
 
-    Talent talent = talentService.signInFromLinkedIn(liteProfile, emailAddress);
+    Talent talent = talentService.signInFromLinkedIn(liteProfile, emailAddress, utmId);
 
     // authenticate talent
     OAuth2AccessToken authToken = tokenFactory.createToken(talent);

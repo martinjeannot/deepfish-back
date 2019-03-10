@@ -16,6 +16,9 @@ import javax.persistence.Column;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -94,6 +97,10 @@ public class AbstractTalent extends AbstractUser {
   @NotNull
   @Column(columnDefinition = "text")
   private String fullProfileText = "";
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(foreignKey = @ForeignKey(name = "FK_talent__utm__utm_id"))
+  private Utm utm;
 
   private float profileCompleteness;
 

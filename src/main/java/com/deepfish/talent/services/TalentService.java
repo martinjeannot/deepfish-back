@@ -44,18 +44,20 @@ public interface TalentService {
    *
    * @param liteProfile talent lite profile
    * @param emailAddress talent email address
+   * @param utmId UTM parameters id
    * @return the signed in talent
    */
-  Talent signInFromLinkedIn(LiteProfile liteProfile, String emailAddress);
+  Talent signInFromLinkedIn(LiteProfile liteProfile, String emailAddress, UUID utmId);
 
   /**
    * Sign a new talent up from his LinkedIn lite profile
    *
    * @param liteProfile talent lite profile
    * @param emailAddress talent email address
+   * @param utmId UTM parameters id
    * @return the newly registered talent
    */
-  Talent signUpFromLinkedIn(LiteProfile liteProfile, String emailAddress);
+  Talent signUpFromLinkedIn(LiteProfile liteProfile, String emailAddress, UUID utmId);
 
   /**
    * Update the profile completeness percentage of the given talent

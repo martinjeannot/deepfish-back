@@ -8,6 +8,7 @@ import com.deepfish.employer.domain.requirement.Seniority;
 import com.deepfish.interview.domain.Interview;
 import com.deepfish.talent.domain.QueryableTalent;
 import com.deepfish.talent.domain.Talent;
+import com.deepfish.talent.domain.Utm;
 import com.deepfish.talent.domain.conditions.CommodityType;
 import com.deepfish.talent.domain.conditions.FixedLocation;
 import com.deepfish.talent.domain.conditions.IndustryType;
@@ -37,7 +38,7 @@ public class RepositoryRestConfiguration extends RepositoryRestConfigurerAdapter
     config.exposeIdsFor(Talent.class, QueryableTalent.class, Opportunity.class, Employer.class,
         Company.class, CompanyMaturityLevel.class, JobType.class, CommodityType.class,
         TaskType.class, IndustryType.class, FixedLocation.class, Seniority.class, Requirement.class,
-        OpportunityDatum.class, Interview.class);
+        OpportunityDatum.class, Interview.class, Utm.class);
   }
 
   @Override
