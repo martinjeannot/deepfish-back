@@ -4,6 +4,7 @@ import com.deepfish.batch.BatchConfiguration;
 import com.deepfish.batch.item.processor.OpportunityExpirator;
 import com.deepfish.batch.item.reader.OpportunityItemReader;
 import com.deepfish.batch.item.writer.OpportunityItemWriter;
+import com.deepfish.batch.tasklet.LinkedinProfileScrapingTasklet;
 import com.deepfish.batch.tasklet.OpportunityDatumSamplingTasklet;
 import com.deepfish.talent.domain.opportunity.Opportunity;
 import com.deepfish.talent.domain.opportunity.OpportunityStatus;
@@ -29,6 +30,8 @@ public class EndOfDayJobConfiguration {
 
   private static final String OPPORTUNITY_DATUM_SAMPLING_STEP_NAME = "eodOpportunityDatumSamplingStep";
 
+  private static final String LINKEDIN_PROFILE_SCRAPING_STEP_NAME = "eodLinkedinProfileScrapingStep";
+
   private final JobBuilderFactory jobBuilderFactory;
 
   private final StepBuilderFactory stepBuilderFactory;
@@ -48,6 +51,7 @@ public class EndOfDayJobConfiguration {
       Step authenticationStep,
       Step eodPendingOpportunityExpirationStep,
       Step eodOpportunityDatumSamplingStep,
+      Step eodLinkedinProfileScrapingStep,
       Step clearAuthenticationStep
   ) {
     return jobBuilderFactory
@@ -55,6 +59,7 @@ public class EndOfDayJobConfiguration {
         .start(authenticationStep)
         .next(eodPendingOpportunityExpirationStep)
         .next(eodOpportunityDatumSamplingStep)
+        .next(eodLinkedinProfileScrapingStep)
         .next(clearAuthenticationStep)
         .build();
   }
@@ -89,6 +94,19 @@ public class EndOfDayJobConfiguration {
     return stepBuilderFactory
         .get(OPPORTUNITY_DATUM_SAMPLING_STEP_NAME)
         .tasklet(opportunityDatumSamplingTasklet)
+        .build();
+  }
+
+  // LINKEDIN PROFILE SCRAPING STEP ================================================================
+
+  @JobScope
+  @Bean
+  public Step eodLinkedinProfileScrapingStep(
+      LinkedinProfileScrapingTasklet linkedinProfileScrapingTasklet
+  ) {
+    return stepBuilderFactory
+        .get(LINKEDIN_PROFILE_SCRAPING_STEP_NAME)
+        .tasklet(linkedinProfileScrapingTasklet)
         .build();
   }
 

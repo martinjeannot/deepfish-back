@@ -1,6 +1,7 @@
 package com.deepfish.talent.repositories;
 
 import com.deepfish.talent.domain.Talent;
+import java.util.List;
 import java.util.UUID;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,6 +30,8 @@ public interface TalentRepository extends PagingAndSortingRepository<Talent, UUI
       @Param("firstName") String firstName,
       @Param("phoneNumber") String phoneNumber,
       Pageable pageable);
+
+  List<Talent> findFirst20ByLinkedinProfileLastRetrievalAttemptedAtIsNullAndLinkedinPublicProfileUrlIsNotNullOrderByCreatedAtDesc();
 
   @PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYER') or hasRole('TALENT')")
   @PostAuthorize("hasRole('ADMIN') or hasRole('EMPLOYER') or returnObject.linkedinId == principal")
