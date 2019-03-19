@@ -71,7 +71,10 @@ aws:
 # PHANTOMBUSTER
 phantombuster:
   client:
-    apiKey: eLnPsZQ3E7ZwZ3YTSbqLpsz79WpaYzcP
+    api-key: eLnPsZQ3E7ZwZ3YTSbqLpsz79WpaYzcP
+  agents:
+    linkedin-profile-scraper:
+      id: 61714
 
 # ===================================================================
 # SPRING
