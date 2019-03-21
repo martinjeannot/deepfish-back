@@ -1,19 +1,24 @@
 package com.deepfish.aws.s3.api;
 
-import org.springframework.web.multipart.MultipartFile;
+import java.nio.ByteBuffer;
 
-/**
- * Service used to aws files
- */
 public interface S3APIClient {
 
   /**
-   * Upload the given file to the given relative URI
+   * Send the given payload to the given relative URI
    *
-   * @param file the file to aws
-   * @param targetURI the relative URI to aws the image to
+   * @param targetURI the relative URI to send the payload to
+   * @param payload the payload to send
    */
-  void upload(MultipartFile file, String targetURI);
+  void put(String targetURI, byte[] payload);
+
+  /**
+   * Send the given payload to the given relative URI
+   *
+   * @param targetURI the relative URI to send the payload to
+   * @param payload the payload to send
+   */
+  void put(String targetURI, ByteBuffer payload);
 
   /**
    * Delete the resource(s) targeted by the given relative URI

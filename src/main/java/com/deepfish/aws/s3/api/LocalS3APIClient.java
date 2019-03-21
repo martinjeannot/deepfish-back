@@ -1,11 +1,16 @@
 package com.deepfish.aws.s3.api;
 
-import org.springframework.web.multipart.MultipartFile;
+import java.nio.ByteBuffer;
 
 public class LocalS3APIClient implements S3APIClient {
 
   @Override
-  public void upload(MultipartFile file, String targetURI) {
+  public void put(String targetURI, byte[] payload) {
+    throw new UnsupportedOperationException(); // TODO
+  }
+
+  @Override
+  public void put(String targetURI, ByteBuffer payload) {
     throw new UnsupportedOperationException(); // TODO
   }
 
