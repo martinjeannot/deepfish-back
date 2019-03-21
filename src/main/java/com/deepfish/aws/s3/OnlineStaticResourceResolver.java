@@ -1,12 +1,12 @@
-package com.deepfish.upload.services;
+package com.deepfish.aws.s3;
 
 import java.net.URI;
 
-public class AmazonS3StaticResourceResolver implements StaticResourceResolver {
+public class OnlineStaticResourceResolver implements StaticResourceResolver {
 
   private final URI staticResourceDomain;
 
-  public AmazonS3StaticResourceResolver(String bucketName) {
+  public OnlineStaticResourceResolver(String bucketName) {
     this.staticResourceDomain = URI.create("https://" + bucketName + ".s3.amazonaws.com");
   }
 

@@ -1,4 +1,4 @@
-package com.deepfish.upload.services;
+package com.deepfish.aws.s3;
 
 import java.net.URI;
 

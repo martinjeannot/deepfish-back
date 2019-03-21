@@ -1,17 +1,17 @@
-package com.deepfish.upload.services;
+package com.deepfish.aws.s3.api;
 
 import org.springframework.web.multipart.MultipartFile;
 
 /**
- * Service used to upload files
+ * Service used to aws files
  */
-public interface UploadService {
+public interface S3APIClient {
 
   /**
    * Upload the given file to the given relative URI
    *
-   * @param file the file to upload
-   * @param targetURI the relative URI to upload the image to
+   * @param file the file to aws
+   * @param targetURI the relative URI to aws the image to
    */
   void upload(MultipartFile file, String targetURI);
 

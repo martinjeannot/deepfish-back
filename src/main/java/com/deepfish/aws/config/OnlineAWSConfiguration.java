@@ -1,9 +1,9 @@
-package com.deepfish.upload.config;
+package com.deepfish.aws.config;
 
-import com.deepfish.upload.services.AmazonS3StaticResourceResolver;
-import com.deepfish.upload.services.AmazonS3UploadService;
-import com.deepfish.upload.services.StaticResourceResolver;
-import com.deepfish.upload.services.UploadService;
+import com.deepfish.aws.s3.OnlineStaticResourceResolver;
+import com.deepfish.aws.s3.StaticResourceResolver;
+import com.deepfish.aws.s3.api.OnlineS3APIClient;
+import com.deepfish.aws.s3.api.S3APIClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,12 +15,13 @@ import software.amazon.awssdk.services.s3.S3Client;
 
 @Configuration
 @Profile({"production", "staging", "dev"})
-public class OnlineUploadConfiguration {
+public class OnlineAWSConfiguration {
 
   @Bean
   S3Client s3Client(
       @Value("${aws.accessKeyId}") String accessKeyId,
-      @Value("${aws.secretAccessKey}") String secretAccessKey) {
+      @Value("${aws.secretAccessKey}") String secretAccessKey
+  ) {
     return S3Client
         .builder()
         .region(Region.EU_WEST_3)
@@ -30,14 +31,17 @@ public class OnlineUploadConfiguration {
   }
 
   @Bean
-  UploadService uploadService(S3Client s3Client,
-      @Value("${deepfish.aws.s3.bucket-name}") String bucketName) {
-    return new AmazonS3UploadService(s3Client, bucketName);
+  S3APIClient s3APIClient(
+      S3Client s3Client,
+      @Value("${deepfish.aws.s3.bucket-name}") String bucketName
+  ) {
+    return new OnlineS3APIClient(s3Client, bucketName);
   }
 
   @Bean
   StaticResourceResolver staticResourceResolver(
-      @Value("${deepfish.aws.s3.bucket-name}") String bucketName) {
-    return new AmazonS3StaticResourceResolver(bucketName);
+      @Value("${deepfish.aws.s3.bucket-name}") String bucketName
+  ) {
+    return new OnlineStaticResourceResolver(bucketName);
   }
 }
