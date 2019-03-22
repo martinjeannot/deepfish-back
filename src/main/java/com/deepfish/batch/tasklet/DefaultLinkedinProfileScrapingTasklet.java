@@ -7,10 +7,11 @@ import com.deepfish.talent.domain.Talent;
 import com.deepfish.talent.repositories.TalentRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.io.ByteStreams;
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.net.URL;
-import java.nio.ByteBuffer;
-import java.nio.channels.Channels;
-import java.nio.channels.ReadableByteChannel;
 import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -72,7 +73,7 @@ public class DefaultLinkedinProfileScrapingTasklet implements LinkedinProfileScr
   public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext)
       throws Exception {
     List<Talent> talents = talentRepository
-        .findFirst20ByLinkedinProfileLastRetrievalAttemptedAtIsNullAndLinkedinPublicProfileUrlIsNotNullOrderByCreatedAtDesc();
+        .findFirst10ByLinkedinProfileLastRetrievalAttemptedAtIsNullAndLinkedinPublicProfileUrlIsNotNullOrderByCreatedAtDesc();
 
     // cleaning up inputs : any invalid linkedIn profile URL messes array ordering (because nothing gets returned)
     talents = talents
@@ -120,13 +121,20 @@ public class DefaultLinkedinProfileScrapingTasklet implements LinkedinProfileScr
           }
           // save profile picture
           String savedImgUrl = general.get("savedImg").toString();
-          ReadableByteChannel channel = Channels.newChannel(new URL(savedImgUrl).openStream());
-          ByteBuffer buffer = ByteBuffer.allocate(1024);
-          channel.read(buffer);
-          String profilePictureURI = talent
-              .buildProfilePictureURI(StringUtils.getFilenameExtension(savedImgUrl));
-          s3APIClient.put(profilePictureURI, buffer);
-          talent.setProfilePictureUrl(staticResourceResolver.resolve(profilePictureURI).toString());
+          try (
+              BufferedInputStream inputStream = new BufferedInputStream(
+                  new URL(savedImgUrl).openStream());
+              ByteArrayOutputStream outputStream = new ByteArrayOutputStream()
+          ) {
+            ByteStreams.copy(inputStream, outputStream);
+            String profilePictureURI = talent
+                .buildProfilePictureURI(StringUtils.getFilenameExtension(savedImgUrl));
+            s3APIClient.put(profilePictureURI, outputStream.toByteArray());
+            talent
+                .setProfilePictureUrl(staticResourceResolver.resolve(profilePictureURI).toString());
+          } catch (IOException e) {
+            LOGGER.error(e.getMessage(), e);
+          }
         }
       }
     }

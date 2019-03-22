@@ -59,7 +59,7 @@ public class DefaultPhantombusterAPIClient implements PhantombusterAPIClient {
     argument.put("emailChooser", "none");
     argument.put("numberOfAddsPerLaunch", 20);
     argument.put("saveImg", true);
-    argument.put("takeScreenshot", true);
+    argument.put("takeScreenshot", false);
     argument.put("takePartialScreenshot", false);
 
     if (Objects.nonNull(talents) && !talents.isEmpty()) {

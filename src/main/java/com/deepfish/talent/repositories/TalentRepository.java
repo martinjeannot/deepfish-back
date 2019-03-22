@@ -31,7 +31,7 @@ public interface TalentRepository extends PagingAndSortingRepository<Talent, UUI
       @Param("phoneNumber") String phoneNumber,
       Pageable pageable);
 
-  List<Talent> findFirst20ByLinkedinProfileLastRetrievalAttemptedAtIsNullAndLinkedinPublicProfileUrlIsNotNullOrderByCreatedAtDesc();
+  List<Talent> findFirst10ByLinkedinProfileLastRetrievalAttemptedAtIsNullAndLinkedinPublicProfileUrlIsNotNullOrderByCreatedAtDesc();
 
   @PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYER') or hasRole('TALENT')")
   @PostAuthorize("hasRole('ADMIN') or hasRole('EMPLOYER') or returnObject.linkedinId == principal")
