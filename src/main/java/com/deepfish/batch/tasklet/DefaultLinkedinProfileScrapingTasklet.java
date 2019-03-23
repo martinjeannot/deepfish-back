@@ -30,7 +30,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 @Component
-@Profile("production")
+@Profile({"production"})
 public class DefaultLinkedinProfileScrapingTasklet implements LinkedinProfileScrapingTasklet {
 
   private static final Logger LOGGER = LoggerFactory
@@ -73,7 +73,7 @@ public class DefaultLinkedinProfileScrapingTasklet implements LinkedinProfileScr
   public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext)
       throws Exception {
     List<Talent> talents = talentRepository
-        .findFirst10ByLinkedinProfileLastRetrievalAttemptedAtIsNullAndLinkedinPublicProfileUrlIsNotNullOrderByCreatedAtDesc();
+        .findFirst10ByActiveIsTrueAndLinkedinProfileLastRetrievalAttemptedAtIsNullAndLinkedinPublicProfileUrlIsNotNullOrderByCreatedAtDesc();
 
     // cleaning up inputs : any invalid linkedIn profile URL messes array ordering (because nothing gets returned)
     talents = talents
