@@ -1,8 +1,9 @@
 package com.deepfish.company.web;
 
+import com.deepfish.aws.s3.api.S3APIClient;
 import com.deepfish.company.domain.Company;
 import com.deepfish.company.repositories.CompanyRepository;
-import com.deepfish.upload.services.UploadService;
+import java.io.IOException;
 import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,20 +23,30 @@ public class CompanyController {
 
   private final CompanyRepository companyRepository;
 
-  private final UploadService uploadService;
+  private final S3APIClient s3APIClient;
 
-  public CompanyController(CompanyRepository companyRepository, UploadService uploadService) {
+  public CompanyController(
+      CompanyRepository companyRepository,
+      S3APIClient s3APIClient
+  ) {
     this.companyRepository = companyRepository;
-    this.uploadService = uploadService;
+    this.s3APIClient = s3APIClient;
   }
 
   @PostMapping("companies/{companyId}/upload-logo")
-  public ResponseEntity uploadLogo(@PathVariable("companyId") UUID companyId,
-      @RequestPart("file") MultipartFile file) {
+  public ResponseEntity uploadLogo(
+      @PathVariable("companyId") UUID companyId,
+      @RequestPart("file") MultipartFile file
+  ) {
     Company company = companyRepository.findOne(companyId);
     String logoURI = company
         .buildLogoURI(StringUtils.getFilenameExtension(file.getOriginalFilename()));
-    uploadService.upload(file, logoURI);
+    try {
+      s3APIClient.put(logoURI, file.getBytes());
+    } catch (IOException e) {
+      LOGGER.error(e.getMessage(), e);
+      throw new RuntimeException(e);
+    }
     company.setLogoURI(logoURI);
     companyRepository.save(company);
     return ResponseEntity.ok().build();
@@ -44,7 +55,7 @@ public class CompanyController {
   @DeleteMapping("companies/{companyId}/upload-logo")
   public ResponseEntity deleteLogo(@PathVariable("companyId") UUID companyId) {
     Company company = companyRepository.findOne(companyId);
-    uploadService.delete(company.getLogoURI());
+    s3APIClient.delete(company.getLogoURI());
     company.setLogoURI(null);
     companyRepository.save(company);
     return ResponseEntity.ok().build();

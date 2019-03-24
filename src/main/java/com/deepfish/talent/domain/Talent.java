@@ -112,6 +112,10 @@ public class Talent extends AbstractTalent {
     }
   }
 
+  public String buildProfilePictureURI(String extension) {
+    return "/talents/" + getId().toString() + "/profile-picture." + extension;
+  }
+
   // GETTERS & SETTERS =============================================================================
 
   public Talent setConditions(Conditions conditions) {

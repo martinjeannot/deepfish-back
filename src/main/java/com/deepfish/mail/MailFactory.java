@@ -75,4 +75,6 @@ public interface MailFactory {
   Email getAdminNewInterviewRequestMail(Interview interview);
 
   Email getAdminInterviewConfirmedMail(Interview interview);
+
+  Email getAdminBatchWarningMail(String message);
 }

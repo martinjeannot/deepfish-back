@@ -61,6 +61,14 @@ linkedin:
     id: 77w79kdr6gql2h
     secret: 7ovNCwpTojlQLQXI
 
+# PHANTOMBUSTER
+phantombuster:
+  client:
+    api-key: eLnPsZQ3E7ZwZ3YTSbqLpsz79WpaYzcP
+  agents:
+    linkedin-profile-scraper:
+      id: 61714
+
 # ===================================================================
 # SPRING
 # ===================================================================

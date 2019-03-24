@@ -68,6 +68,14 @@ aws:
   accessKeyId: AKIAIMQSHSSRBOGANSYA
   secretAccessKey: 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
 
+# PHANTOMBUSTER
+phantombuster:
+  client:
+    api-key: eLnPsZQ3E7ZwZ3YTSbqLpsz79WpaYzcP
+  agents:
+    linkedin-profile-scraper:
+      id: 61714
+
 # ===================================================================
 # SPRING
 # ===================================================================

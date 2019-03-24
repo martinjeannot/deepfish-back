@@ -98,6 +98,10 @@ public class AbstractTalent extends AbstractUser {
   @Column(columnDefinition = "text")
   private String fullProfileText = "";
 
+  private LocalDateTime linkedinProfileLastRetrievedAt;
+
+  private LocalDateTime linkedinProfileLastRetrievalAttemptedAt;
+
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(foreignKey = @ForeignKey(name = "FK_talent__utm__utm_id"))
   private Utm utm;

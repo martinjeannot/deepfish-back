@@ -831,4 +831,29 @@ public class PebbleMailFactory implements MailFactory {
         .withHTMLText(writer.toString())
         .buildEmail();
   }
+
+  private final PebbleTemplate adminBatchWarningMailTemplate = pebbleEngine
+      .getTemplate("mails/admin/batchWarning.html");
+
+  @Override
+  public Email getAdminBatchWarningMail(String message) {
+    String subject = "[BATCH] WARNING";
+    Map<String, Object> context = new HashMap<>();
+    context.put("title", subject);
+    context.put("message", message);
+    Writer writer = new StringWriter();
+    try {
+      adminBatchWarningMailTemplate.evaluate(writer, context);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
+    return EmailBuilder
+        .startingBlank()
+        .from(DAVID_EMAIL)
+        .to("martin@deepfish.co")
+        .withSubject(subject)
+        .withHTMLText(writer.toString())
+        .buildEmail();
+  }
 }
