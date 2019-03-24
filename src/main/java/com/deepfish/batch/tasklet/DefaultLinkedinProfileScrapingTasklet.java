@@ -119,21 +119,23 @@ public class DefaultLinkedinProfileScrapingTasklet implements LinkedinProfileScr
           } catch (JsonProcessingException e) {
             LOGGER.error(e.getMessage(), e);
           }
-          // save profile picture
-          String savedImgUrl = general.get("savedImg").toString();
-          try (
-              BufferedInputStream inputStream = new BufferedInputStream(
-                  new URL(savedImgUrl).openStream());
-              ByteArrayOutputStream outputStream = new ByteArrayOutputStream()
-          ) {
-            ByteStreams.copy(inputStream, outputStream);
-            String profilePictureURI = talent
-                .buildProfilePictureURI(StringUtils.getFilenameExtension(savedImgUrl));
-            s3APIClient.put(profilePictureURI, outputStream.toByteArray());
-            talent
-                .setProfilePictureUrl(staticResourceResolver.resolve(profilePictureURI).toString());
-          } catch (IOException e) {
-            LOGGER.error(e.getMessage(), e);
+          if (general.containsKey("savedImg")) {
+            // save profile picture
+            String savedImgUrl = general.get("savedImg").toString();
+            try (
+                BufferedInputStream inputStream = new BufferedInputStream(
+                    new URL(savedImgUrl).openStream());
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream()
+            ) {
+              ByteStreams.copy(inputStream, outputStream);
+              String profilePictureURI = talent
+                  .buildProfilePictureURI(StringUtils.getFilenameExtension(savedImgUrl));
+              s3APIClient.put(profilePictureURI, outputStream.toByteArray());
+              talent.setProfilePictureUrl(
+                  staticResourceResolver.resolve(profilePictureURI).toString());
+            } catch (IOException e) {
+              LOGGER.error(e.getMessage(), e);
+            }
           }
         }
       }
