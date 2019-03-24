@@ -65,7 +65,7 @@ aws:
 # PHANTOMBUSTER
 phantombuster:
   client:
-    api-key: eLnPsZQ3E7ZwZ3YTSbqLpsz79WpaYzcP
+    api-key: d3LSRz7RiFeHw9pGyRe8VnXiNMExgY0F
   agents:
     linkedin-profile-scraper:
       id: 61714
