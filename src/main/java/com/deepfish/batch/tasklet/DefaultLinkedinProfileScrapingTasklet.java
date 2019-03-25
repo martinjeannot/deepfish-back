@@ -11,6 +11,7 @@ import com.google.common.io.ByteStreams;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URL;
 import java.time.Clock;
 import java.time.LocalDateTime;
@@ -124,7 +125,7 @@ public class DefaultLinkedinProfileScrapingTasklet implements LinkedinProfileScr
             String savedImgUrl = general.get("savedImg").toString();
             try (
                 BufferedInputStream inputStream = new BufferedInputStream(
-                    new URL(savedImgUrl).openStream());
+                    new URL(URI.create(savedImgUrl).toASCIIString()).openStream());
                 ByteArrayOutputStream outputStream = new ByteArrayOutputStream()
             ) {
               ByteStreams.copy(inputStream, outputStream);
