@@ -74,7 +74,7 @@ public class DefaultLinkedinProfileScrapingTasklet implements LinkedinProfileScr
   public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext)
       throws Exception {
     List<Talent> talents = talentRepository
-        .findFirst10ByActiveIsTrueAndLinkedinProfileLastRetrievalAttemptedAtIsNullAndLinkedinPublicProfileUrlIsNotNullOrderByCreatedAtDesc();
+        .findFirst20ByActiveIsTrueAndLinkedinProfileLastRetrievalAttemptedAtIsNullAndLinkedinPublicProfileUrlIsNotNullOrderByCreatedAtDesc();
 
     // cleaning up inputs : any invalid linkedIn profile URL messes array ordering (because nothing gets returned)
     talents = talents

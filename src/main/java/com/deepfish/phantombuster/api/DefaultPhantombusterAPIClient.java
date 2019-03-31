@@ -57,12 +57,12 @@ public class DefaultPhantombusterAPIClient implements PhantombusterAPIClient {
     Map<String, Object> argument = new HashMap<>();
     argument.put("sessionCookie", SESSION_COOKIE);
     argument.put("emailChooser", "none");
-    argument.put("numberOfAddsPerLaunch", 20);
     argument.put("saveImg", true);
     argument.put("takeScreenshot", false);
     argument.put("takePartialScreenshot", false);
 
     if (Objects.nonNull(talents) && !talents.isEmpty()) {
+      argument.put("numberOfAddsPerLaunch", talents.size());
       argument.put("profileUrls",
           talents.stream().map(Talent::getLinkedinPublicProfileUrl).collect(Collectors.toList()));
       argument.put("noDatabase", true);

@@ -22,7 +22,7 @@ public interface DefaultQueryableTalentProjection {
 
   String getProfilePictureUrl();
 
-  Map<String, Object> getBasicProfile();
+  Map<String, Object> getFullProfile();
 
   int getYearsOfExperience();
 
