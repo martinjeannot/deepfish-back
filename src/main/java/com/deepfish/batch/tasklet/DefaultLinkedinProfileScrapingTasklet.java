@@ -96,16 +96,13 @@ public class DefaultLinkedinProfileScrapingTasklet implements LinkedinProfileScr
     for (int i = 0; i < talents.size(); i++) {
       Talent talent = talents.get(i);
       Map<String, Object> linkedinProfile = linkedinProfiles.get(i);
-      String cleanedLinkedinPublicProfileUrl = talent.getLinkedinPublicProfileUrl()
-          .replaceAll("/$", "");
+      URI linkedinPublicProfileUrl = URI.create(talent.getLinkedinPublicProfileUrl());
       if ((
           linkedinProfile.containsKey("details") && ((Map) linkedinProfile.get("details"))
-              .get("linkedinProfile").toString().replaceAll("/$", "")
-              .equals(cleanedLinkedinPublicProfileUrl)
+              .get("linkedinProfile").toString().contains(linkedinPublicProfileUrl.getRawPath())
       ) || (
           linkedinProfile.containsKey("general") && ((Map) linkedinProfile.get("general"))
-              .get("profileUrl").toString().replaceAll("/$", "")
-              .equals(cleanedLinkedinPublicProfileUrl)
+              .get("profileUrl").toString().contains(linkedinPublicProfileUrl.getRawPath())
       )) {
         // checked : the current linkedIn profile retrieval attempt was for the current talent (trailing slashes removed)
         LocalDateTime now = LocalDateTime.now(Clock.systemUTC());
