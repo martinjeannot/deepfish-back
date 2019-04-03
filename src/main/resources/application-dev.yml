@@ -45,6 +45,11 @@ deepfish:
       private:
         name: PhKJqwetpeKw
 
+# CALENDLY
+calendly:
+  slugs:
+    talent-qualification: _talent_dev
+
 # ----------------------------------------
 # WEB PROPERTIES
 # ----------------------------------------

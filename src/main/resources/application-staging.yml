@@ -39,6 +39,11 @@ deepfish:
       private:
         name: wdo2wQmWh1lv
 
+# CALENDLY
+calendly:
+  slugs:
+    talent-qualification: _talent_staging
+
 # ----------------------------------------
 # WEB PROPERTIES
 # ----------------------------------------

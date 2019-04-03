@@ -49,6 +49,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         .antMatchers("/employers/password-reset").permitAll()
         .antMatchers("/employers/typeform").permitAll()
         .antMatchers("/requirements/typeform").permitAll()
+        .antMatchers("/calendly/webhooks/*").permitAll()
         .anyRequest().denyAll();
   }
 
