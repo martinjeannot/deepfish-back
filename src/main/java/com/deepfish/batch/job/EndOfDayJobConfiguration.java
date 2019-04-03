@@ -123,7 +123,7 @@ public class EndOfDayJobConfiguration {
         .getCronTriggerFactoryBean(
             endOfDayJobDetailFactoryBean(),
             //"0 0/1 * ? * * *" // every minute
-            "0 0 23 ? * * *" // at 23:00PM every day
+            "0 17 23 ? * * *" // at 23:17PM every day
         );
   }
 }
