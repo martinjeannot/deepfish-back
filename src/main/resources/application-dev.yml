@@ -47,8 +47,9 @@ deepfish:
 
 # CALENDLY
 calendly:
-  slugs:
-    talent-qualification: _talent_dev
+  talent-qualification:
+    slug: _talent_dev
+    url: https://calendly.com/deepfish/_talent_dev
 
 # ----------------------------------------
 # WEB PROPERTIES

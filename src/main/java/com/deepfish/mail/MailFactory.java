@@ -31,6 +31,8 @@ public interface MailFactory {
 
   Email getTalentInterviewConfirmedMail(Interview interview);
 
+  Email getTalentQualificationInterviewSchedulingMail(Talent talent);
+
   // EMPLOYER ======================================================================================
 
   Email getEmployerWelcomeMail(Employer employer, String password);

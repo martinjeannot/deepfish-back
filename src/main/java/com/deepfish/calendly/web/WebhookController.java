@@ -26,7 +26,7 @@ public class WebhookController {
   private final TalentRepository talentRepository;
 
   public WebhookController(
-      @Value("${calendly.slugs.talent-qualification:#{null}}") String talentQualificationSlug,
+      @Value("${calendly.talent-qualification.slug:#{null}}") String talentQualificationSlug,
       TalentRepository talentRepository
   ) {
     this.talentQualificationSlug = talentQualificationSlug;

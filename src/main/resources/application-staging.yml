@@ -41,8 +41,9 @@ deepfish:
 
 # CALENDLY
 calendly:
-  slugs:
-    talent-qualification: _talent_staging
+  talent-qualification:
+    slug: _talent_staging
+    url: https://calendly.com/deepfish/_talent_staging
 
 # ----------------------------------------
 # WEB PROPERTIES

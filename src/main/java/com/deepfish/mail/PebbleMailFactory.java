@@ -293,6 +293,33 @@ public class PebbleMailFactory implements MailFactory {
         .buildEmail();
   }
 
+
+  private final PebbleTemplate talentQualificationInterviewSchedulingMailTemplate = pebbleEngine
+      .getTemplate("mails/talent/qualificationInterviewScheduling.html");
+
+  @Override
+  public Email getTalentQualificationInterviewSchedulingMail(Talent talent) {
+    String subject = "Choisis un créneau avec Deepfish";
+    Map<String, Object> context = new HashMap<>();
+    context.put("title", subject);
+    context.put("talent", talent);
+    context.put("calendlyUrl", frontAppUrlBuilder.getTalentQualificationCalendlyUrl(talent));
+    Writer writer = new StringWriter();
+    try {
+      talentQualificationInterviewSchedulingMailTemplate.evaluate(writer, context);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
+    return EmailBuilder
+        .startingBlank()
+        .from(DAVID_EMAIL)
+        .to(talent.getEmail())
+        .withSubject(subject)
+        .withHTMLText(writer.toString())
+        .buildEmail();
+  }
+
   // EMPLOYER ======================================================================================
 
   private final PebbleTemplate employerWelcomeMailTemplate = pebbleEngine
