@@ -1,6 +1,7 @@
 package com.deepfish.mail.util;
 
 import com.deepfish.security.auth.TokenFactory;
+import com.deepfish.talent.domain.Talent;
 import com.deepfish.talent.domain.opportunity.Opportunity;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -31,13 +32,18 @@ public class UnboundFrontAppUrlBuilder implements FrontAppUrlBuilder {
   @Value("#{'${deepfish.front.scheme}' + '://' + '${deepfish.front.host}' + ('${deepfish.front.port}'.isEmpty() ? '' : ':' + '${deepfish.front.port}' )}")
   private String frontAppUrl;
 
+  private final String talentQualificationCalendlyUrl;
+
   private final TokenFactory tokenFactory;
 
   private final ObjectMapper objectMapper;
 
   public UnboundFrontAppUrlBuilder(
+      @Value("${calendly.talent-qualification.url:#{null}}") String talentQualificationCalendlyUrl,
       TokenFactory tokenFactory,
-      ObjectMapper objectMapper) {
+      ObjectMapper objectMapper
+  ) {
+    this.talentQualificationCalendlyUrl = talentQualificationCalendlyUrl;
     this.tokenFactory = tokenFactory;
     this.objectMapper = objectMapper;
   }
@@ -66,5 +72,15 @@ public class UnboundFrontAppUrlBuilder implements FrontAppUrlBuilder {
     } catch (JsonProcessingException | UnsupportedEncodingException e) {
       throw new RuntimeException(e);
     }
+  }
+
+  @Override
+  public String getTalentQualificationCalendlyUrl(Talent talent) {
+    return UriComponentsBuilder
+        .fromHttpUrl(talentQualificationCalendlyUrl)
+        .queryParam("name", talent.getFirstName() + " " + talent.getLastName())
+        .queryParam("email", talent.getEmail())
+        .queryParam("a1", talent.getPhoneNumber())
+        .toUriString();
   }
 }

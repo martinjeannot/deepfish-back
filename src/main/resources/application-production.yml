@@ -39,6 +39,12 @@ deepfish:
       private:
         name: yOIKc5oHPN6K
 
+# CALENDLY
+calendly:
+  talent-qualification:
+    slug: _talent
+    url: https://calendly.com/deepfish/_talent
+
 # ----------------------------------------
 # WEB PROPERTIES
 # ----------------------------------------
