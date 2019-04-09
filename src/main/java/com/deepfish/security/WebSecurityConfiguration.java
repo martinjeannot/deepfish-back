@@ -32,9 +32,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(AuthenticationManagerBuilder auth) throws Exception {
     auth
-        .userDetailsService(userDetailsService).passwordEncoder(passwordEncoder()).and()
-        .inMemoryAuthentication().withUser("admin@deepfish.fr").password("password")
-        .authorities("ROLE_SUPER_ADMIN");
+        .userDetailsService(userDetailsService)
+        .passwordEncoder(passwordEncoder());
   }
 
   @Override
