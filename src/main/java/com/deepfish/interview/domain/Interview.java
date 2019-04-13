@@ -154,10 +154,11 @@ public class Interview implements Identifiable<UUID> {
     }
   }
 
-  public void handleEmployerResponse(ParticipationStatus employerResponseStatus) {
+  public Interview handleEmployerResponse(ParticipationStatus employerResponseStatus) {
     setEmployerResponseStatus(employerResponseStatus);
     setEmployerRespondedAt(LocalDateTime.now(Clock.systemUTC()));
     setUpdatedAt(LocalDateTime.now(Clock.systemUTC()));
+    return this;
   }
 
   /**

@@ -11,6 +11,7 @@ import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import javax.persistence.Column;
@@ -149,5 +150,21 @@ public class Opportunity {
     if (OpportunityStatus.DECLINED.equals(employerStatus)) {
       setEmployerDeclinationReason(employerDeclinationReason);
     }
+  }
+
+  public OpportunityStatus getPreviousTalentStatus() {
+    return getPreviousOpportunityStatus("talentStatus");
+  }
+
+  public OpportunityStatus getPreviousEmployerStatus() {
+    return getPreviousOpportunityStatus("employerStatus");
+  }
+
+  private OpportunityStatus getPreviousOpportunityStatus(String fieldName) {
+    if (getPreviousState().containsKey(fieldName)
+        && Objects.nonNull(getPreviousState().get(fieldName))) {
+      return OpportunityStatus.valueOf((String) getPreviousState().get(fieldName));
+    }
+    return null;
   }
 }
