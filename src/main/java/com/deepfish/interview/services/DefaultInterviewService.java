@@ -7,6 +7,7 @@ import com.deepfish.interview.repositories.InterviewRepository;
 import com.deepfish.mail.MailFactory;
 import com.deepfish.mail.MailService;
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -59,7 +60,7 @@ public class DefaultInterviewService implements InterviewService {
   }
 
   @Override
-  public void updateInterviewStatus(Interview interview) {
+  public Interview updateInterviewStatus(Interview interview) {
     boolean statusHasBeenUpdated = interview.updateStatus();
     if (statusHasBeenUpdated) {
       switch (interview.getStatus()) {
@@ -87,8 +88,16 @@ public class DefaultInterviewService implements InterviewService {
           mailService.send(mailFactory.getAdminInterviewConfirmedMail(interview));
           break;
         default:
-          return;
+          break;
       }
     }
+    return interview;
+  }
+
+  @Override
+  public void handleEmployerDeclination(List<Interview> declinedInterviews) {
+    declinedInterviews
+        .forEach(Interview::updateStatus);
+    interviewRepository.save(declinedInterviews);
   }
 }

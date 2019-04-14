@@ -1,9 +1,11 @@
 package com.deepfish.talent.domain.opportunity;
 
+import com.deepfish.core.domain.StateRetaining;
 import com.deepfish.employer.domain.requirement.Requirement;
 import com.deepfish.interview.domain.Interview;
 import com.deepfish.talent.domain.Talent;
 import com.deepfish.user.domain.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.querydsl.core.annotations.QueryEntity;
@@ -37,7 +39,7 @@ import lombok.ToString;
 @Data
 @ToString(exclude = {"creator", "talent", "requirement"})
 @EqualsAndHashCode(exclude = {"creator", "talent", "requirement"})
-public class Opportunity {
+public class Opportunity implements StateRetaining {
 
   /**
    * Number of days from opportunity creation until expiration
@@ -107,6 +109,8 @@ public class Opportunity {
   @Column(columnDefinition = "text")
   private String employerDeclinationReason = "";
 
+  // ===============================================================================================
+
   /**
    * Tag this opportunity as forwarded to the related employer (through requirement)
    */
@@ -149,5 +153,17 @@ public class Opportunity {
     if (OpportunityStatus.DECLINED.equals(employerStatus)) {
       setEmployerDeclinationReason(employerDeclinationReason);
     }
+  }
+
+  // GETTERS/SETTERS ===============================================================================
+
+  @JsonIgnore
+  public OpportunityStatus getPreviousTalentStatus() {
+    return getValueFromPreviousState("talentStatus", OpportunityStatus.class);
+  }
+
+  @JsonIgnore
+  public OpportunityStatus getPreviousEmployerStatus() {
+    return getValueFromPreviousState("employerStatus", OpportunityStatus.class);
   }
 }

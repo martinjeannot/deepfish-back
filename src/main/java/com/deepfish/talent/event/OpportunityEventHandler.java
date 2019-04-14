@@ -8,6 +8,7 @@ import com.deepfish.mail.MailFactory;
 import com.deepfish.mail.MailService;
 import com.deepfish.talent.domain.opportunity.Opportunity;
 import com.deepfish.talent.domain.opportunity.OpportunityStatus;
+import com.deepfish.talent.services.OpportunityService;
 import com.google.common.collect.Sets;
 import java.util.Objects;
 import java.util.Set;
@@ -28,13 +29,18 @@ public class OpportunityEventHandler {
   private static final Set<OpportunityStatus> USER_ACTIONED_OPPORTUNITY_STATUSES = Sets
       .newHashSet(ACCEPTED, DECLINED);
 
+  private final OpportunityService opportunityService;
+
   private final MailService mailService;
 
   private final MailFactory mailFactory;
 
   public OpportunityEventHandler(
+      OpportunityService opportunityService,
       MailService mailService,
-      MailFactory mailFactory) {
+      MailFactory mailFactory
+  ) {
+    this.opportunityService = opportunityService;
     this.mailService = mailService;
     this.mailFactory = mailFactory;
   }
@@ -47,37 +53,32 @@ public class OpportunityEventHandler {
   @HandleBeforeSave
   public void onBeforeSave(Opportunity opportunity) {
     if (Objects.nonNull(opportunity.getPreviousState())) {
-      // [previous state] data gathering
-
-      OpportunityStatus previousTalentStatus = getPreviousOpportunityStatus("talentStatus",
-          opportunity);
-      OpportunityStatus previousEmployerStatus = getPreviousOpportunityStatus("employerStatus",
-          opportunity);
-
-      // [previous state] data specific behavior
 
       // talent response
-      if (PENDING.equals(previousTalentStatus)
+      if (PENDING.equals(opportunity.getPreviousTalentStatus())
           && USER_ACTIONED_OPPORTUNITY_STATUSES.contains(opportunity.getTalentStatus())) {
-        opportunity.handleTalentResponse(opportunity.getTalentStatus(),
-            opportunity.getTalentDeclinationReason(), false);
+        opportunity.handleTalentResponse(
+            opportunity.getTalentStatus(),
+            opportunity.getTalentDeclinationReason(),
+            false);
       }
 
       // talent forwarding
-      if (Objects.isNull(previousEmployerStatus)
+      if (Objects.isNull(opportunity.getPreviousEmployerStatus())
           && PENDING.equals(opportunity.getEmployerStatus())) {
         opportunity.forwardToEmployer();
       }
 
       // handling employer response
-      if (PENDING.equals(previousEmployerStatus)
+      if (PENDING.equals(opportunity.getPreviousEmployerStatus())
           && USER_ACTIONED_OPPORTUNITY_STATUSES.contains(opportunity.getEmployerStatus())) {
-        opportunity.handleEmployerResponse(opportunity.getEmployerStatus(),
+        opportunity.handleEmployerResponse(
+            opportunity.getEmployerStatus(),
             opportunity.getEmployerDeclinationReason());
       }
 
       // talent retrieval
-      if (Objects.nonNull(previousEmployerStatus)
+      if (Objects.nonNull(opportunity.getPreviousEmployerStatus())
           && Objects.isNull(opportunity.getEmployerStatus())) {
         opportunity.retrieveFromEmployer();
       }
@@ -87,16 +88,9 @@ public class OpportunityEventHandler {
   @HandleAfterSave
   public void onAfterSave(Opportunity opportunity) {
     if (Objects.nonNull(opportunity.getPreviousState())) {
-      // [previous state] data gathering
 
-      OpportunityStatus previousTalentStatus = getPreviousOpportunityStatus("talentStatus",
-          opportunity);
-      OpportunityStatus previousEmployerStatus = getPreviousOpportunityStatus("employerStatus",
-          opportunity);
-
-      // [previous state] data specific behavior
-
-      if (PENDING.equals(previousTalentStatus)) {
+      // check for talent status change
+      if (PENDING.equals(opportunity.getPreviousTalentStatus())) {
         if (ACCEPTED.equals(opportunity.getTalentStatus())) {
           mailService.send(mailFactory.getAdminTalentAcceptedOpportunityMail(opportunity));
         } else if (DECLINED.equals(opportunity.getTalentStatus())) {
@@ -104,26 +98,20 @@ public class OpportunityEventHandler {
         }
       }
 
-      if (PENDING.equals(previousEmployerStatus)) {
-        if (ACCEPTED.equals(opportunity.getEmployerStatus())) {
-          mailService.send(mailFactory.getAdminEmployerAcceptedTalentMail(opportunity));
-        } else if (DECLINED.equals(opportunity.getEmployerStatus())) {
-          mailService.send(mailFactory.getAdminEmployerDeclinedTalentMail(opportunity));
-        }
-      } else if (ACCEPTED.equals(previousEmployerStatus)) {
-        if (DECLINED.equals(opportunity.getEmployerStatus())) {
-          mailService.send(mailFactory.getAdminEmployerDisqualifiedTalentMail(opportunity));
+      // check for employer status change
+      if (Objects.nonNull(opportunity.getPreviousEmployerStatus())
+          && !opportunity.getEmployerStatus().equals(opportunity.getPreviousEmployerStatus())) {
+        switch (opportunity.getEmployerStatus()) {
+          case ACCEPTED:
+            mailService.send(mailFactory.getAdminEmployerAcceptedTalentMail(opportunity));
+            break;
+          case DECLINED:
+            opportunityService.handleEmployerDeclination(opportunity);
+            break;
+          default:
+            break;
         }
       }
     }
-  }
-
-  private OpportunityStatus getPreviousOpportunityStatus(String fieldName,
-      Opportunity opportunity) {
-    if (opportunity.getPreviousState().containsKey(fieldName)
-        && Objects.nonNull(opportunity.getPreviousState().get(fieldName))) {
-      return OpportunityStatus.valueOf((String) opportunity.getPreviousState().get(fieldName));
-    }
-    return null;
   }
 }

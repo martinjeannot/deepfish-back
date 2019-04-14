@@ -550,8 +550,9 @@ public class PebbleMailFactory implements MailFactory {
   @Override
   public Email getAdminTalentAcceptedOpportunityMail(Opportunity opportunity) {
     String subject =
-        opportunity.getTalent().getLastName() + " a accepté " + opportunity.getRequirement()
-            .getCompany().getName();
+        "[Opportunity accepted] " + opportunity.getTalent().getFirstName() + " " + opportunity
+            .getTalent().getLastName() + " a accepté " + opportunity.getRequirement().getCompany()
+            .getName();
     Map<String, Object> context = new HashMap<>();
     context.put("title", subject);
     context.put("talent", opportunity.getTalent());
