@@ -1,5 +1,6 @@
 package com.deepfish.talent.domain.opportunity;
 
+import com.deepfish.core.domain.StateRetaining;
 import com.deepfish.employer.domain.requirement.Requirement;
 import com.deepfish.interview.domain.Interview;
 import com.deepfish.talent.domain.Talent;
@@ -11,7 +12,6 @@ import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import javax.persistence.Column;
@@ -38,7 +38,7 @@ import lombok.ToString;
 @Data
 @ToString(exclude = {"creator", "talent", "requirement"})
 @EqualsAndHashCode(exclude = {"creator", "talent", "requirement"})
-public class Opportunity {
+public class Opportunity implements StateRetaining {
 
   /**
    * Number of days from opportunity creation until expiration
@@ -153,18 +153,10 @@ public class Opportunity {
   }
 
   public OpportunityStatus getPreviousTalentStatus() {
-    return getPreviousOpportunityStatus("talentStatus");
+    return getValueFromPreviousState("talentStatus", OpportunityStatus.class);
   }
 
   public OpportunityStatus getPreviousEmployerStatus() {
-    return getPreviousOpportunityStatus("employerStatus");
-  }
-
-  private OpportunityStatus getPreviousOpportunityStatus(String fieldName) {
-    if (getPreviousState().containsKey(fieldName)
-        && Objects.nonNull(getPreviousState().get(fieldName))) {
-      return OpportunityStatus.valueOf((String) getPreviousState().get(fieldName));
-    }
-    return null;
+    return getValueFromPreviousState("employerStatus", OpportunityStatus.class);
   }
 }

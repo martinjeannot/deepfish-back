@@ -1,5 +1,6 @@
 package com.deepfish.interview.domain;
 
+import com.deepfish.core.domain.StateRetaining;
 import com.deepfish.employer.domain.Employer;
 import com.deepfish.talent.domain.Talent;
 import com.deepfish.talent.domain.opportunity.Opportunity;
@@ -40,7 +41,7 @@ import org.springframework.hateoas.Identifiable;
 @Data
 @ToString(exclude = {"opportunity", "talent", "employer"})
 @EqualsAndHashCode(exclude = {"opportunity", "talent", "employer"})
-public class Interview implements Identifiable<UUID> {
+public class Interview implements Identifiable<UUID>, StateRetaining {
 
   @Id
   @GeneratedValue
@@ -184,17 +185,6 @@ public class Interview implements Identifiable<UUID> {
       setUpdatedAt(LocalDateTime.now(Clock.systemUTC()));
       return true;
     }
-  }
-
-  private <V> V getValueFromPreviousState(String key, Class<V> type) {
-    if (previousState.containsKey(key) && Objects.nonNull(previousState.get(key))) {
-      if (ParticipationStatus.class.equals(type)) {
-        return (V) ParticipationStatus.valueOf((String) previousState.get(key));
-      } else {
-        return (V) previousState.get(key);
-      }
-    }
-    return null;
   }
 
   // GETTERS/SETTERS ===============================================================================
