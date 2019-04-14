@@ -25,6 +25,7 @@ public interface InterviewRepository extends PagingAndSortingRepository<Intervie
   @Query("select itw from #{#entityName} itw "
       + "join itw.opportunity opp on opp.id = :opportunityId "
       + "where itw.startDateTime > :startAfter "
+      + "and itw.status = '#{T(com.deepfish.interview.domain.InterviewStatus).TENTATIVE}' "
       + "and itw.talentResponseStatus = '#{T(com.deepfish.interview.domain.ParticipationStatus).NEEDS_ACTION}' "
       + "or itw.status = '#{T(com.deepfish.interview.domain.InterviewStatus).CONFIRMED}' "
       + "order by itw.startDateTime desc")
