@@ -134,8 +134,6 @@ public class DefaultTalentService implements TalentService {
       talent.setLinkedinId(liteProfile.getId());
       talent.setLastName(liteProfile.getLastName());
       talent.setFirstName(liteProfile.getFirstName());
-      // TODO remove after profile picture scraping (to prevent value reset)
-      talent.setProfilePictureUrl(liteProfile.getProfilePictureUrl());
       try {
         talent.setLiteProfileText(objectMapper.writeValueAsString(liteProfile.getLiteProfile()));
       } catch (JsonProcessingException e) {
