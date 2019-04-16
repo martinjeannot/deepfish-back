@@ -42,14 +42,17 @@ public class LiteProfile {
   }
 
   public String getProfilePictureUrl() {
-    List identifiers = (List) ((Map) ((Map) liteProfile
-        .get("profilePicture"))
-        .get("displayImage~"))
-        .get("elements");
-    return (String) ((Map) ((List) ((Map) identifiers
-        .get(identifiers.size() - 1))
-        .get("identifiers"))
-        .get(0))
-        .get("identifier");
+    if (liteProfile.containsKey("profilePicture")) {
+      List identifiers = (List) ((Map) ((Map) liteProfile
+          .get("profilePicture"))
+          .get("displayImage~"))
+          .get("elements");
+      return (String) ((Map) ((List) ((Map) identifiers
+          .get(identifiers.size() - 1))
+          .get("identifiers"))
+          .get(0))
+          .get("identifier");
+    }
+    return "https://app.deepfish.co/static/img/avatar.png";
   }
 }
