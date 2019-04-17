@@ -53,6 +53,6 @@ public class LiteProfile {
           .get(0))
           .get("identifier");
     }
-    return "https://app.deepfish.co/static/img/avatar.png";
+    return null;
   }
 }

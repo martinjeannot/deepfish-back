@@ -14,4 +14,6 @@ public interface FrontAppUrlBuilder {
   String getTalentOpportunityUrl(Opportunity opportunity);
 
   String getTalentQualificationCalendlyUrl(Talent talent);
+
+  String getTalentProfilePictureUrl();
 }
