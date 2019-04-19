@@ -153,6 +153,7 @@ public class DefaultTalentService implements TalentService {
   public Talent signUpFromLinkedIn(LiteProfile liteProfile, String emailAddress, UUID utmId) {
     Talent talent = TalentMapper.INSTANCE.liteProfileToTalent(liteProfile);
 
+    // talent may not have any linkedIn profile picture
     if (Objects.isNull(talent.getProfilePictureUrl())) {
       talent.setProfilePictureUrl(frontAppUrlBuilder.getTalentProfilePictureUrl());
     }

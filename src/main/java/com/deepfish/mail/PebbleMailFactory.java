@@ -786,6 +786,38 @@ public class PebbleMailFactory implements MailFactory {
         .buildEmail();
   }
 
+  private final PebbleTemplate adminEmployerFollowUpMailTemplate = pebbleEngine
+      .getTemplate("mails/admin/employerFollowUp.html");
+
+  @Override
+  public Email getAdminEmployerFollowUpMail(Employer employer, Talent talent, String message) {
+    String subject =
+        "[Employer follow-up] "
+            + employer.getFirstName()
+            + " de "
+            + employer.getCompany().getName()
+            + " nous a fait son retour sur "
+            + talent.getFirstName();
+    Map<String, Object> context = new HashMap<>();
+    context.put("title", subject);
+    context.put("employer", employer);
+    context.put("talent", talent);
+    context.put("message", message);
+    Writer writer = new StringWriter();
+    try {
+      adminEmployerFollowUpMailTemplate.evaluate(writer, context);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
+    return EmailBuilder
+        .startingBlank()
+        .toMultiple(SALES_TEAM_EMAILS)
+        .withSubject(subject)
+        .withHTMLText(writer.toString())
+        .buildEmail();
+  }
+
   private final PebbleTemplate adminTalentPendingOpportunitiesFollowUpLinkedInMailTemplate = pebbleEngine
       .getTemplate("mails/admin/talentPendingOpportunitiesFollowUpLinkedIn.html");
 
