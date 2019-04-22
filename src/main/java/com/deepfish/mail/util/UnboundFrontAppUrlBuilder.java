@@ -83,4 +83,12 @@ public class UnboundFrontAppUrlBuilder implements FrontAppUrlBuilder {
         .queryParam("a1", talent.getPhoneNumber())
         .toUriString();
   }
+
+  @Override
+  public String getTalentProfilePictureUrl() {
+    return UriComponentsBuilder
+        .fromHttpUrl(frontAppUrl)
+        .path("/static/img/avatar.png")
+        .toUriString();
+  }
 }

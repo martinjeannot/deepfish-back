@@ -8,7 +8,6 @@ import com.deepfish.mail.MailService;
 import com.deepfish.talent.domain.Talent;
 import com.deepfish.talent.repositories.TalentRepository;
 import javax.validation.Valid;
-import org.simplejavamail.email.Email;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -45,9 +44,18 @@ public class ContactController {
   public ResponseEntity sendMessageToAdmins(@Valid @RequestBody ContactForm contactForm) {
     Employer employer = employerRepository.findOne(contactForm.getEmployerId());
     Talent talent = talentRepository.findOne(contactForm.getTalentId());
-    Email adminEmployerRequestMail = mailFactory
-        .getAdminEmployerRequestMail(employer, talent, contactForm.getMessage());
-    mailService.send(adminEmployerRequestMail);
-    return ResponseEntity.ok(null);
+    mailService
+        .send(mailFactory.getAdminEmployerRequestMail(employer, talent, contactForm.getMessage()));
+    return ResponseEntity.ok().build();
+  }
+
+  @PostMapping("employers/follow-up")
+  @ResponseBody
+  public ResponseEntity sendFollowUpMessageToAdmins(@Valid @RequestBody ContactForm contactForm) {
+    Employer employer = employerRepository.findOne(contactForm.getEmployerId());
+    Talent talent = talentRepository.findOne(contactForm.getTalentId());
+    mailService
+        .send(mailFactory.getAdminEmployerFollowUpMail(employer, talent, contactForm.getMessage()));
+    return ResponseEntity.ok().build();
   }
 }

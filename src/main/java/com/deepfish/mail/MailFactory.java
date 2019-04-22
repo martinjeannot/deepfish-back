@@ -68,6 +68,8 @@ public interface MailFactory {
 
   Email getAdminEmployerRequestMail(Employer employer, Talent talent, String message);
 
+  Email getAdminEmployerFollowUpMail(Employer employer, Talent talent, String message);
+
   Email getAdminTalentPendingOpportunitiesFollowUpLinkedInMail(Collection<String[]> talents);
 
   Email getAdminTalentPendingOpportunitiesFollowUpSMSMail(Collection<String[]> talents);

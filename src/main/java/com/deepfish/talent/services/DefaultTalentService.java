@@ -3,6 +3,7 @@ package com.deepfish.talent.services;
 import com.deepfish.linkedin.domain.LiteProfile;
 import com.deepfish.mail.MailFactory;
 import com.deepfish.mail.MailService;
+import com.deepfish.mail.util.FrontAppUrlBuilder;
 import com.deepfish.security.Role;
 import com.deepfish.talent.domain.Talent;
 import com.deepfish.talent.domain.TalentMapper;
@@ -46,6 +47,8 @@ public class DefaultTalentService implements TalentService {
 
   private final MailFactory mailFactory;
 
+  private final FrontAppUrlBuilder frontAppUrlBuilder;
+
   public DefaultTalentService(
       OpportunityService opportunityService,
       TalentRepository talentRepository,
@@ -53,7 +56,8 @@ public class DefaultTalentService implements TalentService {
       PasswordEncoder passwordEncoder,
       ObjectMapper objectMapper,
       MailService mailService,
-      MailFactory mailFactory
+      MailFactory mailFactory,
+      FrontAppUrlBuilder frontAppUrlBuilder
   ) {
     this.opportunityService = opportunityService;
     this.talentRepository = talentRepository;
@@ -62,6 +66,7 @@ public class DefaultTalentService implements TalentService {
     this.objectMapper = objectMapper;
     this.mailService = mailService;
     this.mailFactory = mailFactory;
+    this.frontAppUrlBuilder = frontAppUrlBuilder;
   }
 
   @Override
@@ -147,6 +152,11 @@ public class DefaultTalentService implements TalentService {
   @Override
   public Talent signUpFromLinkedIn(LiteProfile liteProfile, String emailAddress, UUID utmId) {
     Talent talent = TalentMapper.INSTANCE.liteProfileToTalent(liteProfile);
+
+    // talent may not have any linkedIn profile picture
+    if (Objects.isNull(talent.getProfilePictureUrl())) {
+      talent.setProfilePictureUrl(frontAppUrlBuilder.getTalentProfilePictureUrl());
+    }
 
     String liteProfileText = null;
     try {
