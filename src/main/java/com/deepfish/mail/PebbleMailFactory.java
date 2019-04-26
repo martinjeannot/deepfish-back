@@ -32,7 +32,6 @@ public class PebbleMailFactory implements MailFactory {
 
   private static final String[] SALES_TEAM_EMAILS = new String[]{
       DAVID_EMAIL,
-      "bruno@deepfish.co",
   };
 
   private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter
@@ -664,6 +663,37 @@ public class PebbleMailFactory implements MailFactory {
     Writer writer = new StringWriter();
     try {
       adminTalentDeactivationMailTemplate.evaluate(writer, context);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
+    return EmailBuilder
+        .startingBlank()
+        .toMultiple(SALES_TEAM_EMAILS)
+        .withSubject(subject)
+        .withHTMLText(writer.toString())
+        .buildEmail();
+  }
+
+  private final PebbleTemplate adminTalentQuestionMailTemplate = pebbleEngine
+      .getTemplate("mails/admin/talentQuestion.html");
+
+  @Override
+  public Email getAdminTalentQuestionMail(Opportunity opportunity, String question) {
+    String subject =
+        "[Talent question] "
+            + opportunity.getTalent().getFirstName()
+            + " a une question sur "
+            + opportunity.getRequirement().getCompany().getName();
+    Map<String, Object> context = new HashMap<>();
+    context.put("title", subject);
+    context.put("opportunity", opportunity);
+    context.put("talent", opportunity.getTalent());
+    context.put("company", opportunity.getRequirement().getCompany());
+    context.put("question", question);
+    Writer writer = new StringWriter();
+    try {
+      adminTalentQuestionMailTemplate.evaluate(writer, context);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
