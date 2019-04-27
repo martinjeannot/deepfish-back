@@ -1,5 +1,8 @@
 package com.deepfish.talent.web;
 
+import com.deepfish.mail.MailFactory;
+import com.deepfish.mail.MailService;
+import com.deepfish.talent.domain.opportunity.Opportunity;
 import com.deepfish.talent.domain.opportunity.OpportunityStatus;
 import com.deepfish.talent.repositories.OpportunityRepository;
 import com.deepfish.talent.services.TalentService;
@@ -18,15 +21,36 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RepositoryRestController
 public class OpportunityController {
 
+  private final MailService mailService;
+
+  private final MailFactory mailFactory;
+
   private final TalentService talentService;
 
   private final OpportunityRepository opportunityRepository;
 
   public OpportunityController(
+      MailService mailService,
+      MailFactory mailFactory,
       TalentService talentService,
       OpportunityRepository opportunityRepository) {
+    this.mailService = mailService;
+    this.mailFactory = mailFactory;
     this.talentService = talentService;
     this.opportunityRepository = opportunityRepository;
+  }
+
+  @PostMapping("/opportunities/{opportunityId}/ask-question")
+  public ResponseEntity askQuestionToAdmins(
+      @PathVariable("opportunityId") UUID opportunityId,
+      @RequestBody Map<String, Object> body
+  ) {
+    Opportunity opportunity = opportunityRepository.findOne(opportunityId);
+    mailService.send(
+        mailFactory.getAdminTalentQuestionMail(
+            opportunity,
+            body.get("question").toString()));
+    return ResponseEntity.ok().build();
   }
 
   @PostMapping("/talents/{talentId}/opportunities/bulk-declination")

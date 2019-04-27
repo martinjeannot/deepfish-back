@@ -60,6 +60,8 @@ public interface MailFactory {
   Email getAdminTalentDeactivationMail(Talent talent, String declinationReason,
       List<String> companyNames);
 
+  Email getAdminTalentQuestionMail(Opportunity opportunity, String question);
+
   Email getAdminEmployerAcceptedTalentMail(Opportunity opportunity);
 
   Email getAdminEmployerDeclinedTalentMail(Opportunity opportunity);
