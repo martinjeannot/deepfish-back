@@ -103,7 +103,7 @@ public class StatisticsController {
       case "day":
         return new String[]{"YYYY-MM-DD", "1 day"};
       case "week":
-        return new String[]{"YYYY-WW", "1 week"};
+        return new String[]{"IYYY-IW", "1 week"};
       case "month":
         return new String[]{"YYYY-MM", "1 month"};
       case "year":
