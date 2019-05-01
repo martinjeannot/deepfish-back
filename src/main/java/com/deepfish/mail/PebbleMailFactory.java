@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.stream.Stream;
 import org.simplejavamail.email.Email;
 import org.simplejavamail.email.EmailBuilder;
 import org.springframework.stereotype.Component;
@@ -30,9 +31,16 @@ public class PebbleMailFactory implements MailFactory {
 
   private static final String DAVID_EMAIL = "david@deepfish.co";
 
+  private static final String MARTIN_EMAIL = "martin@deepfish.co";
+
   private static final String[] SALES_TEAM_EMAILS = new String[]{
       DAVID_EMAIL,
   };
+
+  private static final String[] TECH_SALES_TEAM_EMAILS = Stream
+      .of(SALES_TEAM_EMAILS, new String[]{MARTIN_EMAIL})
+      .flatMap(Stream::of)
+      .toArray(String[]::new);
 
   private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter
       .ofLocalizedDate(FormatStyle.FULL).withLocale(Locale.FRANCE);
@@ -700,7 +708,7 @@ public class PebbleMailFactory implements MailFactory {
 
     return EmailBuilder
         .startingBlank()
-        .toMultiple(SALES_TEAM_EMAILS)
+        .toMultiple(TECH_SALES_TEAM_EMAILS)
         .withSubject(subject)
         .withHTMLText(writer.toString())
         .buildEmail();
