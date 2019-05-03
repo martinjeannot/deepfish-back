@@ -4,10 +4,13 @@ import com.deepfish.talent.domain.conditions.JobType;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Map;
+import java.util.UUID;
 import org.springframework.data.rest.core.config.Projection;
 
 @Projection(name = "employer", types = {Requirement.class})
 public interface EmployerRequirementProjection {
+
+  UUID getId();
 
   LocalDateTime getCreatedAt();
 

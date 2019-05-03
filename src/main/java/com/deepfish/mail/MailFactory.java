@@ -72,6 +72,8 @@ public interface MailFactory {
 
   Email getAdminEmployerFollowUpMail(Employer employer, Talent talent, String message);
 
+  Email getAdminEmployerRequirementUpdateMail(Requirement requirement, String message);
+
   Email getAdminTalentPendingOpportunitiesFollowUpLinkedInMail(Collection<String[]> talents);
 
   Email getAdminTalentPendingOpportunitiesFollowUpSMSMail(Collection<String[]> talents);
