@@ -949,7 +949,7 @@ public class PebbleMailFactory implements MailFactory {
     return EmailBuilder
         .startingBlank()
         .from(DAVID_EMAIL)
-        .to("martin@deepfish.co")
+        .to(MARTIN_EMAIL)
         .withSubject(subject)
         .withHTMLText(writer.toString())
         .buildEmail();
