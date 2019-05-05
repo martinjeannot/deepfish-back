@@ -99,7 +99,8 @@ public class OpportunityEventHandler {
       }
 
       // check for employer status change
-      if (Objects.nonNull(opportunity.getPreviousEmployerStatus())
+      if (Objects.nonNull(opportunity.getEmployerStatus())
+          && Objects.nonNull(opportunity.getPreviousEmployerStatus())
           && !opportunity.getEmployerStatus().equals(opportunity.getPreviousEmployerStatus())) {
         switch (opportunity.getEmployerStatus()) {
           case ACCEPTED:

@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.stream.Stream;
 import org.simplejavamail.email.Email;
 import org.simplejavamail.email.EmailBuilder;
 import org.springframework.stereotype.Component;
@@ -30,9 +31,16 @@ public class PebbleMailFactory implements MailFactory {
 
   private static final String DAVID_EMAIL = "david@deepfish.co";
 
+  private static final String MARTIN_EMAIL = "martin@deepfish.co";
+
   private static final String[] SALES_TEAM_EMAILS = new String[]{
       DAVID_EMAIL,
   };
+
+  private static final String[] TECH_SALES_TEAM_EMAILS = Stream
+      .of(SALES_TEAM_EMAILS, new String[]{MARTIN_EMAIL})
+      .flatMap(Stream::of)
+      .toArray(String[]::new);
 
   private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter
       .ofLocalizedDate(FormatStyle.FULL).withLocale(Locale.FRANCE);
@@ -700,7 +708,7 @@ public class PebbleMailFactory implements MailFactory {
 
     return EmailBuilder
         .startingBlank()
-        .toMultiple(SALES_TEAM_EMAILS)
+        .toMultiple(TECH_SALES_TEAM_EMAILS)
         .withSubject(subject)
         .withHTMLText(writer.toString())
         .buildEmail();
@@ -842,7 +850,37 @@ public class PebbleMailFactory implements MailFactory {
 
     return EmailBuilder
         .startingBlank()
-        .toMultiple(SALES_TEAM_EMAILS)
+        .toMultiple(TECH_SALES_TEAM_EMAILS)
+        .withSubject(subject)
+        .withHTMLText(writer.toString())
+        .buildEmail();
+  }
+
+  private final PebbleTemplate adminEmployerRequirementUpdateMailTemplate = pebbleEngine
+      .getTemplate("mails/admin/employerRequirementUpdate.html");
+
+  @Override
+  public Email getAdminEmployerRequirementUpdateMail(Requirement requirement, String message) {
+    String subject =
+        "[Requirement update] Un recruteur chez "
+            + requirement.getCompany().getName()
+            + " veut modifier son besoin : "
+            + requirement.getName();
+    Map<String, Object> context = new HashMap<>();
+    context.put("title", subject);
+    context.put("requirement", requirement);
+    context.put("company", requirement.getCompany());
+    context.put("message", message);
+    Writer writer = new StringWriter();
+    try {
+      adminEmployerRequirementUpdateMailTemplate.evaluate(writer, context);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
+    return EmailBuilder
+        .startingBlank()
+        .toMultiple(TECH_SALES_TEAM_EMAILS)
         .withSubject(subject)
         .withHTMLText(writer.toString())
         .buildEmail();
@@ -941,7 +979,7 @@ public class PebbleMailFactory implements MailFactory {
     return EmailBuilder
         .startingBlank()
         .from(DAVID_EMAIL)
-        .to("martin@deepfish.co")
+        .to(MARTIN_EMAIL)
         .withSubject(subject)
         .withHTMLText(writer.toString())
         .buildEmail();
