@@ -13,9 +13,6 @@ public interface TalentOpportunityProjection {
 
   UUID getId();
 
-  @Value("#{target.getCreatedAt().plusDays(T(com.deepfish.talent.domain.opportunity.Opportunity).LIFESPAN_DAYS)}")
-  LocalDateTime getExpiredAt();
-
   OpportunityStatus getTalentStatus();
 
   OpportunityStatus getEmployerStatus();

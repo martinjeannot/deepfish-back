@@ -41,11 +41,6 @@ import lombok.ToString;
 @EqualsAndHashCode(exclude = {"creator", "talent", "requirement"})
 public class Opportunity implements StateRetaining {
 
-  /**
-   * Number of days from opportunity creation until expiration
-   */
-  public static final int LIFESPAN_DAYS = 15;
-
   @Id
   @GeneratedValue
   @Setter(AccessLevel.NONE)
