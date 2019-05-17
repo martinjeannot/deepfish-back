@@ -46,6 +46,36 @@ public class Company {
   @Column(name = "logo_uri")
   private String logoURI;
 
+  private String websiteUrl;
+
+  private String size;
+
+  private String headquartersAddress;
+
+  private String foundedIn;
+
+  private String revenue;
+
+  private String customerReferences;
+
+  private String coverImageUri;
+
+  private String topImageUri;
+
+  private String bottomImageUri;
+
+  private String facebookUrl;
+
+  private String instagramUrl;
+
+  private String linkedinUrl;
+
+  private String twitterUrl;
+
+  private String youtubeUrl;
+
+  // ===============================================================================================
+
   public String buildLogoURI(String extension) {
     return "/companies/" + id.toString() + "/logo." + extension;
   }
