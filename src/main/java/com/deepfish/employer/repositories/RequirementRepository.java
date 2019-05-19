@@ -28,10 +28,10 @@ public interface RequirementRepository extends PagingAndSortingRepository<Requir
       "select req from #{#entityName} req "
           + "left outer join req.company comp "
           + "where req.status = :status "
-          + "and (upper(req.name) like upper(concat('%', :name, '%')) or upper(comp.name) like upper(concat('%', :companyName, '%')))")
-  Page<Requirement> findByStatusIsAndNameContainingOrCompanyNameContainingAllIgnoreCase(
+          + "and upper(comp.name) like upper(concat('%', :companyName, '%')) "
+          + "order by comp.name")
+  Page<Requirement> findByStatusAndCompanyNameContainingIgnoreCaseOrderByCompanyNameAsc(
       @Param("status") RequirementStatus status,
-      @Param("name") String name,
       @Param("companyName") String companyName,
       Pageable pageable);
 }

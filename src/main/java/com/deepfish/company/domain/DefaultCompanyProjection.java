@@ -20,4 +20,35 @@ public interface DefaultCompanyProjection {
 
   @Value("#{target.logoURI != null ? @staticResourceResolver.resolve(target.logoURI).toString() : null}")
   String getLogoURL();
+
+  String getWebsiteUrl();
+
+  String getSize();
+
+  String getHeadquartersAddress();
+
+  String getFoundedIn();
+
+  String getRevenue();
+
+  String getCustomerReferences();
+
+  @Value("#{target.coverImageUri != null ? @staticResourceResolver.resolve(target.coverImageUri).toString() : null}")
+  String getCoverImageUrl();
+
+  @Value("#{target.topImageUri != null ? @staticResourceResolver.resolve(target.topImageUri).toString() : null}")
+  String getTopImageUrl();
+
+  @Value("#{target.bottomImageUri != null ? @staticResourceResolver.resolve(target.bottomImageUri).toString() : null}")
+  String getBottomImageUrl();
+
+  String getFacebookUrl();
+
+  String getInstagramUrl();
+
+  String getLinkedinUrl();
+
+  String getTwitterUrl();
+
+  String getYoutubeUrl();
 }
