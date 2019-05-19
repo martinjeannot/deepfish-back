@@ -39,25 +39,118 @@ public class CompanyController {
       @RequestPart("file") MultipartFile file
   ) {
     Company company = companyRepository.findOne(companyId);
-    String logoURI = company
-        .buildLogoURI(StringUtils.getFilenameExtension(file.getOriginalFilename()));
-    try {
-      s3APIClient.put(logoURI, file.getBytes());
-    } catch (IOException e) {
-      LOGGER.error(e.getMessage(), e);
-      throw new RuntimeException(e);
-    }
-    company.setLogoURI(logoURI);
+    String resourceUri =
+        company
+            .buildLogoUri(
+                StringUtils.getFilenameExtension(
+                    file.getOriginalFilename()));
+    uploadResource(resourceUri, file);
+    company.setLogoURI(resourceUri);
     companyRepository.save(company);
     return ResponseEntity.ok().build();
   }
 
   @DeleteMapping("companies/{companyId}/upload-logo")
-  public ResponseEntity deleteLogo(@PathVariable("companyId") UUID companyId) {
+  public ResponseEntity deleteLogo(
+      @PathVariable("companyId") UUID companyId
+  ) {
     Company company = companyRepository.findOne(companyId);
     s3APIClient.delete(company.getLogoURI());
     company.setLogoURI(null);
     companyRepository.save(company);
     return ResponseEntity.ok().build();
+  }
+
+  @PostMapping("companies/{companyId}/upload-cover")
+  public ResponseEntity uploadCoverImage(
+      @PathVariable("companyId") UUID companyId,
+      @RequestPart("file") MultipartFile file
+  ) {
+    Company company = companyRepository.findOne(companyId);
+    String resourceUri =
+        company
+            .buildCoverImageUri(
+                StringUtils.getFilenameExtension(
+                    file.getOriginalFilename()));
+    uploadResource(resourceUri, file);
+    company.setCoverImageUri(resourceUri);
+    companyRepository.save(company);
+    return ResponseEntity.ok().build();
+  }
+
+  @DeleteMapping("companies/{companyId}/upload-cover")
+  public ResponseEntity deleteCoverImage(
+      @PathVariable("companyId") UUID companyId
+  ) {
+    Company company = companyRepository.findOne(companyId);
+    s3APIClient.delete(company.getCoverImageUri());
+    company.setCoverImageUri(null);
+    companyRepository.save(company);
+    return ResponseEntity.ok().build();
+  }
+
+  @PostMapping("companies/{companyId}/upload-top")
+  public ResponseEntity uploadTopImage(
+      @PathVariable("companyId") UUID companyId,
+      @RequestPart("file") MultipartFile file
+  ) {
+    Company company = companyRepository.findOne(companyId);
+    String resourceUri =
+        company
+            .buildTopImageUri(
+                StringUtils.getFilenameExtension(
+                    file.getOriginalFilename()));
+    uploadResource(resourceUri, file);
+    company.setTopImageUri(resourceUri);
+    companyRepository.save(company);
+    return ResponseEntity.ok().build();
+  }
+
+  @DeleteMapping("companies/{companyId}/upload-top")
+  public ResponseEntity deleteTopImage(
+      @PathVariable("companyId") UUID companyId
+  ) {
+    Company company = companyRepository.findOne(companyId);
+    s3APIClient.delete(company.getTopImageUri());
+    company.setTopImageUri(null);
+    companyRepository.save(company);
+    return ResponseEntity.ok().build();
+  }
+
+  @PostMapping("companies/{companyId}/upload-bottom")
+  public ResponseEntity uploadBottomImage(
+      @PathVariable("companyId") UUID companyId,
+      @RequestPart("file") MultipartFile file
+  ) {
+    Company company = companyRepository.findOne(companyId);
+    String resourceUri =
+        company
+            .buildBottomImageUri(
+                StringUtils.getFilenameExtension(
+                    file.getOriginalFilename()));
+    uploadResource(resourceUri, file);
+    company.setBottomImageUri(resourceUri);
+    companyRepository.save(company);
+    return ResponseEntity.ok().build();
+  }
+
+  @DeleteMapping("companies/{companyId}/upload-bottom")
+  public ResponseEntity deleteBottomImage(
+      @PathVariable("companyId") UUID companyId
+  ) {
+    Company company = companyRepository.findOne(companyId);
+    s3APIClient.delete(company.getBottomImageUri());
+    company.setBottomImageUri(null);
+    companyRepository.save(company);
+    return ResponseEntity.ok().build();
+  }
+
+  private void uploadResource(String resourceUri, MultipartFile file) {
+    try {
+      s3APIClient.put(resourceUri, file.getBytes());
+    } catch (IOException e) {
+      LOGGER.error(e.getMessage(), e);
+      throw new RuntimeException(e);
+    }
   }
 }

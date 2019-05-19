@@ -76,7 +76,23 @@ public class Company {
 
   // ===============================================================================================
 
-  public String buildLogoURI(String extension) {
-    return "/companies/" + id.toString() + "/logo." + extension;
+  public String buildLogoUri(String extension) {
+    return buildResourceUri("logo", extension);
+  }
+
+  public String buildCoverImageUri(String extension) {
+    return buildResourceUri("cover-image", extension);
+  }
+
+  public String buildTopImageUri(String extension) {
+    return buildResourceUri("top-image", extension);
+  }
+
+  public String buildBottomImageUri(String extension) {
+    return buildResourceUri("bottom-image", extension);
+  }
+
+  private String buildResourceUri(String filename, String extension) {
+    return "/companies/" + id.toString() + "/" + filename + "." + extension;
   }
 }
