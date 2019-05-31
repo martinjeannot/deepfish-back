@@ -20,8 +20,8 @@ public interface InterviewRepository extends PagingAndSortingRepository<Intervie
 
   List<Interview> findBySharedId(UUID sharedId);
 
-  @PreAuthorize("hasRole('TALENT')")
-  @PostAuthorize("returnObject.?[talent.linkedinId != #root.principal].size() == 0")
+  @PreAuthorize("hasAnyRole('ADMIN', 'TALENT')")
+  @PostAuthorize("hasRole('ADMIN') or returnObject.?[talent.linkedinId != #root.principal].size() == 0")
   @Query("select itw from #{#entityName} itw "
       + "join itw.opportunity opp on opp.id = :opportunityId "
       + "where itw.startDateTime > :startAfter "
