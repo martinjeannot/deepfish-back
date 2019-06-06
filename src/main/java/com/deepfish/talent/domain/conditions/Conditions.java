@@ -80,6 +80,12 @@ public class Conditions {
 
   @ManyToMany
   @JoinTable(
+      joinColumns = @JoinColumn(foreignKey = @ForeignKey(name = "FK_conditions_client_industry_types__conditions")),
+      inverseJoinColumns = @JoinColumn(foreignKey = @ForeignKey(name = "FK_conditions_client_industry_types__client_industry_type")))
+  private Set<ClientIndustryType> clientIndustryTypes = new HashSet<>();
+
+  @ManyToMany
+  @JoinTable(
       joinColumns = @JoinColumn(foreignKey = @ForeignKey(name = "FK_conditions_fixed_locations__conditions")),
       inverseJoinColumns = @JoinColumn(foreignKey = @ForeignKey(name = "FK_conditions_fixed_locations__fixed_location")))
   private Set<FixedLocation> fixedLocations = new HashSet<>();

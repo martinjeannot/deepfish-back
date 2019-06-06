@@ -23,5 +23,7 @@ public interface DefaultConditionsProjection {
 
   Set<IndustryType> getIndustryTypes();
 
+  Set<ClientIndustryType> getClientIndustryTypes();
+
   Set<DefaultFixedLocationsProjection> getFixedLocations();
 }

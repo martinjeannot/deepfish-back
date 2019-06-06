@@ -10,11 +10,12 @@ import lombok.Setter;
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
- * An industry type refers to a group of similar products or services (i.e. what is being sold)
+ * A client industry type refers to a group of companies operating in similar business lines (i.e.
+ * who is it sold to)
  */
 @Entity
 @Data
-public class IndustryType {
+public class ClientIndustryType {
 
   @Id
   @GeneratedValue
