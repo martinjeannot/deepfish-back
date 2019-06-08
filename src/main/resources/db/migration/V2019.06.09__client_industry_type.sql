@@ -36,4 +36,14 @@ BEGIN
       ADD CONSTRAINT FK_conditions_client_industry_types__conditions FOREIGN KEY (conditions_talent_id) REFERENCES conditions;
   END IF;
 
+  -- Conditions ====================================================================================
+
+  IF NOT EXISTS(SELECT 1
+                FROM information_schema.columns
+                WHERE table_name = 'conditions' AND column_name = 'internship')
+  THEN
+    ALTER TABLE conditions
+      ADD internship BOOLEAN NOT NULL DEFAULT FALSE;
+  END IF;
+
 END$$;

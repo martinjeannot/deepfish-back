@@ -48,6 +48,8 @@ public class Conditions {
   @NotNull
   private LocalDate canStartOn = LocalDate.now(Clock.systemUTC());
 
+  private boolean internship = false;
+
   @ManyToMany
   @JoinTable(
       joinColumns = @JoinColumn(foreignKey = @ForeignKey(name = "FK_conditions_company_maturity_levels__conditions")),
