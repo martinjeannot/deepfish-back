@@ -48,6 +48,8 @@ public class Conditions {
   @NotNull
   private LocalDate canStartOn = LocalDate.now(Clock.systemUTC());
 
+  private boolean internship = false;
+
   @ManyToMany
   @JoinTable(
       joinColumns = @JoinColumn(foreignKey = @ForeignKey(name = "FK_conditions_company_maturity_levels__conditions")),
@@ -77,6 +79,12 @@ public class Conditions {
       joinColumns = @JoinColumn(foreignKey = @ForeignKey(name = "FK_conditions_industry_types__conditions")),
       inverseJoinColumns = @JoinColumn(foreignKey = @ForeignKey(name = "FK_conditions_industry_types__industry_type")))
   private Set<IndustryType> industryTypes = new HashSet<>();
+
+  @ManyToMany
+  @JoinTable(
+      joinColumns = @JoinColumn(foreignKey = @ForeignKey(name = "FK_conditions_client_industry_types__conditions")),
+      inverseJoinColumns = @JoinColumn(foreignKey = @ForeignKey(name = "FK_conditions_client_industry_types__client_industry_type")))
+  private Set<ClientIndustryType> clientIndustryTypes = new HashSet<>();
 
   @ManyToMany
   @JoinTable(

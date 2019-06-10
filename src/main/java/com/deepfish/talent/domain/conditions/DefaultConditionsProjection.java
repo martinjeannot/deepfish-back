@@ -13,6 +13,8 @@ public interface DefaultConditionsProjection {
 
   LocalDate getCanStartOn();
 
+  boolean isInternship();
+
   Set<CompanyMaturityLevel> getCompanyMaturityLevels();
 
   Set<JobType> getJobTypes();
@@ -22,6 +24,8 @@ public interface DefaultConditionsProjection {
   Set<TaskType> getTaskTypes();
 
   Set<IndustryType> getIndustryTypes();
+
+  Set<ClientIndustryType> getClientIndustryTypes();
 
   Set<DefaultFixedLocationsProjection> getFixedLocations();
 }
