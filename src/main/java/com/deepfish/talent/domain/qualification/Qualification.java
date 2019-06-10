@@ -35,6 +35,8 @@ public class Qualification {
   @JoinColumn(foreignKey = @ForeignKey(name = "FK_qualification__talent__talent_id"))
   private Talent talent;
 
+  private boolean hasBeenQualified = false;
+
   private int ranking;
 
   private int complexSellingSkillsRating;
@@ -47,5 +49,5 @@ public class Qualification {
   @Column(columnDefinition = "text")
   private String recommendation = "";
 
-  private boolean interviewScheduled;
+  private boolean interviewScheduled = false;
 }

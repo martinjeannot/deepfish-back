@@ -46,4 +46,14 @@ BEGIN
       ADD internship BOOLEAN NOT NULL DEFAULT FALSE;
   END IF;
 
+  -- Qualification =================================================================================
+
+  IF NOT EXISTS(SELECT 1
+                FROM information_schema.columns
+                WHERE table_name = 'qualification' AND column_name = 'has_been_qualified')
+  THEN
+    ALTER TABLE qualification
+      ADD has_been_qualified BOOLEAN NOT NULL DEFAULT FALSE;
+  END IF;
+
 END$$;
