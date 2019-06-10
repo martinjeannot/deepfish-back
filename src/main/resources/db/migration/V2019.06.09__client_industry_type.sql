@@ -15,15 +15,17 @@ BEGIN
       PRIMARY KEY (id)
     );
     INSERT INTO client_industry_type (id, l10n_key, enabled, order_index)
-    VALUES ('bb0c2075-cc2f-4419-be55-86317f1359b7', 'Banque / Assurance', TRUE, 0);
+    VALUES ('c4da34ee-abe5-48f7-833b-3cb24f93dd7a', 'Sans préférence', TRUE, 0);
     INSERT INTO client_industry_type (id, l10n_key, enabled, order_index)
-    VALUES ('a366ec02-6cd1-4b52-b06c-5c0a2870b7b1', 'Transport / Energie', TRUE, 1);
+    VALUES ('bb0c2075-cc2f-4419-be55-86317f1359b7', 'Banque / Assurance', TRUE, 1);
     INSERT INTO client_industry_type (id, l10n_key, enabled, order_index)
-    VALUES ('c78f89d1-cb8c-4d67-a59e-e72c23f1cd38', 'Retail / Distribution / Luxe', TRUE, 2);
+    VALUES ('a366ec02-6cd1-4b52-b06c-5c0a2870b7b1', 'Transport / Energie', TRUE, 2);
     INSERT INTO client_industry_type (id, l10n_key, enabled, order_index)
-    VALUES ('bf8ccf16-9a13-4f8f-9017-b0c3f148d331', 'Secteur public', TRUE, 3);
+    VALUES ('c78f89d1-cb8c-4d67-a59e-e72c23f1cd38', 'Retail / Distribution / Luxe', TRUE, 3);
     INSERT INTO client_industry_type (id, l10n_key, enabled, order_index)
-    VALUES ('d78ad9e4-e46a-43d8-aa88-a535911ebc15', 'Santé / Chimie / Pharmacie', TRUE, 4);
+    VALUES ('bf8ccf16-9a13-4f8f-9017-b0c3f148d331', 'Secteur public', TRUE, 4);
+    INSERT INTO client_industry_type (id, l10n_key, enabled, order_index)
+    VALUES ('d78ad9e4-e46a-43d8-aa88-a535911ebc15', 'Santé / Chimie / Pharmacie', TRUE, 5);
 
     CREATE TABLE conditions_client_industry_types (
       conditions_talent_id     UUID NOT NULL,
