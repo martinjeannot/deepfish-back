@@ -8,8 +8,8 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.rest.core.config.Projection;
 
-@Projection(name = "admin-item", types = {Interview.class})
-public interface AdminItemInterviewProjection {
+@Projection(name = "admin", types = {Interview.class})
+public interface AdminInterviewProjection {
 
   UUID getId();
 
@@ -17,10 +17,20 @@ public interface AdminItemInterviewProjection {
 
   LocalDateTime getCreatedAt();
 
+  String getLocation();
+
   ZonedDateTime getStartAt();
+
+  ZonedDateTime getEndAt();
+
+  InterviewFormat getFormat();
 
   Talent getTalent();
 
+  ParticipationStatus getTalentResponseStatus();
+
   @Value("#{target.employer.company}")
   Company getCompany();
+
+  ParticipationStatus getEmployerResponseStatus();
 }
