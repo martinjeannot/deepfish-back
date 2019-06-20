@@ -87,7 +87,9 @@ public class DefaultInterviewService implements InterviewService {
           // mailService.send(mailFactory.getTalentInterviewConfirmedMail(interview));
           mailService.send(mailFactory.getAdminInterviewConfirmedMail(interview));
           break;
+
         default:
+          interviewRepository.save(interview);
           break;
       }
     }

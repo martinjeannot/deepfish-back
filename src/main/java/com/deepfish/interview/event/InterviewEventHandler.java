@@ -27,6 +27,7 @@ public class InterviewEventHandler {
   @HandleBeforeSave
   public void onBeforeSave(Interview interview) {
     if (Objects.nonNull(interview.getPreviousState())) {
+      interview.handleEmployerResponseFromPreviousState();
       interview.handleTalentResponseFromPreviousState();
     }
   }
