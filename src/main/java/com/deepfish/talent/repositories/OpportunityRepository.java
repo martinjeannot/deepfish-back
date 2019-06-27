@@ -32,7 +32,7 @@ public interface OpportunityRepository extends PagingAndSortingRepository<Opport
       + "join opp.requirement req "
       + "join req.company comp "
       + "where opp.talent.id = :talentId "
-      + "and opp.employerStatus in ('#{T(com.deepfish.talent.domain.opportunity.OpportunityStatus).PENDING}', '#{T(com.deepfish.talent.domain.opportunity.OpportunityStatus).ACCEPTED}') "
+      + "and opp.employerStatus in ('#{T(com.deepfish.talent.domain.opportunity.OpportunityStatus).ACCEPTED}') "
       + "and upper(comp.name) like upper(concat('%', :companyName, '%'))")
   Page<Opportunity> findInterviewSchedulableByTalentIdAndCompanyNameContainingAllIgnoreCase(
       @Param("talentId") UUID talentId,

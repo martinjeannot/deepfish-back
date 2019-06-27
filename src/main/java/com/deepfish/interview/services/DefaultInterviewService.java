@@ -1,5 +1,6 @@
 package com.deepfish.interview.services;
 
+import com.deepfish.employer.repositories.EmployerRepository;
 import com.deepfish.interview.domain.Interview;
 import com.deepfish.interview.domain.InterviewStatus;
 import com.deepfish.interview.domain.ParticipationStatus;
@@ -22,16 +23,20 @@ public class DefaultInterviewService implements InterviewService {
 
   private final InterviewRepository interviewRepository;
 
+  private final EmployerRepository employerRepository;
+
   private final MailService mailService;
 
   private final MailFactory mailFactory;
 
   public DefaultInterviewService(
       InterviewRepository interviewRepository,
+      EmployerRepository employerRepository,
       MailService mailService,
       MailFactory mailFactory
   ) {
     this.interviewRepository = interviewRepository;
+    this.employerRepository = employerRepository;
     this.mailService = mailService;
     this.mailFactory = mailFactory;
   }
@@ -42,12 +47,12 @@ public class DefaultInterviewService implements InterviewService {
     UUID newSharedId = Objects.isNull(referenceInterview.getSharedId()) ? UUID.randomUUID() : null;
 
     interviews.forEach(interview -> {
-      // currently only employers can schedule interviews but this may change in the future
-      interview.handleEmployerResponse(ParticipationStatus.ACCEPTED);
       if (Objects.isNull(interview.getSharedId())) {
         // add shared id
         interview.setSharedId(newSharedId);
       }
+      // currently only employers can schedule interviews but this may change in the future
+      interview.handleEmployerResponse(ParticipationStatus.ACCEPTED);
     });
 
     interviews = interviewRepository.save(interviews);
@@ -55,6 +60,47 @@ public class DefaultInterviewService implements InterviewService {
     // send notifications
     mailService.send(mailFactory.getTalentInterviewRequestMail(interviews));
     mailService.send(mailFactory.getAdminNewInterviewRequestMail(interviews.iterator().next()));
+
+    return interviews;
+  }
+
+  @Override
+  public Iterable<Interview> scheduleInterviewsAsAdmin(Iterable<Interview> interviews) {
+    Interview referenceInterview = interviews.iterator().next();
+    UUID newSharedId = Objects.isNull(referenceInterview.getSharedId()) ? UUID.randomUUID() : null;
+
+    interviews.forEach(interview -> {
+      if (Objects.isNull(interview.getSharedId())) {
+        // add shared id
+        interview.setSharedId(newSharedId);
+      }
+      // currently only employers can create requirements but this may change in the future
+      interview.setEmployer(
+          employerRepository.findOne(interview.getOpportunity().getRequirement().getCreatedBy()));
+      // handle talent response
+      switch (interview.getTalentResponseStatus()) {
+        case NEEDS_ACTION:
+          break;
+        case ACCEPTED:
+          interview.handleTalentResponse(ParticipationStatus.ACCEPTED);
+          break;
+        default:
+          throw new IllegalArgumentException(
+              "Cannot handle participation status : " + interview.getTalentResponseStatus());
+      }
+      // handle employer response
+      switch (interview.getEmployerResponseStatus()) {
+        case ACCEPTED:
+          interview.handleEmployerResponse(ParticipationStatus.ACCEPTED);
+          break;
+        default:
+          throw new IllegalArgumentException(
+              "Cannot handle participation status : " + interview.getEmployerResponseStatus());
+      }
+      interview.updateStatus();
+    });
+
+    interviews = interviewRepository.save(interviews);
 
     return interviews;
   }

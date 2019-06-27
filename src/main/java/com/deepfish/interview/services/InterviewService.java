@@ -10,6 +10,8 @@ public interface InterviewService {
 
   Iterable<Interview> scheduleInterviews(Iterable<Interview> interviews);
 
+  Iterable<Interview> scheduleInterviewsAsAdmin(Iterable<Interview> interviews);
+
   Interview updateInterviewStatus(Interview interview);
 
   /**

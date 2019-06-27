@@ -46,4 +46,19 @@ public class InterviewController {
     }
     return ResponseEntity.noContent().build();
   }
+
+  @PostMapping("/admin/create-resources")
+  public ResponseEntity scheduleInterviewsAsAdmin(
+      @RequestBody Resource<ResourceList<Interview>> interviewResources
+  ) {
+    Iterable<Interview> interviews = interviewResources.getContent().getResources().stream()
+        .map(Resource::getContent).collect(Collectors.toList());
+    if (interviews.iterator().hasNext()) {
+      interviews = interviewService.scheduleInterviewsAsAdmin(interviews);
+      return ResponseEntity
+          .created(entityLinks.linkForSingleResource(interviews.iterator().next()).toUri())
+          .build();
+    }
+    return ResponseEntity.noContent().build();
+  }
 }
