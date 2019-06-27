@@ -32,7 +32,7 @@ public class InterviewController {
     this.entityLinks = entityLinks;
   }
 
-  @PostMapping("/list")
+  @PostMapping("/create-resources")
   public ResponseEntity scheduleInterviews(
       @RequestBody Resource<ResourceList<Interview>> interviewResources
   ) {
