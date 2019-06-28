@@ -12,6 +12,12 @@ public interface InterviewService {
 
   Iterable<Interview> scheduleInterviewsAsAdmin(Iterable<Interview> interviews);
 
+  void cancelInterview(
+      Interview interview,
+      String cancelledBy,
+      boolean cancelLinkedInterviews
+  );
+
   Interview updateInterviewStatus(Interview interview);
 
   /**

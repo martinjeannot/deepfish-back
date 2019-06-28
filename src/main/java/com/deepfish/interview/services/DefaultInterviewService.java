@@ -8,6 +8,7 @@ import com.deepfish.interview.repositories.InterviewRepository;
 import com.deepfish.mail.MailFactory;
 import com.deepfish.mail.MailService;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -103,6 +104,34 @@ public class DefaultInterviewService implements InterviewService {
     interviews = interviewRepository.save(interviews);
 
     return interviews;
+  }
+
+  @Override
+  public void cancelInterview(
+      Interview interview,
+      String cancelledBy,
+      boolean cancelLinkedInterviews
+  ) {
+    Iterable<Interview> interviews;
+    if (cancelLinkedInterviews) {
+      interviews = interviewRepository.findBySharedId(interview.getSharedId());
+    } else {
+      interviews = Collections.singletonList(interview);
+    }
+    interviews.forEach(interviewToCancel -> {
+      switch (cancelledBy) {
+        case "TALENT":
+          interviewToCancel.handleTalentResponse(ParticipationStatus.DECLINED);
+          break;
+        case "EMPLOYER":
+          interviewToCancel.handleEmployerResponse(ParticipationStatus.DECLINED);
+          break;
+        default:
+          throw new IllegalArgumentException("Unknown cancelledBy : " + cancelledBy);
+      }
+      interviewToCancel.updateStatus();
+    });
+    interviewRepository.save(interviews);
   }
 
   @Override
