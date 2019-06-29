@@ -29,7 +29,14 @@ public interface TalentRepository extends PagingAndSortingRepository<Talent, UUI
       @Param("lastName") String lastName,
       @Param("firstName") String firstName,
       @Param("phoneNumber") String phoneNumber,
-      Pageable pageable);
+      Pageable pageable
+  );
+
+  Page<Talent> findByActiveTrueAndLastNameContainingOrActiveTrueAndFirstNameContainingAllIgnoreCase(
+      @Param("lastName") String lastName,
+      @Param("firstName") String firstName,
+      Pageable pageable
+  );
 
   List<Talent> findFirst20ByActiveIsTrueAndLinkedinProfileLastRetrievalAttemptedAtIsNullAndLinkedinPublicProfileUrlIsNotNullOrderByCreatedAtDesc();
 

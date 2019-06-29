@@ -4,6 +4,8 @@ import com.deepfish.interview.domain.Interview;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.UUID;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QueryDslPredicateExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -19,6 +21,13 @@ public interface InterviewRepository extends PagingAndSortingRepository<Intervie
     QueryDslPredicateExecutor<Interview> {
 
   List<Interview> findBySharedId(UUID sharedId);
+
+  @PreAuthorize("hasRole('ADMIN')")
+  Page<Interview> findByTalentLastNameContainingOrTalentFirstNameContainingAllIgnoreCase(
+      @Param("talentLastName") String talentLastName,
+      @Param("talentFirstName") String talentFirstName,
+      Pageable pageable
+  );
 
   @PreAuthorize("hasAnyRole('ADMIN', 'TALENT')")
   @PostAuthorize("hasRole('ADMIN') or returnObject.?[talent.linkedinId != #root.principal].size() == 0")

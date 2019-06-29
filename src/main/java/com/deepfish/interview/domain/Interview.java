@@ -146,9 +146,10 @@ public class Interview implements Identifiable<UUID>, StateRetaining {
    * In this case, the participation status has already been set by SDR
    */
   public void handleTalentResponseFromPreviousState() {
-    ParticipationStatus previousTalentResponseStatus = getValueFromPreviousState(
-        "talentResponseStatus",
-        ParticipationStatus.class);
+    ParticipationStatus previousTalentResponseStatus =
+        getValueFromPreviousState(
+            "talentResponseStatus",
+            ParticipationStatus.class);
     if (!getTalentResponseStatus().equals(previousTalentResponseStatus)) {
       setTalentRespondedAt(LocalDateTime.now(Clock.systemUTC()));
       setUpdatedAt(LocalDateTime.now(Clock.systemUTC()));
@@ -160,6 +161,20 @@ public class Interview implements Identifiable<UUID>, StateRetaining {
     setEmployerRespondedAt(LocalDateTime.now(Clock.systemUTC()));
     setUpdatedAt(LocalDateTime.now(Clock.systemUTC()));
     return this;
+  }
+
+  /**
+   * In this case, the participation status has already been set by SDR
+   */
+  public void handleEmployerResponseFromPreviousState() {
+    ParticipationStatus previousEmployerResponseStatus =
+        getValueFromPreviousState(
+            "employerResponseStatus",
+            ParticipationStatus.class);
+    if (!getEmployerResponseStatus().equals(previousEmployerResponseStatus)) {
+      setEmployerRespondedAt(LocalDateTime.now(Clock.systemUTC()));
+      setUpdatedAt(LocalDateTime.now(Clock.systemUTC()));
+    }
   }
 
   /**
