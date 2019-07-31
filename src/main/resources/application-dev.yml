@@ -88,6 +88,13 @@ phantombuster:
 
 spring:
   # ----------------------------------------
+  # WEB PROPERTIES
+  # ----------------------------------------
+  # MULTIPART (MultipartProperties)
+  http:
+    multipart:
+      location: /var/tmp
+  # ----------------------------------------
   # DATA PROPERTIES
   # ----------------------------------------
   # JPA (JpaBaseConfiguration, HibernateJpaAutoConfiguration)

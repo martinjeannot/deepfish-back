@@ -84,6 +84,13 @@ spring:
   sendgrid:
     api-key: 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
   # ----------------------------------------
+  # WEB PROPERTIES
+  # ----------------------------------------
+  # MULTIPART (MultipartProperties)
+  http:
+    multipart:
+      location: /var/tmp
+  # ----------------------------------------
   # DATA PROPERTIES
   # ----------------------------------------
   # JPA (JpaBaseConfiguration, HibernateJpaAutoConfiguration)
