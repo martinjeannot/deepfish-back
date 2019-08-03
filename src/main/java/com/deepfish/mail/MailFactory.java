@@ -62,6 +62,9 @@ public interface MailFactory {
 
   Email getAdminTalentQuestionMail(Opportunity opportunity, String question);
 
+  Email getAdminTalentReferralInvitationMail(Talent talent, String emails, String referralSubject,
+      String message);
+
   Email getAdminEmployerAcceptedTalentMail(Opportunity opportunity);
 
   Email getAdminEmployerDeclinedTalentMail(Opportunity opportunity);
