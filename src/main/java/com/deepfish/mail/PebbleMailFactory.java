@@ -714,6 +714,33 @@ public class PebbleMailFactory implements MailFactory {
         .buildEmail();
   }
 
+  private final PebbleTemplate adminTalentReferralInvitationMailTemplate = pebbleEngine
+      .getTemplate("mails/admin/talentReferralInvitation.html");
+
+  @Override
+  public Email getAdminTalentReferralInvitationMail(Talent talent, String emails,
+      String referralSubject, String message) {
+    String subject = "[Referral] From " + talent.getFirstName() + " " + talent.getLastName();
+    Map<String, Object> context = new HashMap<>();
+    context.put("title", subject);
+    context.put("talent", talent);
+    context.put("emails", emails);
+    context.put("subject", referralSubject);
+    context.put("message", message);
+    Writer writer = new StringWriter();
+    try {
+      adminTalentReferralInvitationMailTemplate.evaluate(writer, context);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+    return EmailBuilder
+        .startingBlank()
+        .to(DAVID_EMAIL)
+        .withSubject(subject)
+        .withHTMLText(writer.toString())
+        .buildEmail();
+  }
+
   private final PebbleTemplate adminEmployerAcceptedTalentMailTemplate = pebbleEngine
       .getTemplate("mails/admin/employerAcceptedTalent.html");
 
