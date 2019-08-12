@@ -33,8 +33,11 @@ public class PebbleMailFactory implements MailFactory {
 
   private static final String MARTIN_EMAIL = "martin@deepfish.co";
 
+  private static final String MELISSA_EMAIL = "melissa@deepfish.co";
+
   private static final String[] SALES_TEAM_EMAILS = new String[]{
       DAVID_EMAIL,
+      MELISSA_EMAIL
   };
 
   private static final String[] TECH_SALES_TEAM_EMAILS = Stream
