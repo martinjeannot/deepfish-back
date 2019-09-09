@@ -78,6 +78,19 @@ public interface QueryableTalentRepository extends
           .forEach(taskType -> predicate.andNot(talent.conditions.taskTypes.contains(taskType)));
       return predicate;
     }));
+    // Industry types
+    bindings.bind(talent.conditions.industryTypes).first((path, industryTypes) -> {
+      BooleanBuilder predicate = new BooleanBuilder();
+      industryTypes.forEach(industryType -> predicate.or(path.contains(industryType)));
+      return predicate;
+    });
+    // Client industry types
+    bindings.bind(talent.conditions.clientIndustryTypes).first((path, clientIndustryTypes) -> {
+      BooleanBuilder predicate = new BooleanBuilder();
+      clientIndustryTypes
+          .forEach(clientIndustryType -> predicate.or(path.contains(clientIndustryType)));
+      return predicate;
+    });
     // Fixed Locations
     bindings.bind(talent.conditions.fixedLocations).first((path, fixedLocations) -> {
       BooleanBuilder predicate = new BooleanBuilder();
