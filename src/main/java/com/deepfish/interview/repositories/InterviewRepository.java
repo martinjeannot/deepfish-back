@@ -1,6 +1,7 @@
 package com.deepfish.interview.repositories;
 
 import com.deepfish.interview.domain.Interview;
+import com.deepfish.interview.domain.InterviewStatus;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -21,6 +22,18 @@ public interface InterviewRepository extends PagingAndSortingRepository<Intervie
     QueryDslPredicateExecutor<Interview> {
 
   List<Interview> findBySharedId(UUID sharedId);
+
+  List<Interview> findByEmployerIdAndStartDateTimeAfterAndStatusIn(
+      UUID employerId,
+      ZonedDateTime startDateTimeAfter,
+      List<InterviewStatus> statuses
+  );
+
+  List<Interview> findByTalentIdAndStartDateTimeAfterAndStatusIn(
+      UUID talentId,
+      ZonedDateTime startDateTimeAfter,
+      List<InterviewStatus> statuses
+  );
 
   @PreAuthorize("hasRole('ADMIN')")
   Page<Interview> findByTalentLastNameContainingOrTalentFirstNameContainingAllIgnoreCase(
