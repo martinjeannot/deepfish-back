@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.querydsl.core.annotations.QueryEntity;
 import java.time.Clock;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Map;
@@ -93,16 +94,24 @@ public class Opportunity implements StateRetaining {
 
   private LocalDateTime forwardedAt;
 
-  private boolean forwardedOnce;
+  private boolean forwardedOnce; // TODO remove this after forwardedAt "mean retrieval"
 
   @Enumerated(EnumType.STRING)
   private OpportunityStatus employerStatus;
 
   private LocalDateTime employerRespondedAt;
 
+  private LocalDateTime employerAcceptedAt;
+
+  private LocalDateTime employerDeclinedAt;
+
   @NotNull
   @Column(columnDefinition = "text")
   private String employerDeclinationReason = "";
+
+  private LocalDate talentStartedOn;
+
+  private LocalDate trialPeriodTerminatedOn; // used to computed trial-to-hire rate
 
   // ===============================================================================================
 
@@ -120,10 +129,8 @@ public class Opportunity implements StateRetaining {
    */
   public void retrieveFromEmployer() {
     setForwarded(false);
-    setForwardedAt(null);
     // clean previous employer response
     setEmployerStatus(null);
-    setEmployerRespondedAt(null);
   }
 
   public void handleTalentResponse(
@@ -144,9 +151,18 @@ public class Opportunity implements StateRetaining {
       String employerDeclinationReason
   ) {
     setEmployerStatus(employerStatus);
-    setEmployerRespondedAt(LocalDateTime.now(Clock.systemUTC()));
-    if (OpportunityStatus.DECLINED.equals(employerStatus)) {
-      setEmployerDeclinationReason(employerDeclinationReason);
+    LocalDateTime now = LocalDateTime.now(Clock.systemUTC());
+    setEmployerRespondedAt(now);
+    switch (employerStatus) {
+      case ACCEPTED:
+        setEmployerAcceptedAt(now);
+        break;
+      case DECLINED:
+        setEmployerDeclinedAt(now);
+        setEmployerDeclinationReason(employerDeclinationReason);
+        break;
+      default:
+        throw new IllegalArgumentException("Unknown employer status : " + employerStatus);
     }
   }
 
