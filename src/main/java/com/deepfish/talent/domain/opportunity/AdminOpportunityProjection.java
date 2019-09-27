@@ -2,6 +2,7 @@ package com.deepfish.talent.domain.opportunity;
 
 import com.deepfish.employer.domain.requirement.Requirement;
 import com.deepfish.user.domain.User;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import org.springframework.data.rest.core.config.Projection;
 
@@ -19,4 +20,10 @@ public interface AdminOpportunityProjection extends AdminItemOpportunityProjecti
   LocalDateTime getForwardedAt();
 
   LocalDateTime getEmployerRespondedAt();
+
+  LocalDate getTalentStartedOn();
+
+  Integer getBaseSalary();
+
+  LocalDate getTrialPeriodTerminatedOn();
 }
