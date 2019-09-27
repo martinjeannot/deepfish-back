@@ -111,7 +111,9 @@ public class Opportunity implements StateRetaining {
 
   private LocalDate talentStartedOn;
 
-  private LocalDate trialPeriodTerminatedOn; // used to computed trial-to-hire rate
+  private Integer baseSalary;
+
+  private LocalDate trialPeriodTerminatedOn; // used to compute trial-to-hire rate
 
   // ===============================================================================================
 

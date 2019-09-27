@@ -11,6 +11,7 @@ BEGIN
       ADD employer_accepted_at TIMESTAMP,
       ADD employer_declined_at TIMESTAMP,
       ADD talent_started_on DATE,
+      ADD base_salary INT4,
       ADD trial_period_terminated_on DATE;
   END IF;
 
