@@ -115,6 +115,8 @@ public class Opportunity implements StateRetaining {
 
   private LocalDate trialPeriodTerminatedOn; // used to compute trial-to-hire rate
 
+  private String trialPeriodTerminationReason;
+
   // ===============================================================================================
 
   /**

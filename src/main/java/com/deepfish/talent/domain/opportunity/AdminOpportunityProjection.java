@@ -26,4 +26,6 @@ public interface AdminOpportunityProjection extends AdminItemOpportunityProjecti
   Integer getBaseSalary();
 
   LocalDate getTrialPeriodTerminatedOn();
+
+  String getTrialPeriodTerminationReason();
 }
