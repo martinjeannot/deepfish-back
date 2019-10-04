@@ -1,5 +1,6 @@
 package com.deepfish.talent.web;
 
+import com.deepfish.core.web.AbstractStatisticsController;
 import com.deepfish.talent.domain.opportunity.OpportunityStatus;
 import java.util.List;
 import java.util.Objects;
@@ -12,12 +13,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @RepositoryRestController
-public class StatisticsController {
+public class TalentStatisticsController extends AbstractStatisticsController {
 
-  private final EntityManager entityManager;
-
-  public StatisticsController(EntityManager entityManager) {
-    this.entityManager = entityManager;
+  public TalentStatisticsController(
+      EntityManager entityManager
+  ) {
+    super(entityManager);
   }
 
   @GetMapping("talents/statistics")
@@ -39,7 +40,7 @@ public class StatisticsController {
               + String.join(", ", qualificationRankings) + ") ";
     }
     talentSqlString += "GROUP BY dtime";
-    Query query = entityManager.createNativeQuery(
+    Query query = getEntityManager().createNativeQuery(
         "SELECT dtime, coalesce(talents, 0) AS talents "
             + "FROM (SELECT to_char(time_series, :date_pattern) AS dtime FROM generate_series(cast(:start_date AS DATE), cast(:end_date AS DATE), cast(:time_interval AS INTERVAL)) time_series) all_times "
             + "LEFT JOIN (" + talentSqlString + ") talents "
@@ -80,7 +81,7 @@ public class StatisticsController {
       opportunitySqlString += "employer_status = :employer_status ";
     }
     opportunitySqlString += "GROUP BY dtime";
-    Query query = entityManager.createNativeQuery(
+    Query query = getEntityManager().createNativeQuery(
         "SELECT dtime, coalesce(opportunities, 0) AS opportunities "
             + "FROM (SELECT to_char(time_series, :date_pattern) AS dtime FROM generate_series(cast(:start_date AS DATE), cast(:end_date AS DATE), cast(:time_interval AS INTERVAL)) time_series) all_times "
             + "LEFT JOIN (" + opportunitySqlString + ") opportunities "
@@ -96,20 +97,5 @@ public class StatisticsController {
       query.setParameter("employer_status", employerStatus.toString());
     }
     return ResponseEntity.ok(query.getResultList());
-  }
-
-  private String[] extractDatePatternAndInterval(String groupBy) {
-    switch (groupBy) {
-      case "day":
-        return new String[]{"YYYY-MM-DD", "1 day"};
-      case "week":
-        return new String[]{"IYYY-IW", "1 week"};
-      case "month":
-        return new String[]{"YYYY-MM", "1 month"};
-      case "year":
-        return new String[]{"YYYY", "1 year"};
-      default:
-        throw new IllegalArgumentException("Unknown group-by value : " + groupBy);
-    }
   }
 }
