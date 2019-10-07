@@ -54,10 +54,11 @@ public class TalentStatisticsController extends AbstractStatisticsController {
 
   @GetMapping("opportunities/statistics")
   @ResponseBody
-  public ResponseEntity getOpportunityStatistics(
+  public ResponseEntity getOpportunitiesStatistics(
       @RequestParam("created-at-after") String createdAtAfter,
       @RequestParam("created-at-before") String createdAtBefore,
       @RequestParam("group-by") String groupBy,
+      @RequestParam(name = "event-field", defaultValue = "created_at") String eventField,
       @RequestParam(name = "talent-status", required = false) OpportunityStatus talentStatus,
       @RequestParam(name = "employer-status", required = false) OpportunityStatus employerStatus
   ) {
@@ -65,12 +66,7 @@ public class TalentStatisticsController extends AbstractStatisticsController {
     String datePattern = datePatternAndInterval[0];
     String interval = datePatternAndInterval[1];
 
-    String dateField = "created_at";
-    dateField = Objects.nonNull(talentStatus) && !OpportunityStatus.PENDING.equals(talentStatus)
-        ? "talent_responded_at" : dateField;
-    dateField = Objects.nonNull(employerStatus) && !OpportunityStatus.PENDING.equals(employerStatus)
-        ? "employer_responded_at" : dateField;
-    String opportunitySqlString = "SELECT to_char(" + dateField
+    String opportunitySqlString = "SELECT to_char(" + eventField
         + ", :date_pattern) AS dtime, count(1) AS opportunities FROM Opportunity ";
     if (Objects.nonNull(talentStatus)) {
       opportunitySqlString += opportunitySqlString.contains(" WHERE ") ? "" : "WHERE ";
