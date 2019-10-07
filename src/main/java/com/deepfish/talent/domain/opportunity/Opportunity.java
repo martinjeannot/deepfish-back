@@ -82,6 +82,8 @@ public class Opportunity implements StateRetaining {
   @Enumerated(EnumType.STRING)
   private OpportunityStatus talentStatus = OpportunityStatus.PENDING;
 
+  private LocalDateTime seenByTalentAt;
+
   private LocalDateTime talentRespondedAt;
 
   @NotNull

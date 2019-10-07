@@ -13,13 +13,7 @@ public interface TalentOpportunityProjection {
 
   UUID getId();
 
-  OpportunityStatus getTalentStatus();
-
-  OpportunityStatus getEmployerStatus();
-
   Requirement getRequirement();
-
-  String getPitch();
 
   @Value("#{target.getRequirement().getCompany()}")
   DefaultCompanyProjection getCompany();
@@ -29,4 +23,12 @@ public interface TalentOpportunityProjection {
 
   @Value("#{target.getRequirement().getLocation()}")
   String getLocation();
+
+  String getPitch();
+
+  OpportunityStatus getTalentStatus();
+
+  LocalDateTime getSeenByTalentAt();
+
+  OpportunityStatus getEmployerStatus();
 }

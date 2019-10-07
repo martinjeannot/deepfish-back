@@ -22,4 +22,15 @@ BEGIN
       ADD trial_period_termination_reason TEXT;
   END IF;
 
+  -- Add seen by talent at to opportunity
+
+  IF NOT EXISTS(SELECT 1
+                FROM information_schema.columns
+                WHERE
+                  table_name = 'opportunity' AND column_name = 'seen_by_talent_at')
+  THEN
+    ALTER TABLE opportunity
+      ADD seen_by_talent_at TIMESTAMP;
+  END IF;
+
 END$$;
