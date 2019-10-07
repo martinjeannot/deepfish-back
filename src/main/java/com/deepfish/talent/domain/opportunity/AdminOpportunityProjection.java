@@ -21,7 +21,9 @@ public interface AdminOpportunityProjection extends AdminItemOpportunityProjecti
 
   LocalDateTime getForwardedAt();
 
-  LocalDateTime getEmployerRespondedAt();
+  LocalDateTime getEmployerAcceptedAt();
+
+  LocalDateTime getEmployerDeclinedAt();
 
   LocalDate getTalentStartedOn();
 
