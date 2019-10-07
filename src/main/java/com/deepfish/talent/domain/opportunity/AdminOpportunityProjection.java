@@ -15,6 +15,8 @@ public interface AdminOpportunityProjection extends AdminItemOpportunityProjecti
 
   String getPitch();
 
+  LocalDateTime getSeenByTalentAt();
+
   LocalDateTime getTalentRespondedAt();
 
   LocalDateTime getForwardedAt();
