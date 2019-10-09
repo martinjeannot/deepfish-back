@@ -501,14 +501,23 @@ public class PebbleMailFactory implements MailFactory {
       .getTemplate("mails/admin/newInterviewRequest.html");
 
   @Override
-  public Email getAdminNewInterviewRequestMail(Interview interview) {
-    String subject = "[Interview request] " + interview.getEmployer().getCompany().getName() + " - "
-        + interview.getTalent().getFirstName() + " "
-        + interview.getTalent().getLastName();
+  public Email getAdminNewInterviewRequestMail(Iterable<Interview> interviews) {
+    Interview referenceInterview = interviews.iterator().next();
+    String subject =
+        "[Interview request] " + referenceInterview.getEmployer().getCompany().getName() + " - "
+            + referenceInterview.getTalent().getFirstName() + " "
+            + referenceInterview.getTalent().getLastName();
     Map<String, Object> context = new HashMap<>();
     context.put("title", subject);
-    context.put("company", interview.getEmployer().getCompany());
-    context.put("talent", interview.getTalent());
+    context.put("company", referenceInterview.getEmployer().getCompany());
+    context.put("talent", referenceInterview.getTalent());
+    context.put("interview", referenceInterview);
+    context.put(
+        "duration",
+        ChronoUnit.MINUTES.between(referenceInterview.getStartAt(), referenceInterview.getEndAt()));
+    context.put("interviews", interviews);
+    context.put("dateFormatter", DATE_FORMATTER);
+    context.put("timeFormatter", TIME_FORMATTER);
     Writer writer = new StringWriter();
     try {
       adminNewInterviewRequestMailTemplate.evaluate(writer, context);
