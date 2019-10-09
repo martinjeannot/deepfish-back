@@ -36,6 +36,13 @@ public interface QueryableTalentRepository extends
       Expression expression = expressionParser.parseExpression(searchQuery);
       return traverseAST(((SpelExpression) expression).getAST(), talent);
     });
+    // Requirements
+    bindings.bind(talent.requirementIdsNotIn).first((path, requirementIds) -> {
+      BooleanBuilder predicate = new BooleanBuilder();
+      requirementIds.forEach(requirementId -> predicate
+          .andNot(talent.opportunities.any().requirement.id.eq(requirementId)));
+      return predicate;
+    });
     // Years of experience
     bindings.bind(talent.minYearsOfExperience).first(
         ((path, minYearsOfExperience) -> talent.yearsOfExperience.goe(minYearsOfExperience)));
