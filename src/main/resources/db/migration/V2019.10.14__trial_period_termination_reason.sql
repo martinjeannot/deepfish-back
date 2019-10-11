@@ -11,6 +11,17 @@ BEGIN
     VALUES ('6bb4d843-5ce7-4969-afcf-20129d48bb1e', 'Sourcing de candidats', 4, TRUE);
   END IF;
 
+  -- Add deal closed on
+
+  IF NOT EXISTS(SELECT 1
+                FROM information_schema.columns
+                WHERE
+                  table_name = 'opportunity' AND column_name = 'deal_closed_on')
+  THEN
+    ALTER TABLE opportunity
+      ADD deal_closed_on DATE;
+  END IF;
+
   -- Add trial period termination reason
 
   IF NOT EXISTS(SELECT 1

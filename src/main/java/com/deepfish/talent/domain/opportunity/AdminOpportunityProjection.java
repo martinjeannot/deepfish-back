@@ -25,6 +25,8 @@ public interface AdminOpportunityProjection extends AdminItemOpportunityProjecti
 
   LocalDateTime getEmployerDeclinedAt();
 
+  LocalDate getDealClosedOn();
+
   LocalDate getTalentStartedOn();
 
   Integer getBaseSalary();

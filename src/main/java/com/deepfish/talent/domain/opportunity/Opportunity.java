@@ -111,6 +111,8 @@ public class Opportunity implements StateRetaining {
   @Column(columnDefinition = "text")
   private String employerDeclinationReason = "";
 
+  private LocalDate dealClosedOn;
+
   private LocalDate talentStartedOn;
 
   private Integer baseSalary;
