@@ -82,6 +82,8 @@ public class Opportunity implements StateRetaining {
   @Enumerated(EnumType.STRING)
   private OpportunityStatus talentStatus = OpportunityStatus.PENDING;
 
+  private LocalDateTime seenByTalentAt;
+
   private LocalDateTime talentRespondedAt;
 
   @NotNull
@@ -109,11 +111,15 @@ public class Opportunity implements StateRetaining {
   @Column(columnDefinition = "text")
   private String employerDeclinationReason = "";
 
+  private LocalDate dealClosedOn;
+
   private LocalDate talentStartedOn;
 
   private Integer baseSalary;
 
   private LocalDate trialPeriodTerminatedOn; // used to compute trial-to-hire rate
+
+  private String trialPeriodTerminationReason;
 
   // ===============================================================================================
 

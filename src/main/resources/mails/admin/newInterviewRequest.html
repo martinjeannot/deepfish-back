@@ -8,8 +8,27 @@
 </head>
 <body>
 <p>
-  {{ company.name }} vient de proposer 3 créneaux d'entretien à
-  {{ talent.firstName }} {{ talent.lastName }}
+  New interview request
+</p>
+
+<p>
+  Company : {{ company.name }}<br/>
+  Talent : {{ talent.firstName }} {{ talent.lastName }}<br/>
+  Format : {{ interview.format }}<br/>
+  Duration (min) : {{ duration }}<br/>
+  Location : {{ interview.location }}<br/>
+</p>
+
+<p>
+  Interview slots :
+<ul>
+  {% for interview in interviews %}
+  <li>
+    Le {{ interview.startAt.format(dateFormatter) }}
+    à {{ interview.startAt.format(timeFormatter) }}
+  </li>
+  {% endfor %}
+</ul>
 </p>
 </body>
 </html>

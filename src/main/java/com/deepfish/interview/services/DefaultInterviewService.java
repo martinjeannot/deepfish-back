@@ -60,7 +60,7 @@ public class DefaultInterviewService implements InterviewService {
 
     // send notifications
     mailService.send(mailFactory.getTalentInterviewRequestMail(interviews));
-    mailService.send(mailFactory.getAdminNewInterviewRequestMail(interviews.iterator().next()));
+    mailService.send(mailFactory.getAdminNewInterviewRequestMail(interviews));
 
     return interviews;
   }

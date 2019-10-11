@@ -15,15 +15,23 @@ public interface AdminOpportunityProjection extends AdminItemOpportunityProjecti
 
   String getPitch();
 
+  LocalDateTime getSeenByTalentAt();
+
   LocalDateTime getTalentRespondedAt();
 
   LocalDateTime getForwardedAt();
 
-  LocalDateTime getEmployerRespondedAt();
+  LocalDateTime getEmployerAcceptedAt();
+
+  LocalDateTime getEmployerDeclinedAt();
+
+  LocalDate getDealClosedOn();
 
   LocalDate getTalentStartedOn();
 
   Integer getBaseSalary();
 
   LocalDate getTrialPeriodTerminatedOn();
+
+  String getTrialPeriodTerminationReason();
 }

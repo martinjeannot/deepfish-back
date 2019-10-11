@@ -83,7 +83,7 @@ public interface MailFactory {
 
   Email getAdminTalentPendingOpportunitiesFollowUpCallMail(Collection<String[]> talents);
 
-  Email getAdminNewInterviewRequestMail(Interview interview);
+  Email getAdminNewInterviewRequestMail(Iterable<Interview> interviews);
 
   Email getAdminInterviewConfirmedMail(Interview interview);
 

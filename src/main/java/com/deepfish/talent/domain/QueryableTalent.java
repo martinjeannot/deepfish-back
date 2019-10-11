@@ -6,6 +6,7 @@ import com.deepfish.talent.domain.conditions.TaskType;
 import com.querydsl.core.annotations.QueryEntity;
 import java.math.BigDecimal;
 import java.util.Collection;
+import java.util.UUID;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -19,6 +20,9 @@ public class QueryableTalent extends AbstractTalent {
 
   @Transient
   private String searchQuery;
+
+  @Transient
+  private Collection<UUID> requirementIdsNotIn;
 
   @Transient
   private Collection<CompanyMaturityLevel> companyMaturityLevelsNotIn;
