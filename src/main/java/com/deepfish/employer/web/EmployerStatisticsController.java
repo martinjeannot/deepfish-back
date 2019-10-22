@@ -20,8 +20,8 @@ public class EmployerStatisticsController extends AbstractStatisticsController {
 
   @GetMapping("requirements/statistics")
   public ResponseEntity getRequirementsStatistics(
-      @RequestParam("start-date") String createdAtAfter,
-      @RequestParam("end-date") String createdAtBefore,
+      @RequestParam("start-date") String startDate,
+      @RequestParam("end-date") String endDate,
       @RequestParam("group-by") String groupBy,
       @RequestParam(name = "event-field", defaultValue = "createdAt") String eventField
   ) {
@@ -39,8 +39,8 @@ public class EmployerStatisticsController extends AbstractStatisticsController {
             + "LEFT JOIN (" + requirementSqlString + ") requirements "
             + "USING (dtime) ORDER BY dtime");
     query.setParameter("date_pattern", datePattern);
-    query.setParameter("start_date", createdAtAfter);
-    query.setParameter("end_date", createdAtBefore);
+    query.setParameter("start_date", startDate);
+    query.setParameter("end_date", endDate);
     query.setParameter("time_interval", interval);
     return ResponseEntity.ok(query.getResultList());
   }
