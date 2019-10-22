@@ -1,5 +1,7 @@
 package com.deepfish.core.web;
 
+import com.google.common.base.CaseFormat;
+import java.lang.reflect.Field;
 import javax.persistence.EntityManager;
 
 public abstract class AbstractStatisticsController {
@@ -10,6 +12,15 @@ public abstract class AbstractStatisticsController {
       EntityManager entityManager
   ) {
     this.entityManager = entityManager;
+  }
+
+  protected String checkEventFieldName(Class clazz, String eventFieldName) {
+    for (Field field : clazz.getDeclaredFields()) {
+      if (field.getName().equals(eventFieldName)) {
+        return CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, field.getName());
+      }
+    }
+    throw new IllegalArgumentException("Cannot find field named : " + eventFieldName);
   }
 
   protected String[] extractDatePatternAndInterval(String groupBy) {
