@@ -1,6 +1,8 @@
 package com.deepfish.interview.web;
 
 import com.deepfish.core.web.AbstractStatisticsController;
+import com.deepfish.interview.domain.Interview;
+import com.deepfish.interview.domain.InterviewFormat;
 import com.deepfish.interview.domain.InterviewStatus;
 import java.util.Objects;
 import javax.persistence.EntityManager;
@@ -21,19 +23,29 @@ public class InterviewStatisticsController extends AbstractStatisticsController 
 
   @GetMapping("interviews/statistics")
   public ResponseEntity getInterviewsStatistics(
-      @RequestParam("created-at-after") String createdAtAfter,
-      @RequestParam("created-at-before") String createdAtBefore,
+      @RequestParam("start-date") String startDate,
+      @RequestParam("end-date") String endDate,
       @RequestParam("group-by") String groupBy,
-      @RequestParam(name = "status", required = false) InterviewStatus status
+      @RequestParam(name = "event-field", defaultValue = "startDateTime") String eventField,
+      @RequestParam(name = "status", required = false) InterviewStatus status,
+      @RequestParam(name = "format", required = false) InterviewFormat format
   ) {
     String[] datePatternAndInterval = extractDatePatternAndInterval(groupBy);
     String datePattern = datePatternAndInterval[0];
     String interval = datePatternAndInterval[1];
 
-    String interviewSqlString = "SELECT to_char(start_date_time, :date_pattern) AS dtime, count(1) AS interviews FROM Interview ";
+    String interviewSqlString = "SELECT to_char("
+        + checkEventFieldName(Interview.class, eventField)
+        + ", :date_pattern) AS dtime, count(1) AS interviews FROM Interview ";
+    // Interview status
     if (Objects.nonNull(status)) {
       interviewSqlString += interviewSqlString.contains(" WHERE ") ? "" : "WHERE ";
       interviewSqlString += "status = :status ";
+    }
+    // Interview format
+    if (Objects.nonNull(format)) {
+      interviewSqlString += interviewSqlString.contains(" WHERE ") ? "AND " : "WHERE ";
+      interviewSqlString += "format = :format ";
     }
     interviewSqlString += "GROUP BY dtime";
     Query query = getEntityManager().createNativeQuery(
@@ -42,11 +54,14 @@ public class InterviewStatisticsController extends AbstractStatisticsController 
             + "LEFT JOIN (" + interviewSqlString + ") interviews "
             + "USING (dtime) ORDER BY dtime");
     query.setParameter("date_pattern", datePattern);
-    query.setParameter("start_date", createdAtAfter);
-    query.setParameter("end_date", createdAtBefore);
+    query.setParameter("start_date", startDate);
+    query.setParameter("end_date", endDate);
     query.setParameter("time_interval", interval);
     if (Objects.nonNull(status)) {
       query.setParameter("status", status.toString());
+    }
+    if (Objects.nonNull(format)) {
+      query.setParameter("format", format.toString());
     }
     return ResponseEntity.ok(query.getResultList());
   }

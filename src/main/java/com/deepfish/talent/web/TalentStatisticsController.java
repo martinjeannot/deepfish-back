@@ -1,6 +1,8 @@
 package com.deepfish.talent.web;
 
 import com.deepfish.core.web.AbstractStatisticsController;
+import com.deepfish.talent.domain.Talent;
+import com.deepfish.talent.domain.opportunity.Opportunity;
 import com.deepfish.talent.domain.opportunity.OpportunityStatus;
 import java.util.List;
 import java.util.Objects;
@@ -24,16 +26,19 @@ public class TalentStatisticsController extends AbstractStatisticsController {
   @GetMapping("talents/statistics")
   @ResponseBody
   public ResponseEntity getTalentAcquisitionStatistics(
-      @RequestParam("created-at-after") String createdAtAfter,
-      @RequestParam("created-at-before") String createdAtBefore,
+      @RequestParam("start-date") String startDate,
+      @RequestParam("end-date") String endDate,
       @RequestParam("group-by") String groupBy,
+      @RequestParam(name = "event-field", defaultValue = "createdAt") String eventField,
       @RequestParam(name = "qualification-ranking", required = false) List<String> qualificationRankings
   ) {
     String[] datePatternAndInterval = extractDatePatternAndInterval(groupBy);
     String datePattern = datePatternAndInterval[0];
     String interval = datePatternAndInterval[1];
 
-    String talentSqlString = "SELECT to_char(created_at, :date_pattern) AS dtime, count(1) AS talents FROM Talent ";
+    String talentSqlString = "SELECT to_char("
+        + checkEventFieldName(Talent.class, eventField)
+        + ", :date_pattern) AS dtime, count(1) AS talents FROM Talent ";
     if (Objects.nonNull(qualificationRankings) && !qualificationRankings.isEmpty()) {
       talentSqlString +=
           "JOIN Qualification ON Qualification.talent_id = Talent.id WHERE Qualification.ranking in ("
@@ -46,19 +51,19 @@ public class TalentStatisticsController extends AbstractStatisticsController {
             + "LEFT JOIN (" + talentSqlString + ") talents "
             + "USING (dtime) ORDER BY dtime");
     query.setParameter("date_pattern", datePattern);
-    query.setParameter("start_date", createdAtAfter);
-    query.setParameter("end_date", createdAtBefore);
+    query.setParameter("start_date", startDate);
+    query.setParameter("end_date", endDate);
     query.setParameter("time_interval", interval);
     return ResponseEntity.ok(query.getResultList());
   }
 
   @GetMapping("opportunities/statistics")
   @ResponseBody
-  public ResponseEntity getOpportunitiesStatistics(
-      @RequestParam("created-at-after") String createdAtAfter,
-      @RequestParam("created-at-before") String createdAtBefore,
+  public ResponseEntity getOpportunityStatistics(
+      @RequestParam("start-date") String startDate,
+      @RequestParam("end-date") String endDate,
       @RequestParam("group-by") String groupBy,
-      @RequestParam(name = "event-field", defaultValue = "created_at") String eventField,
+      @RequestParam(name = "event-field", defaultValue = "createdAt") String eventField,
       @RequestParam(name = "talent-status", required = false) OpportunityStatus talentStatus,
       @RequestParam(name = "employer-status", required = false) OpportunityStatus employerStatus
   ) {
@@ -66,7 +71,8 @@ public class TalentStatisticsController extends AbstractStatisticsController {
     String datePattern = datePatternAndInterval[0];
     String interval = datePatternAndInterval[1];
 
-    String opportunitySqlString = "SELECT to_char(" + eventField
+    String opportunitySqlString = "SELECT to_char("
+        + checkEventFieldName(Opportunity.class, eventField)
         + ", :date_pattern) AS dtime, count(1) AS opportunities FROM Opportunity ";
     if (Objects.nonNull(talentStatus)) {
       opportunitySqlString += opportunitySqlString.contains(" WHERE ") ? "" : "WHERE ";
@@ -83,8 +89,8 @@ public class TalentStatisticsController extends AbstractStatisticsController {
             + "LEFT JOIN (" + opportunitySqlString + ") opportunities "
             + "USING (dtime) ORDER BY dtime");
     query.setParameter("date_pattern", datePattern);
-    query.setParameter("start_date", createdAtAfter);
-    query.setParameter("end_date", createdAtBefore);
+    query.setParameter("start_date", startDate);
+    query.setParameter("end_date", endDate);
     query.setParameter("time_interval", interval);
     if (Objects.nonNull(talentStatus)) {
       query.setParameter("talent_status", talentStatus.toString());
