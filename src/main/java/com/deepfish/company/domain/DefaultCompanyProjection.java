@@ -1,6 +1,7 @@
 package com.deepfish.company.domain;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.rest.core.config.Projection;
@@ -26,6 +27,8 @@ public interface DefaultCompanyProjection {
   String getSize();
 
   String getHeadquartersAddress();
+
+  Map<String, Object> getHeadquartersGeocode();
 
   String getFoundedIn();
 

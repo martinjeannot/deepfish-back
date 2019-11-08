@@ -9,7 +9,9 @@ import com.deepfish.talent.domain.Talent;
 import com.deepfish.talent.domain.opportunity.Opportunity;
 import com.mitchellbosecke.pebble.PebbleEngine;
 import com.mitchellbosecke.pebble.template.PebbleTemplate;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.time.LocalDate;
@@ -997,6 +999,38 @@ public class PebbleMailFactory implements MailFactory {
         .startingBlank()
         .to("bruno@deepfish.co")
         .cc(DAVID_EMAIL)
+        .withSubject(subject)
+        .withHTMLText(writer.toString())
+        .buildEmail();
+  }
+
+  private final PebbleTemplate adminErrorMailTemplate = pebbleEngine
+      .getTemplate("mails/admin/error.html");
+
+  @Override
+  public Email getAdminErrorMail(Exception exception) {
+    String subject = "[ERROR] " + exception.getClass().getName();
+    // dump stack trace to output stream
+    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+    PrintStream printStream = new PrintStream(byteArrayOutputStream);
+    exception.printStackTrace(printStream);
+    printStream.close();
+
+    Map<String, Object> context = new HashMap<>();
+    context.put("title", subject);
+    context.put("message", exception.toString());
+    context.put("stackTraceOutputStream", byteArrayOutputStream);
+    Writer writer = new StringWriter();
+    try {
+      adminErrorMailTemplate.evaluate(writer, context);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
+    return EmailBuilder
+        .startingBlank()
+        .from(DAVID_EMAIL)
+        .to(MARTIN_EMAIL)
         .withSubject(subject)
         .withHTMLText(writer.toString())
         .buildEmail();

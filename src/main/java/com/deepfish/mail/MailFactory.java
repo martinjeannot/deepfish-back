@@ -87,5 +87,7 @@ public interface MailFactory {
 
   Email getAdminInterviewConfirmedMail(Interview interview);
 
+  Email getAdminErrorMail(Exception exception);
+
   Email getAdminBatchWarningMail(String message);
 }

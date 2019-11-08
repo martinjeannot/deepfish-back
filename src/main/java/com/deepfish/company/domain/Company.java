@@ -5,6 +5,7 @@ import com.querydsl.core.annotations.QueryEntity;
 import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import javax.persistence.Column;
@@ -16,6 +17,7 @@ import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.NotBlank;
 
 @Entity
@@ -51,6 +53,13 @@ public class Company {
   private String size;
 
   private String headquartersAddress;
+
+  /**
+   * Headquarters address geocoding result
+   */
+  @Type(type = "jsonb")
+  @Column(columnDefinition = "jsonb")
+  private Map<String, Object> headquartersGeocode;
 
   private String foundedIn;
 
