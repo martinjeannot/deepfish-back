@@ -8,6 +8,7 @@ import com.google.maps.errors.ApiException;
 import com.google.maps.model.GeocodingResult;
 import java.io.IOException;
 import java.util.Map;
+import java.util.Objects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,6 +36,9 @@ public class GoogleMapsGeocodingService implements GeocodingService {
 
   @Override
   public <T> T geocode(String address, Class<T> returnType) {
+    if (Objects.isNull(address) || address.isEmpty()) {
+      throw new IllegalArgumentException("Cannot geocode null address");
+    }
     GeocodingResult[] results;
     try {
       results = GeocodingApi.geocode(geoApiContext, address).await();

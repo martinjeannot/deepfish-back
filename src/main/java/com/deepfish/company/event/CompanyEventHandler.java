@@ -4,6 +4,7 @@ import com.deepfish.company.domain.Company;
 import com.deepfish.geo.geocoding.GeocodingService;
 import com.deepfish.mail.MailFactory;
 import com.deepfish.mail.MailService;
+import com.google.common.base.Strings;
 import java.util.Map;
 import java.util.Objects;
 import org.slf4j.Logger;
@@ -36,7 +37,8 @@ public class CompanyEventHandler {
 
   @HandleBeforeSave
   public void onBeforeSave(Company company) {
-    if (Objects.isNull(company.getHeadquartersGeocode())) {
+    if (Objects.isNull(company.getHeadquartersGeocode())
+        && !Strings.isNullOrEmpty(company.getHeadquartersAddress())) {
       try {
         Map<String, Object> headquartersGeocode = geocodingService
             .geocode(company.getHeadquartersAddress(), Map.class);
