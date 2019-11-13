@@ -47,6 +47,10 @@ public class Qualification {
 
   @NotNull
   @Column(columnDefinition = "text")
+  private String notes = "";
+
+  @NotNull
+  @Column(columnDefinition = "text")
   private String recommendation = "";
 
   private boolean interviewScheduled = false;
