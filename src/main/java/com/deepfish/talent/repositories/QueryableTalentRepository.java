@@ -165,7 +165,7 @@ public interface QueryableTalentRepository extends
         .or(talent.lastName.containsIgnoreCase(value)) // to find unscraped profiles
         .or(talent.fullProfileText.containsIgnoreCase(value))
         .or(talent.selfPitch.containsIgnoreCase(value))
-        .or(talent.notes.containsIgnoreCase(value))
+        .or(talent.qualification.notes.containsIgnoreCase(value))
         .or(talent.qualification.recommendation.containsIgnoreCase(value));
   }
 }

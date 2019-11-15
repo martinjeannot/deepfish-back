@@ -57,6 +57,12 @@ server:
 # SECURITY PROPERTIES
 # ----------------------------------------
 
+# GOOGLE
+google:
+  apis:
+    maps:
+      api-key: AIzaSyB2zSE15HB9yiBQkiQ7sBr-z8yBrkuq3og
+
 # LINKEDIN
 linkedin:
   client:

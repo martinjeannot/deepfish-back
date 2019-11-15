@@ -111,11 +111,15 @@ public class Opportunity implements StateRetaining {
   @Column(columnDefinition = "text")
   private String employerDeclinationReason = "";
 
+  private LocalDate offerMadeOn;
+
+  private Float baseSalaryOffer;
+
   private LocalDate dealClosedOn;
 
   private LocalDate talentStartedOn;
 
-  private Integer baseSalary;
+  private Float baseSalary;
 
   private LocalDate trialPeriodTerminatedOn; // used to compute trial-to-hire rate
 

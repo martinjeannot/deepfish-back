@@ -146,5 +146,5 @@ public class AbstractTalent extends AbstractUser {
 
   @NotNull
   @Column(columnDefinition = "text")
-  private String notes = "";
+  private String followUp = "";
 }

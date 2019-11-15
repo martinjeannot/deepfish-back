@@ -61,6 +61,12 @@ calendly:
 # SECURITY PROPERTIES
 # ----------------------------------------
 
+# GOOGLE
+google:
+  apis:
+    maps:
+      api-key: AIzaSyB3iQPycHTtWt6Zzsjg_z2XgGUK9GmjTx4
+
 # LINKEDIN
 linkedin:
   client:
