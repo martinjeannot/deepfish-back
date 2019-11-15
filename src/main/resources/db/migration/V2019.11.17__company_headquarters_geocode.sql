@@ -32,4 +32,17 @@ BEGIN
       RENAME notes TO follow_up;
   END IF;
 
+  -- [Talent/Opportunity] offer
+
+  IF NOT EXISTS(SELECT 1
+                FROM information_schema.columns
+                WHERE
+                  table_name = 'opportunity' AND column_name = 'offer_made_on')
+  THEN
+    ALTER TABLE opportunity
+      ADD offer_made_on DATE,
+      ADD base_salary_offer REAL,
+      ALTER COLUMN base_salary TYPE REAL;
+  END IF;
+
 END$$;
