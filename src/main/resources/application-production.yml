@@ -61,7 +61,7 @@ server:
 google:
   apis:
     maps:
-      api-key: AIzaSyB3iQPycHTtWt6Zzsjg_z2XgGUK9GmjTx4
+      api-key: AIzaSyBba2cErsaT5k8siR5G8bmf91hywX8R3B0
 
 # LINKEDIN
 linkedin:
