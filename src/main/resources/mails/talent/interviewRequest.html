@@ -16,14 +16,13 @@
 </p>
 
 <p>
-  Choisis un de ces 3 créneaux pour avancer avec l'entreprise :
+  Choisis un de ces 3 créneaux <a href="https://app.deepfish.co/#/sign-in">sur la plateforme</a>
+  pour avancer avec l'entreprise :
 <ul>
   {% for interview in interviews %}
   <li>
-    <a href="https://app.deepfish.co/#/sign-in">
-      Le {{ interview.startAt.format(dateFormatter) }}
-      à {{ interview.startAt.format(timeFormatter) }}
-    </a>
+    Le {{ interview.startAt.format(dateFormatter) }}
+    à {{ interview.startAt.format(timeFormatter) }}
   </li>
   {% endfor %}
 </ul>
