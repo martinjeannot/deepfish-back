@@ -1,5 +1,6 @@
 package com.deepfish.user.domain;
 
+import com.deepfish.employer.domain.Employer;
 import com.deepfish.talent.domain.Talent;
 import java.util.HashSet;
 import java.util.Set;
@@ -17,11 +18,15 @@ import lombok.ToString;
     @UniqueConstraint(name = "UK_users__username", columnNames = {"username"}),
 })
 @Data
-@ToString(callSuper = true, exclude = {"talents"})
-@EqualsAndHashCode(callSuper = true, exclude = {"talents"})
+@ToString(callSuper = true, exclude = {"talents", "employers"})
+@EqualsAndHashCode(callSuper = true, exclude = {"talents", "employers"})
 public class User extends AbstractUser {
 
   @NotNull
   @OneToMany(mappedBy = "talentAdvocate")
   private Set<Talent> talents = new HashSet<>();
+
+  @NotNull
+  @OneToMany(mappedBy = "clientExecutive")
+  private Set<Employer> employers = new HashSet<>();
 }

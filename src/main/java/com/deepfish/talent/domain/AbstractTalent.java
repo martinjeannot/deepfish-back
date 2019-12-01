@@ -157,7 +157,7 @@ public class AbstractTalent extends AbstractUser {
 
   /**
    * Needed to prevent fetching a {@literal null} entity resulting in a 404 error from SDR (which
-   * needs to be catch frontend-side)
+   * needs to be caught frontend-side)
    *
    * @return {@code true} if the talent has been assigned a talent advocate, {@code false} otherwise
    */
