@@ -27,4 +27,19 @@ BEGIN
       ADD CONSTRAINT FK_employer__users__client_executive_id FOREIGN KEY (client_executive_id) REFERENCES users;
   END IF;
 
+  -- [Company] add status
+
+  IF NOT EXISTS(SELECT 1
+                FROM information_schema.columns
+                WHERE
+                  table_name = 'company' AND column_name = 'status')
+  THEN
+    ALTER TABLE company
+      ADD status VARCHAR(255);
+    UPDATE company
+    SET status = 'PENDING';
+    ALTER TABLE company
+      ALTER COLUMN status SET NOT NULL;
+  END IF;
+
 END$$;
