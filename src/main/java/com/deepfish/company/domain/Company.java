@@ -43,6 +43,8 @@ public class Company {
   @Enumerated(EnumType.STRING)
   private CompanyStatus status = CompanyStatus.PENDING;
 
+  private LocalDateTime validatedAt;
+
   @NotNull
   @OneToMany(mappedBy = "company")
   private Set<Employer> employers = new HashSet<>();

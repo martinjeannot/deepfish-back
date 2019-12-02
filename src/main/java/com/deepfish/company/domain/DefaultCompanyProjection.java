@@ -17,6 +17,8 @@ public interface DefaultCompanyProjection {
 
   CompanyStatus getStatus();
 
+  LocalDateTime getValidatedAt();
+
   String getDescription();
 
   String getLogoURI();

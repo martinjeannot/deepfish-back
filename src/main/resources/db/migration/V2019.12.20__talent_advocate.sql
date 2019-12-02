@@ -35,7 +35,8 @@ BEGIN
                   table_name = 'company' AND column_name = 'status')
   THEN
     ALTER TABLE company
-      ADD status VARCHAR(255);
+      ADD status VARCHAR(255),
+      ADD validated_at TIMESTAMP;
     UPDATE company
     SET status = 'PENDING';
     ALTER TABLE company
