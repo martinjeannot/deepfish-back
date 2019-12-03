@@ -140,6 +140,10 @@ public class AbstractTalent extends AbstractUser {
 
   private boolean active;
 
+  private boolean online;
+
+  private LocalDateTime onlinedAt;
+
   private LocalDate reactivatedOn;
 
   @Enumerated(EnumType.STRING)
