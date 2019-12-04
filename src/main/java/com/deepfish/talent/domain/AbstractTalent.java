@@ -144,6 +144,10 @@ public class AbstractTalent extends AbstractUser {
 
   private LocalDateTime onlinedAt;
 
+  @NotNull
+  @Enumerated(EnumType.STRING)
+  private JobFunction jobFunction = JobFunction.SALES;
+
   private LocalDate reactivatedOn;
 
   @Enumerated(EnumType.STRING)
