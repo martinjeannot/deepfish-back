@@ -1,6 +1,7 @@
 package com.deepfish.employer.domain;
 
 import com.deepfish.company.domain.Company;
+import com.deepfish.user.domain.DefaultUserProjection;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.UUID;
@@ -27,4 +28,6 @@ public interface DefaultEmployerProjection {
   LocalDateTime getLastSignedInAt();
 
   Company getCompany();
+
+  DefaultUserProjection getClientExecutive();
 }
