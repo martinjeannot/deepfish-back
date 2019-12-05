@@ -2,6 +2,7 @@ package com.deepfish.talent.repositories;
 
 import com.deepfish.talent.domain.EmployerQueryableTalent;
 import com.deepfish.talent.domain.QEmployerQueryableTalent;
+import com.querydsl.core.BooleanBuilder;
 import java.util.UUID;
 import org.springframework.data.querydsl.QueryDslPredicateExecutor;
 import org.springframework.data.querydsl.binding.QuerydslBinderCustomizer;
@@ -24,13 +25,20 @@ public interface EmployerQueryableTalentRepository extends
   ) {
     // Experience
     bindings.bind(talent.minExperience)
-        .first((path, value) -> talent.yearsOfExperience.goe(value));
+        .first((path, minExperience) -> talent.yearsOfExperience.goe(minExperience));
     bindings.bind(talent.maxExperience)
-        .first((path, value) -> talent.yearsOfExperience.loe(value));
+        .first((path, maxExperience) -> talent.yearsOfExperience.loe(maxExperience));
     // Base salary
     bindings.bind(talent.minBaseSalary)
-        .first((path, value) -> talent.conditions.fixedSalary.goe(value));
+        .first((path, minBaseSalary) -> talent.conditions.fixedSalary.goe(minBaseSalary));
     bindings.bind(talent.maxBaseSalary)
-        .first((path, value) -> talent.conditions.fixedSalary.loe(value));
+        .first((path, maxBaseSalary) -> talent.conditions.fixedSalary.loe(maxBaseSalary));
+    // Fixed Locations
+    bindings.bind(talent.conditions.fixedLocations)
+        .first((path, fixedLocations) -> {
+          BooleanBuilder predicate = new BooleanBuilder();
+          fixedLocations.forEach(fixedLocation -> predicate.or(path.contains(fixedLocation)));
+          return predicate;
+        });
   }
 }
