@@ -29,4 +29,8 @@ public class User extends AbstractUser {
   @NotNull
   @OneToMany(mappedBy = "clientExecutive")
   private Set<Employer> employers = new HashSet<>();
+
+  public String getProfilePictureUri() {
+    return null; // TODO
+  }
 }

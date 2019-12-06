@@ -17,4 +17,7 @@ public interface DefaultUserProjection {
 
   @Value("#{target.username}")
   String getEmail();
+
+  @Value("#{target.profilePictureUri != null ? @staticResourceResolver.resolve(target.profilePictureUri).toString() : null}")
+  String getProfilePictureUrl();
 }
