@@ -42,4 +42,21 @@ BEGIN
       ADD validated_at TIMESTAMP;
   END IF;
 
+  -- [Requirement]
+
+  IF NOT EXISTS(SELECT 1
+                FROM information_schema.columns
+                WHERE
+                  table_name = 'requirement' AND column_name = 'version')
+  THEN
+    ALTER TABLE requirement
+      ADD version INT4,
+      ADD job_function VARCHAR(255) NOT NULL DEFAULT 'SALES';
+    UPDATE requirement
+    SET version = 1;
+    ALTER TABLE requirement
+      ALTER COLUMN version SET NOT NULL,
+      ALTER COLUMN version SET DEFAULT 2;
+  END IF;
+
 END$$;

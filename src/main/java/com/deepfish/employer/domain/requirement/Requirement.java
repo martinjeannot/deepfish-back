@@ -1,6 +1,7 @@
 package com.deepfish.employer.domain.requirement;
 
 import com.deepfish.company.domain.Company;
+import com.deepfish.talent.domain.JobFunction;
 import com.deepfish.talent.domain.conditions.JobType;
 import com.querydsl.core.annotations.QueryEntity;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
@@ -38,6 +39,8 @@ public class Requirement {
   @Setter(AccessLevel.NONE)
   private UUID id;
 
+  private int version = 2;
+
   @NotNull
   @Setter(AccessLevel.NONE)
   private LocalDateTime createdAt = LocalDateTime.now(Clock.systemUTC());
@@ -52,6 +55,10 @@ public class Requirement {
 
   @NotBlank
   private String name;
+
+  @NotNull
+  @Enumerated(EnumType.STRING)
+  private JobFunction jobFunction = JobFunction.SALES;
 
   @NotNull
   @Enumerated(EnumType.STRING)
