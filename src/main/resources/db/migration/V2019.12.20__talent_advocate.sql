@@ -59,4 +59,23 @@ BEGIN
       ALTER COLUMN version SET DEFAULT 2;
   END IF;
 
+  -- [Opportunity]
+
+  IF NOT EXISTS(SELECT 1
+                FROM information_schema.columns
+                WHERE
+                  table_name = 'opportunity' AND column_name = 'version')
+  THEN
+    ALTER TABLE opportunity
+      ADD version INT4,
+      ADD name VARCHAR(255) NOT NULL DEFAULT '',
+      ADD base_salary_from REAL,
+      ADD base_salary_to REAL,
+      ADD employer_id UUID;
+    ALTER TABLE opportunity
+      ALTER COLUMN creator_id DROP NOT NULL;
+    ALTER TABLE opportunity
+      ADD CONSTRAINT FK_opportunity__employer__employer_id FOREIGN KEY (employer_id) REFERENCES employer;
+  END IF;
+
 END$$;
