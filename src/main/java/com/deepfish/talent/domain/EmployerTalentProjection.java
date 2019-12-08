@@ -34,5 +34,7 @@ public interface EmployerTalentProjection {
 
   EmployerQualificationProjection getQualification();
 
+  JobFunction getJobFunction();
+
   String getSelfPitch();
 }
