@@ -1,8 +1,8 @@
 package com.deepfish.talent.domain.opportunity;
 
 import com.deepfish.company.domain.DefaultCompanyProjection;
+import com.deepfish.employer.domain.TalentEmployerProjection;
 import com.deepfish.employer.domain.requirement.Requirement;
-import com.deepfish.talent.domain.conditions.JobType;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,16 +13,18 @@ public interface TalentOpportunityProjection {
 
   UUID getId();
 
+  TalentEmployerProjection getEmployer();
+
   Requirement getRequirement();
 
   @Value("#{target.getRequirement().getCompany()}")
   DefaultCompanyProjection getCompany();
 
-  @Value("#{target.getRequirement().getJobType()}")
-  JobType getJobType();
+  String getName();
 
-  @Value("#{target.getRequirement().getLocation()}")
-  String getLocation();
+  Float getBaseSalaryFrom();
+
+  Float getBaseSalaryTo();
 
   String getPitch();
 
