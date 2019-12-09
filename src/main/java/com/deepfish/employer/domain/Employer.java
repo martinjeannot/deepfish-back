@@ -3,6 +3,7 @@ package com.deepfish.employer.domain;
 import com.deepfish.company.domain.Company;
 import com.deepfish.user.domain.AbstractUser;
 import com.deepfish.user.domain.User;
+import com.querydsl.core.annotations.QueryEntity;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,6 +19,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 @Entity
+@QueryEntity
 @Table(uniqueConstraints = {
     @UniqueConstraint(name = "UK_employer__username", columnNames = {"username"}),
 })
