@@ -50,12 +50,9 @@ BEGIN
                   table_name = 'requirement' AND column_name = 'version')
   THEN
     ALTER TABLE requirement
-      ADD version INT4,
+      ADD version INT4 NOT NULL DEFAULT 1,
       ADD job_function VARCHAR(255) NOT NULL DEFAULT 'SALES';
-    UPDATE requirement
-    SET version = 1;
     ALTER TABLE requirement
-      ALTER COLUMN version SET NOT NULL,
       ALTER COLUMN version SET DEFAULT 2;
   END IF;
 
@@ -67,14 +64,14 @@ BEGIN
                   table_name = 'opportunity' AND column_name = 'version')
   THEN
     ALTER TABLE opportunity
-      ADD version INT4,
+      ADD version INT4 NOT NULL DEFAULT 1,
       ADD name VARCHAR(255) NOT NULL DEFAULT '',
       ADD base_salary_from REAL,
       ADD base_salary_to REAL,
-      ADD employer_id UUID;
-    ALTER TABLE opportunity
+      ADD employer_id UUID,
       ALTER COLUMN creator_id DROP NOT NULL;
     ALTER TABLE opportunity
+      ALTER COLUMN version SET DEFAULT 2,
       ADD CONSTRAINT FK_opportunity__employer__employer_id FOREIGN KEY (employer_id) REFERENCES employer;
   END IF;
 
