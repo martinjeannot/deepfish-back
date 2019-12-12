@@ -17,6 +17,23 @@ BEGIN
       ADD CONSTRAINT FK_talent__users__talent_advocate_id FOREIGN KEY (talent_advocate_id) REFERENCES users;
   END IF;
 
+
+  IF NOT EXISTS(SELECT 1
+                FROM information_schema.tables
+                WHERE
+                  table_name = 'conditions_company_blacklist')
+  THEN
+    CREATE TABLE conditions_company_blacklist (
+      conditions_talent_id UUID NOT NULL,
+      company_blacklist_id UUID NOT NULL,
+      PRIMARY KEY (conditions_talent_id, company_blacklist_id)
+    );
+    ALTER TABLE conditions_company_blacklist
+      ADD CONSTRAINT FK_conditions_company_blacklist__company FOREIGN KEY (company_blacklist_id) REFERENCES company;
+    ALTER TABLE conditions_company_blacklist
+      ADD CONSTRAINT FK_conditions_company_blacklist__conditions FOREIGN KEY (conditions_talent_id) REFERENCES conditions;
+  END IF;
+
   -- [Employer]
 
   IF NOT EXISTS(SELECT 1

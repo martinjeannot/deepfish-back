@@ -1,5 +1,6 @@
 package com.deepfish.talent.domain.conditions;
 
+import com.deepfish.company.domain.Company;
 import com.deepfish.company.domain.CompanyMaturityLevel;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -14,6 +15,8 @@ public interface DefaultConditionsProjection {
   LocalDate getCanStartOn();
 
   boolean isInternship();
+
+  Set<Company> getCompanyBlacklist();
 
   Set<CompanyMaturityLevel> getCompanyMaturityLevels();
 
