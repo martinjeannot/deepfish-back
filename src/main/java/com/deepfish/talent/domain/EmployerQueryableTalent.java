@@ -14,6 +14,9 @@ import org.hibernate.annotations.Immutable;
 public class EmployerQueryableTalent extends AbstractTalent {
 
   @Transient
+  private UUID companyId;
+
+  @Transient
   private UUID employerId;
 
   @Transient

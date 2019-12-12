@@ -23,6 +23,10 @@ public interface EmployerQueryableTalentRepository extends
       QuerydslBindings bindings,
       QEmployerQueryableTalent talent
   ) {
+    // Company
+    bindings.bind(talent.companyId)
+        .first((path, companyId) -> new BooleanBuilder()
+            .andNot(talent.conditions.companyBlacklist.any().id.eq(companyId)));
     // Employer
     bindings.bind(talent.employerId)
         .first((path, employerId) -> new BooleanBuilder()
