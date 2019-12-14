@@ -16,11 +16,11 @@ public interface EmployerTalentProjection {
 
   String getLastName();
 
-  // String getPhoneNumber();
+  String getPhoneNumber();
 
-  // String getEmail();
+  String getEmail();
 
-  // String getLinkedinPublicProfileUrl();
+  String getLinkedinPublicProfileUrl();
 
   String getProfilePictureUrl();
 
