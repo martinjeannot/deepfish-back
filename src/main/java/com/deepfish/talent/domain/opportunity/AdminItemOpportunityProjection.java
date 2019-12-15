@@ -12,6 +12,8 @@ public interface AdminItemOpportunityProjection {
 
   UUID getId();
 
+  int getVersion();
+
   LocalDateTime getCreatedAt();
 
   Talent getTalent();

@@ -9,8 +9,6 @@ import org.springframework.data.rest.core.config.Projection;
 @Projection(name = "admin", types = {Opportunity.class})
 public interface AdminOpportunityProjection extends AdminItemOpportunityProjection {
 
-  int getVersion();
-
   User getCreator();
 
   Requirement getRequirement();
