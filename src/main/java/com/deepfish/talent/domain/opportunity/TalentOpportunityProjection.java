@@ -33,4 +33,6 @@ public interface TalentOpportunityProjection {
   LocalDateTime getSeenByTalentAt();
 
   OpportunityStatus getEmployerStatus();
+
+  String getEmployerDeclinationReason();
 }
