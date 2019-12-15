@@ -17,6 +17,15 @@ BEGIN
       ADD CONSTRAINT FK_talent__users__talent_advocate_id FOREIGN KEY (talent_advocate_id) REFERENCES users;
   END IF;
 
+  IF NOT EXISTS(SELECT 1
+                FROM information_schema.columns
+                WHERE
+                  table_name = 'conditions' AND column_name = 'available_from')
+  THEN
+    ALTER TABLE conditions
+      ADD available_from VARCHAR(255) NOT NULL DEFAULT '';
+  END IF;
+
 
   IF NOT EXISTS(SELECT 1
                 FROM information_schema.tables

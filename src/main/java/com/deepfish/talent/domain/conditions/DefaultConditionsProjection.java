@@ -14,6 +14,8 @@ public interface DefaultConditionsProjection {
 
   LocalDate getCanStartOn();
 
+  String getAvailableFrom();
+
   boolean isInternship();
 
   Set<Company> getCompanyBlacklist();

@@ -5,8 +5,10 @@ import com.deepfish.company.domain.CompanyMaturityLevel;
 import com.deepfish.talent.domain.Talent;
 import com.querydsl.core.annotations.QueryEntity;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.time.Clock;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -48,6 +50,9 @@ public class Conditions {
 
   @NotNull
   private LocalDate canStartOn = LocalDate.now(Clock.systemUTC());
+
+  @NotNull
+  private String availableFrom = new SimpleDateFormat("YYYY-MM").format(new Date());
 
   private boolean internship = false;
 
