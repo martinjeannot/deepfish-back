@@ -53,7 +53,7 @@ public class HourlyJobConfiguration {
     return jobBuilderFactory
         .get(JOB_NAME)
         .start(authenticationStep)
-        .next(hourlyTalentQualificationInterviewSchedulingNotificationStep)
+        //.next(hourlyTalentQualificationInterviewSchedulingNotificationStep)
         .next(clearAuthenticationStep)
         .build();
   }

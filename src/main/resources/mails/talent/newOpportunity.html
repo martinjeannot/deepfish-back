@@ -8,30 +8,40 @@
 </head>
 <body>
 <p>
-  Bonjour {{ talent.firstName }},
+  Félicitations {{ talent.firstName }},
 </p>
 
 <p>
-  Tu as reçu une nouvelle opportunité sur Deepfish !
+  {{ company.name }} vient de te <a href="{{ opportunityUrl }}">faire une offre</a> sur Deepfish !
 </p>
 
 <p>
-  Découvres-en tous les détails <a href="{{ opportunityUrl }}">en cliquant ici</a> (*). Ta réponse
-  nous permettra d'affiner la pertinence des opportunités futures.
+  Tu as 2 options :
+<ul>
+  <li>
+    <strong>Accepter</strong> l'offre, pour que le recruteur te propose des créneaux d’échange afin
+    d’avancer dans le processus de recrutement
+  </li>
+  <li>
+    <strong>Refuser</strong> l'offre, en précisant une raison courtoise pour l’entreprise
+  </li>
+</ul>
 </p>
 
 <p>
-  Merci de ne pas contacter l'entreprise en direct, hors plateforme.
+  Je compte sur toi pour répondre rapidement au recruteur sur la plateforme (pas en direct, hors
+  plateforme), et reste à ta disposition.
 </p>
 
 <p>
-  En te souhaitant une bonne journée,<br/>
-  L'équipe Deepfish
+  À bientôt,<br/>
+  {{ talentAdvocate.firstName }} {{ talentAdvocate.lastName }} - Talent Advocate<br/>
+  {{ talentAdvocate.phoneNumber }} - {{ talentAdvocate.username }}
 </p>
 
 <p style="font-style: italic">
-  (*) : si tu utilises une application mail comme Outlook ou Windows Courrier, découvres ta nouvelle
-  opportunité depuis <a href="https://app.deepfish.co/#/sign-in">ton espace connecté</a>.
+  (*) : si le lien ne fonctionne pas, découvres ta nouvelle offre depuis
+  <a href="https://app.deepfish.co/#/sign-in">ton espace connecté</a> directement.
 </p>
 </body>
 </html>

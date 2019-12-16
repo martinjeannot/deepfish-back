@@ -97,10 +97,12 @@ public class PebbleMailFactory implements MailFactory {
   @Override
   public Email getTalentNewOpportunityMail(Opportunity opportunity) {
     String subject = opportunity.getTalent().getFirstName()
-        + ", tu as reçu une nouvelle opportunité sur Deepfish";
+        + ", tu as reçu une nouvelle offre sur Deepfish";
     Map<String, Object> context = new HashMap<>();
     context.put("title", subject);
     context.put("talent", opportunity.getTalent());
+    context.put("talentAdvocate", opportunity.getTalent().getTalentAdvocate());
+    context.put("company", opportunity.getRequirement().getCompany());
     context.put("opportunityUrl", frontAppUrlBuilder.getTalentOpportunityUrl(opportunity));
     Writer writer = new StringWriter();
     try {
@@ -111,6 +113,7 @@ public class PebbleMailFactory implements MailFactory {
 
     return EmailBuilder
         .startingBlank()
+        .from(opportunity.getTalent().getTalentAdvocate().getUsername())
         .to(opportunity.getTalent().getEmail())
         .withSubject(subject)
         .withHTMLText(writer.toString())
@@ -123,10 +126,11 @@ public class PebbleMailFactory implements MailFactory {
   @Override
   public Email getTalentPendingOpportunityFollowUp2ndMail(Opportunity opportunity) {
     String subject = "RAPPEL - " + opportunity.getTalent().getFirstName()
-        + ", une opportunité t'attend sur Deepfish !";
+        + ", une offre t'attend sur Deepfish !";
     Map<String, Object> context = new HashMap<>();
     context.put("title", subject);
     context.put("talent", opportunity.getTalent());
+    context.put("talentAdvocate", opportunity.getTalent().getTalentAdvocate());
     Writer writer = new StringWriter();
     try {
       talentPendingOpportunityFollowUp2ndMailTemplate.evaluate(writer, context);
@@ -136,7 +140,7 @@ public class PebbleMailFactory implements MailFactory {
 
     return EmailBuilder
         .startingBlank()
-        .from(DAVID_EMAIL)
+        .from(opportunity.getTalent().getTalentAdvocate().getUsername())
         .to(opportunity.getTalent().getEmail())
         .withSubject(subject)
         .withHTMLText(writer.toString())
@@ -254,6 +258,7 @@ public class PebbleMailFactory implements MailFactory {
     Map<String, Object> context = new HashMap<>();
     context.put("title", subject);
     context.put("talent", talent);
+    context.put("talentAdvocate", talent.getTalentAdvocate());
     context.put("company", referenceInterview.getEmployer().getCompany());
     context.put("format", MailHelper.getLabelForInterviewFormat(referenceInterview.getFormat()));
     context.put("interviews", interviews);
@@ -268,7 +273,7 @@ public class PebbleMailFactory implements MailFactory {
 
     return EmailBuilder
         .startingBlank()
-        .from(DAVID_EMAIL)
+        .from(talent.getTalentAdvocate().getUsername())
         .to(talent.getEmail())
         .withSubject(subject)
         .withHTMLText(writer.toString())
@@ -287,6 +292,7 @@ public class PebbleMailFactory implements MailFactory {
     Map<String, Object> context = new HashMap<>();
     context.put("title", subject);
     context.put("talent", interview.getTalent());
+    context.put("talentAdvocate", interview.getTalent().getTalentAdvocate());
     context.put("format", MailHelper.getLabelForInterviewFormat(interview.getFormat()));
     context.put("company", interview.getEmployer().getCompany());
     context.put("interview", interview);
@@ -301,7 +307,7 @@ public class PebbleMailFactory implements MailFactory {
 
     return EmailBuilder
         .startingBlank()
-        .from(DAVID_EMAIL)
+        .from(interview.getTalent().getTalentAdvocate().getUsername())
         .to(interview.getTalent().getEmail())
         .withSubject(subject)
         .withHTMLText(writer.toString())
