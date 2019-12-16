@@ -15,6 +15,8 @@ public interface DefaultTalentProjection {
 
   String getLastName();
 
+  String getPhoneNumber();
+
   Collection<? extends GrantedAuthority> getAuthorities();
 
   DefaultUserProjection getTalentAdvocate();
