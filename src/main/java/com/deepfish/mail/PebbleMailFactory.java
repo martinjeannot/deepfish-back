@@ -348,7 +348,7 @@ public class PebbleMailFactory implements MailFactory {
 
   @Override
   public Email getEmployerWelcomeMail(Employer employer, String password) {
-    String subject = "Deepfish - Plateforme de recrutement de commerciaux en ESN";
+    String subject = "Deepfish - Plateforme de recrutement des fonctions support en ESN";
     Map<String, Object> context = new HashMap<>();
     context.put("title", subject);
     context.put("employer", employer);
@@ -415,6 +415,32 @@ public class PebbleMailFactory implements MailFactory {
     return EmailBuilder
         .startingBlank()
         .to(employer.getUsername())
+        .withSubject(subject)
+        .withHTMLText(writer.toString())
+        .buildEmail();
+  }
+
+  private final PebbleTemplate employerTalentAcceptedOpportunityMailTemplate = pebbleEngine
+      .getTemplate("mails/employer/talentAcceptedOpportunity.html");
+
+  @Override
+  public Email getEmployerTalentAcceptedOpportunityMail(Opportunity opportunity) {
+    String subject = opportunity.getTalent().getFirstName() + " accepte votre offre sur Deepfish";
+    Map<String, Object> context = new HashMap<>();
+    context.put("title", subject);
+    context.put("employer", opportunity.getEmployer());
+    context.put("talent", opportunity.getTalent());
+    Writer writer = new StringWriter();
+    try {
+      employerTalentAcceptedOpportunityMailTemplate.evaluate(writer, context);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
+    return EmailBuilder
+        .startingBlank()
+        .from(DAVID_EMAIL)
+        .to(opportunity.getEmployer().getUsername())
         .withSubject(subject)
         .withHTMLText(writer.toString())
         .buildEmail();
