@@ -18,6 +18,10 @@ public interface EmployerOpportunityProjection {
 
   Set<Interview> getInterviews();
 
+  float getBaseSalaryFrom();
+
+  float getBaseSalaryTo();
+
   OpportunityStatus getTalentStatus();
 
   OpportunityStatus getEmployerStatus();
