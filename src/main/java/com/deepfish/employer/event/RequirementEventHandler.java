@@ -26,6 +26,8 @@ public class RequirementEventHandler {
 
   @HandleAfterCreate
   public void onAfterCreate(Requirement requirement) {
-    mailService.send(mailFactory.getAdminNewRequirementMail(requirement));
+    // disabling new requirement notification (V3 debut : only admins can create new requirements)
+    // to be reactivated when employers can create their own requirements
+    // mailService.send(mailFactory.getAdminNewRequirementMail(requirement));
   }
 }

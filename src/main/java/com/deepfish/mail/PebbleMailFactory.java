@@ -500,7 +500,7 @@ public class PebbleMailFactory implements MailFactory {
 
     return EmailBuilder
         .startingBlank()
-        .toMultiple(SALES_TEAM_EMAILS)
+        .toMultiple(DAVID_EMAIL)
         .withSubject(subject)
         .withHTMLText(writer.toString())
         .buildEmail();
