@@ -27,5 +27,7 @@ public interface EmployerOpportunityProjection {
 
   LocalDateTime getTalentRespondedAt();
 
+  String getTalentDeclinationReason();
+
   OpportunityStatus getEmployerStatus();
 }
