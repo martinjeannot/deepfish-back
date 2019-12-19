@@ -53,7 +53,7 @@ public class IntradayJobConfiguration {
     return jobBuilderFactory
         .get(JOB_NAME)
         .start(authenticationStep)
-        .next(intraday1stIncompleteProfileNotificationStep)
+        //.next(intraday1stIncompleteProfileNotificationStep)
         .next(clearAuthenticationStep)
         .build();
   }

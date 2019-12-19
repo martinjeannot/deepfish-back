@@ -4,6 +4,7 @@ import com.deepfish.talent.domain.conditions.Conditions;
 import com.deepfish.talent.domain.opportunity.Opportunity;
 import com.deepfish.talent.domain.qualification.Qualification;
 import com.deepfish.user.domain.AbstractUser;
+import com.deepfish.user.domain.User;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import java.time.Clock;
 import java.time.LocalDate;
@@ -41,9 +42,9 @@ import org.hibernate.validator.constraints.NotBlank;
 @Data
 @Accessors(chain = true)
 @ToString(callSuper = true, exclude = {"basicProfile", "conditions", "qualification",
-    "opportunities"})
+    "opportunities", "talentAdvocate"})
 @EqualsAndHashCode(callSuper = true, exclude = {"basicProfile", "conditions", "qualification",
-    "opportunities"})
+    "opportunities", "talentAdvocate"})
 @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 public class AbstractTalent extends AbstractUser {
 
@@ -98,6 +99,10 @@ public class AbstractTalent extends AbstractUser {
   @Column(columnDefinition = "text")
   private String fullProfileText = "";
 
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(foreignKey = @ForeignKey(name = "FK_talent__users__talent_advocate_id"))
+  private User talentAdvocate;
+
   private LocalDateTime linkedinProfileLastRetrievedAt;
 
   private LocalDateTime linkedinProfileLastRetrievalAttemptedAt;
@@ -135,6 +140,14 @@ public class AbstractTalent extends AbstractUser {
 
   private boolean active;
 
+  private boolean online;
+
+  private LocalDateTime onlinedAt;
+
+  @NotNull
+  @Enumerated(EnumType.STRING)
+  private JobFunction jobFunction = JobFunction.SALES;
+
   private LocalDate reactivatedOn;
 
   @Enumerated(EnumType.STRING)
@@ -147,4 +160,16 @@ public class AbstractTalent extends AbstractUser {
   @NotNull
   @Column(columnDefinition = "text")
   private String followUp = "";
+
+  // GETTERS/SETTERS ===============================================================================
+
+  /**
+   * Needed to prevent fetching a {@literal null} entity resulting in a 404 error from SDR (which
+   * needs to be caught frontend-side)
+   *
+   * @return {@code true} if the talent has been assigned a talent advocate, {@code false} otherwise
+   */
+  public boolean gethasTalentAdvocate() {
+    return talentAdvocate != null;
+  }
 }

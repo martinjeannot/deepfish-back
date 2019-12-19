@@ -12,7 +12,7 @@
 </p>
 
 <p>
-  Félicitations, {{ company.name }} te propose un entretien {{ format }} !
+  Bonne nouvelle, {{ company.name }} te propose un entretien {{ format }} !
 </p>
 
 <p>
@@ -29,11 +29,14 @@
 </p>
 
 <p>
-  À bientôt
+  À bientôt,<br/>
+  {{ talentAdvocate.firstName }} {{ talentAdvocate.lastName }} - Talent Advocate<br/>
+  {{ talentAdvocate.phoneNumber }} - {{ talentAdvocate.username }}
 </p>
 
 <p style="font-style: italic">
-  PS : si aucun créneau ne te convient, merci de nous prévenir via le chat sur le site Deepfish
+  PS : si aucun créneau ne te convient, merci de me prévenir rapidement, soit par email, soit via le
+  chat sur le site Deepfish
 </p>
 </body>
 </html>

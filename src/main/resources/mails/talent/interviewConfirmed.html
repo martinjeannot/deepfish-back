@@ -14,13 +14,18 @@
 <p>
   Ton entretien {{ format }} avec {{ company.name }} est confirmé
   le {{ interview.startAt.format(dateFormatter) }}
-  à {{ interview.startAt.format(timeFormatter) }} !<br/>
+  à {{ interview.startAt.format(timeFormatter) }}.<br/>
   Tu peux dès maintenant l'ajouter à ton agenda.
 </p>
 
 <p>
   Je reste à ta disposition au besoin,<br/>
   À bientôt
+</p>
+
+<p>
+  {{ talentAdvocate.firstName }} {{ talentAdvocate.lastName }} - Talent Advocate<br/>
+  {{ talentAdvocate.phoneNumber }} - {{ talentAdvocate.username }}
 </p>
 </body>
 </html>

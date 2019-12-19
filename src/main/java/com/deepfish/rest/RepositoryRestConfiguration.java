@@ -17,6 +17,7 @@ import com.deepfish.talent.domain.conditions.JobType;
 import com.deepfish.talent.domain.conditions.TaskType;
 import com.deepfish.talent.domain.opportunity.Opportunity;
 import com.deepfish.talent.domain.opportunity.OpportunityDatum;
+import com.deepfish.user.domain.User;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.data.rest.core.event.ValidatingRepositoryEventListener;
@@ -40,7 +41,7 @@ public class RepositoryRestConfiguration extends RepositoryRestConfigurerAdapter
         Talent.class, QueryableTalent.class, Opportunity.class, Employer.class, Company.class,
         CompanyMaturityLevel.class, JobType.class, CommodityType.class, TaskType.class,
         IndustryType.class, ClientIndustryType.class, FixedLocation.class, Seniority.class,
-        Requirement.class, OpportunityDatum.class, Interview.class, Utm.class
+        Requirement.class, OpportunityDatum.class, Interview.class, Utm.class, User.class
     );
   }
 

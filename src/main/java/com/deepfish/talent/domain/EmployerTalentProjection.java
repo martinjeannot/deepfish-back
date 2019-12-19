@@ -1,7 +1,8 @@
 package com.deepfish.talent.domain;
 
 import com.deepfish.talent.domain.conditions.EmployerConditionsProjection;
-import com.deepfish.talent.domain.qualification.Qualification;
+import com.deepfish.talent.domain.qualification.EmployerQualificationProjection;
+import com.deepfish.user.domain.DefaultUserProjection;
 import java.util.Map;
 import java.util.UUID;
 import org.springframework.data.rest.core.config.Projection;
@@ -15,21 +16,25 @@ public interface EmployerTalentProjection {
 
   String getLastName();
 
-  String getLinkedinPublicProfileUrl();
-
-  String getProfilePictureUrl();
-
   String getPhoneNumber();
 
   String getEmail();
 
-  Map<String, Object> getBasicProfile();
+  String getLinkedinPublicProfileUrl();
+
+  String getProfilePictureUrl();
+
+  Map<String, Object> getFullProfile();
+
+  DefaultUserProjection getTalentAdvocate();
 
   int getYearsOfExperience();
 
-  String getSelfPitch();
-
   EmployerConditionsProjection getConditions();
 
-  Qualification getQualification();
+  EmployerQualificationProjection getQualification();
+
+  JobFunction getJobFunction();
+
+  String getSelfPitch();
 }

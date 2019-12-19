@@ -93,6 +93,7 @@ public class OpportunityEventHandler {
       if (PENDING.equals(opportunity.getPreviousTalentStatus())) {
         if (ACCEPTED.equals(opportunity.getTalentStatus())) {
           mailService.send(mailFactory.getAdminTalentAcceptedOpportunityMail(opportunity));
+          mailService.send(mailFactory.getEmployerTalentAcceptedOpportunityMail(opportunity));
         } else if (DECLINED.equals(opportunity.getTalentStatus())) {
           mailService.send(mailFactory.getAdminTalentDeclinedOpportunityMail(opportunity));
         }

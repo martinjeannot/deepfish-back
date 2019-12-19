@@ -19,7 +19,15 @@ public interface EmployerOpportunityProjection {
 
   Set<Interview> getInterviews();
 
-  OpportunityStatus getEmployerStatus();
+  float getBaseSalaryFrom();
 
-  LocalDateTime getForwardedAt();
+  float getBaseSalaryTo();
+
+  OpportunityStatus getTalentStatus();
+
+  LocalDateTime getTalentRespondedAt();
+
+  String getTalentDeclinationReason();
+
+  OpportunityStatus getEmployerStatus();
 }

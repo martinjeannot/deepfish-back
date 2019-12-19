@@ -66,9 +66,9 @@ public class BeginningOfDayJobConfiguration {
     return jobBuilderFactory
         .get(JOB_NAME)
         .start(authenticationStep)
-        .next(bod2ndIncompleteProfileNotificationStep)
-        .next(bod3rdIncompleteProfileNotificationStep)
-        .next(bod4thIncompleteProfileNotificationStep)
+        //.next(bod2ndIncompleteProfileNotificationStep)
+        //.next(bod3rdIncompleteProfileNotificationStep)
+        //.next(bod4thIncompleteProfileNotificationStep)
         .next(bodTalentReactivationStep)
         .next(clearAuthenticationStep)
         .build();

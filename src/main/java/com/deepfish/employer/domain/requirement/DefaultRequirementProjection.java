@@ -12,6 +12,8 @@ public interface DefaultRequirementProjection {
 
   UUID getId();
 
+  int getVersion();
+
   LocalDateTime getCreatedAt();
 
   Company getCompany();

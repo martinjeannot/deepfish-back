@@ -41,6 +41,8 @@ public interface MailFactory {
 
   Email getEmployerPasswordResetMail(Employer employer, String password);
 
+  Email getEmployerTalentAcceptedOpportunityMail(Opportunity opportunity);
+
   Email getEmployerInterviewConfirmedMail(Interview interview);
 
   // ADMIN =========================================================================================

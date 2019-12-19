@@ -1,6 +1,7 @@
 package com.deepfish.talent.domain.opportunity;
 
 import com.deepfish.core.domain.StateRetaining;
+import com.deepfish.employer.domain.Employer;
 import com.deepfish.employer.domain.requirement.Requirement;
 import com.deepfish.interview.domain.Interview;
 import com.deepfish.talent.domain.Talent;
@@ -34,6 +35,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.validator.constraints.NotBlank;
 
 @Entity
 @QueryEntity
@@ -47,6 +49,8 @@ public class Opportunity implements StateRetaining {
   @Setter(AccessLevel.NONE)
   private UUID id;
 
+  private int version = 2;
+
   @Transient
   @JsonProperty(access = Access.WRITE_ONLY)
   private Map<String, Object> previousState;
@@ -55,10 +59,13 @@ public class Opportunity implements StateRetaining {
   @Setter(AccessLevel.NONE)
   private LocalDateTime createdAt = LocalDateTime.now(Clock.systemUTC());
 
-  @NotNull
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(foreignKey = @ForeignKey(name = "FK_opportunity__user__creator_id"))
   private User creator;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(foreignKey = @ForeignKey(name = "FK_opportunity__employer__employer_id"))
+  private Employer employer;
 
   @NotNull
   @ManyToOne(fetch = FetchType.LAZY)
@@ -73,6 +80,13 @@ public class Opportunity implements StateRetaining {
   @NotNull
   @OneToMany(mappedBy = "opportunity")
   private Set<Interview> interviews = new HashSet<>();
+
+  @NotBlank
+  private String name = "";
+
+  private Float baseSalaryFrom;
+
+  private Float baseSalaryTo;
 
   @NotNull
   @Column(columnDefinition = "text")

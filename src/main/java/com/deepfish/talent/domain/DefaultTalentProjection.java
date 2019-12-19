@@ -1,19 +1,15 @@
-package com.deepfish.employer.domain;
+package com.deepfish.talent.domain;
 
-import com.deepfish.company.domain.Company;
 import com.deepfish.user.domain.DefaultUserProjection;
-import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.UUID;
 import org.springframework.data.rest.core.config.Projection;
 import org.springframework.security.core.GrantedAuthority;
 
-@Projection(name = "default", types = {Employer.class})
-public interface DefaultEmployerProjection {
+@Projection(name = "default", types = {Talent.class})
+public interface DefaultTalentProjection {
 
   UUID getId();
-
-  String getUsername();
 
   String getFirstName();
 
@@ -23,11 +19,5 @@ public interface DefaultEmployerProjection {
 
   Collection<? extends GrantedAuthority> getAuthorities();
 
-  LocalDateTime getCreatedAt();
-
-  LocalDateTime getLastSignedInAt();
-
-  Company getCompany();
-
-  DefaultUserProjection getClientExecutive();
+  DefaultUserProjection getTalentAdvocate();
 }
