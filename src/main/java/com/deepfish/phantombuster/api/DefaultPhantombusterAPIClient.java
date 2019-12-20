@@ -29,7 +29,7 @@ public class DefaultPhantombusterAPIClient implements PhantombusterAPIClient {
 
   private static final RestTemplate REST_TEMPLATE = new RestTemplate();
 
-  private static final String SESSION_COOKIE = "AQEDARMQIMcDq3q7AAABbTEu160AAAFtVTtbrU0AcWtgDzwG9h0jmu0es3pkh30b1gwbAtKHIS3zlHd8RoZPsspqzx4xLABDk9k1w_IeqtIpm0dIg5ZU9aoc643k5Kvq8Q6b2xHYF4DGTRsu3igthRH8";
+  private static final String SESSION_COOKIE = "AQEDARMQIMcEgy95AAABbyWOYCkAAAFvSZrkKU0AuePqQ0JNBm4Ird3BWJ8EEzQyuL7OA2_-Uscvoye7S9ErLZcamQXoaPPMYxmcSPDH2Zm9aAFrhQ8q8z7uX78FO70gUfaEnXmXzbdlO8tgaRCLwmY2";
 
   private final String apiKey;
 
